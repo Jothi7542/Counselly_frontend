@@ -131,13 +131,11 @@
                             <h2 class="name">${c.name}</h2>
                             <img src="${c.profile_image || fallbackImg}" alt="${c.name}" class="profile-img">
                         </div>
-                        
-                        <!-- Review Stars
-    <div class="rating-section" style="text-align: center; margin-bottom: 10px;">
-        <span style="color: #FFD700; font-size: 1.2em; letter-spacing: 2px;">${stars}</span>
-        <span style="color: #666; font-size: 0.9em; margin-left: 5px;">${c.rating || 0} (${c.reviews_count || 0}
-            reviews)</span>
-    </div>
+                        <div class="rating-section" style="text-align: center; margin-bottom: 10px;">
+                        <span style="color: #FFD700; font-size: 1.2em; letter-spacing: 2px;">${stars}</span>
+                        <span style="color: #666; font-size: 0.9em; margin-left: 5px;">${c.rating || 0} (${c.reviews_count || 0}
+                        reviews)</span>
+                    </div>
 
     <p class="experience">${c.experience || '3.5'} years of experience</p>
     <p class="heading">Speaks</p>
