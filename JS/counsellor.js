@@ -1,4 +1,5 @@
-const API_URL = "https://counselly-backend.vercel.app";
+const API_URL = "https://counselly-backend.vercel.app/counsellors/";
+
 
 // Always normalize data into array
 function normalizeArray(value) {
