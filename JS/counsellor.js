@@ -1,6 +1,4 @@
-const API_URL = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1"
-  ? "http://localhost:8000/counsellors"
-  : "https://counselly-backend.vercel.app/counsellors";
+const API_URL = "https://counselly-backend.vercel.app";
 
 // Always normalize data into array
 function normalizeArray(value) {
