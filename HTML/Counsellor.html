@@ -70,7 +70,10 @@
             async function loadCounsellors(filter = "") {
                 try {
                     console.log("Fetching counsellors...");
-                    const counsellors = await API.counsellors.getAll();
+                    // const counsellors = await API.counsellors.getAll();
+                    const res = await fetch(API_URL);
+                    const counsellors = await res.json();
+
 
                     // Deduplicate by ID
                     const uniqueCounsellors = Array.from(new Map(counsellors.map(c => [c.counsellors_id, c])).values());
