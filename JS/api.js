@@ -1,5 +1,5 @@
 // API Configuration
-const API_BASE_URL = "https://counselly-backend.vercel.app";
+const API_URL = "https://counselly-backend.vercel.app";
 
 // Token Management
 const TokenManager = {
