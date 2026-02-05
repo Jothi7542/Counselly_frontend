@@ -31,7 +31,12 @@ const UserManager = {
 async function request(endpoint, options = {}) {
     const token = TokenManager.get();
 
+    // Ensure endpoint starts with /
+    const path = endpoint.startsWith('/') ? endpoint : `/${endpoint}`;
+    const url = `${API_BASE_URL}${path}`;
+
     const headers = {
+        "Accept": "application/json",
         ...options.headers,
     };
 
@@ -44,15 +49,19 @@ async function request(endpoint, options = {}) {
     }
 
     const config = {
+        method: options.method || 'GET',
         ...options,
         headers,
     };
 
+    console.log(`[API] Fetching: ${url}`, { method: config.method, hasToken: !!token });
+
     try {
-        const response = await fetch(`${API_BASE_URL}${endpoint}`, config);
+        const response = await fetch(url, config);
 
         // Handle 401 Unauthorized
         if (response.status === 401) {
+            console.error("[API] 401 Unauthorized");
             TokenManager.remove();
             UserManager.remove();
             window.location.href = "/HTML/auth.html";
@@ -67,7 +76,7 @@ async function request(endpoint, options = {}) {
 
         return data;
     } catch (error) {
-        console.error("API Error:", error);
+        console.error(`[API] Fetch error for ${url}:`, error);
         throw error;
     }
 }
