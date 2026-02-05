@@ -47,7 +47,7 @@ document.getElementById("clientSignup").addEventListener("submit", async functio
     TokenManager.set(response.access_token);
     UserManager.set(response.user);
     alert("Signup successful!");
-    window.location.href = "../Index.html"; // Redirect to home
+    window.location.href = "../index.html"; // Redirect to home
   } catch (error) {
     alert(error.message || "Signup failed. Please try again.");
   }
@@ -64,7 +64,7 @@ document.getElementById("clientLogin").addEventListener("submit", async function
     const response = await API.auth.clientLogin(email, password);
     TokenManager.set(response.access_token);
     UserManager.set(response.user);
-    window.location.href = "../Index.html";
+    window.location.href = "../index.html";
   } catch (error) {
     alert(error.message || "Invalid email or password");
   }
