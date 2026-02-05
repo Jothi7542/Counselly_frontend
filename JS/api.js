@@ -32,9 +32,12 @@ async function request(endpoint, options = {}) {
     const token = TokenManager.get();
 
     const headers = {
-        "Content-Type": "application/json",
         ...options.headers,
     };
+
+    if (options.body && !(options.body instanceof FormData)) {
+        headers["Content-Type"] = "application/json";
+    }
 
     if (token && !options.skipAuth) {
         headers["Authorization"] = `Bearer ${token}`;
