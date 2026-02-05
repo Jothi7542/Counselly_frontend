@@ -69,10 +69,7 @@
             async function loadCounsellors(filter = "") {
                 try {
                     console.log("Fetching counsellors...");
-                    // const counsellors = await API.counsellors.getAll();
-                    const res = await fetch(API_URL);
-                    const counsellors = await res.json();
-
+                    const counsellors = await API.counsellors.getAll();
 
                     // Deduplicate by ID
                     const uniqueCounsellors = Array.from(new Map(counsellors.map(c => [c.counsellors_id, c])).values());
@@ -95,7 +92,7 @@
                     grid.innerHTML = `
                         <div style="grid-column: 1/-1; text-align: center; padding: 40px;">
                             <p style="color: #ef4444; font-weight: 600;">Connection Error: ${err.message}</p>
-                            <p style="color: var(--text-muted); margin-top: 10px;">Please ensure the backend server is running on port 8000.</p>
+                            <p style="color: var(--text-muted); margin-top: 10px;">Please ensure you have a stable internet connection or try again later.</p>
                             <button onclick="location.reload()" style="margin-top: 20px; padding: 10px 20px; background: var(--primary); color: white; border: none; border-radius: 8px; cursor: pointer;">Retry Connection</button>
                         </div>
                     `;
@@ -157,7 +154,7 @@
             // Initial load
             loadCounsellors();
         });
-    </script> 
+    </script>
 
 
     <!-- Additional sections like Footer are inferred to be updated via global changes or shared CSS -->

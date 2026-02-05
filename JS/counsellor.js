@@ -1,4 +1,4 @@
-const API_URL = "https://counselly-backend.vercel.app/counsellors";
+// API_URL is now centrally defined in JS/api.js
 
 
 // Always normalize data into array
@@ -10,8 +10,7 @@ function normalizeArray(value) {
 
 async function loadCounsellors() {
   try {
-    const res = await fetch(API_URL);
-    const counsellors = await res.json();
+    const counsellors = await API.counsellors.getAll();
 
     const grid = document.getElementById("counsellorGrid");
     grid.innerHTML = "";
