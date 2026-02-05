@@ -24,7 +24,7 @@
             <a class="login-btn" href="./auth.html">Login</a>
         </div>
     </nav>
-
+    <script src="../JS/api.js"></script>
     <script src="../JS/counsellor.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", () => {
@@ -63,7 +63,6 @@
     </div>
 
     <script>
-        const API_URL = "https://counselly-backend.vercel.app/counsellors/";
         document.addEventListener("DOMContentLoaded", async () => {
             const grid = document.getElementById("counsellorGrid");
             const searchInput = document.getElementById("searchInput");
