@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us | Counselly</title>
+    <link rel="stylesheet" href="../CSS/style.css">
+    <style>
+        .contact-container {
+            max-width: 900px;
+            margin: 80px auto;
+            padding: 40px;
+            background: white;
+            border-radius: 30px;
+            box-shadow: var(--shadow-lg);
+            display: flex;
+            gap: 50px;
+        }
+
+        .contact-info {
+            flex: 1;
+        }
+
+        .contact-form {
+            flex: 1.5;
+        }
+
+        .contact-info h2 {
+            color: var(--primary);
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+
+        .contact-info p {
+            color: var(--text-muted);
+            margin-bottom: 30px;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .info-item i {
+            color: var(--accent);
+            font-size: 1.2rem;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 15px;
+            border: 1px solid #E2E8F0;
+            border-radius: 12px;
+            font-size: 1rem;
+            background: #F8FAFC;
+        }
+
+        .send-btn {
+            background: linear-gradient(to right, var(--primary), var(--primary-hover));
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            width: 100%;
+            transition: var(--transition);
+        }
+
+        .send-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(62, 39, 35, 0.4);
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <img src="../Assets/Project_logo.png" alt="Counselly Logo">
+            <h1>Counselly</h1>
+        </div>
+        <ul class="nav-links">
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="./About.html">About</a></li>
+            <li><a href="./Blog.html">Blog</a></li>
+            <li><a href="./Contact.html" class="active">Contact</a></li>
+        </ul>
+        <div class="nav-buttons" id="navButtons">
+            <a class="login-btn" href="./auth.html">Login</a>
+        </div>
+    </nav>
+
+    <div class="contact-container">
+        <div class="contact-info">
+            <h2>Get in Touch</h2>
+            <p>We're here to help you on your journey to wellness. Reach out to us anytime.</p>
+            <div class="info-item">
+                <span>📧 support@thecounselly.com</span>
+            </div>
+            <div class="info-item">
+                <span>📍 Chennai, India</span>
+            </div>
+        </div>
+        <form class="contact-form">
+            <div class="form-group">
+                <label>Your Name</label>
+                <input type="text" placeholder="John Doe">
+            </div>
+            <div class="form-group">
+                <label>Email Address</label>
+                <input type="email" placeholder="john@example.com">
+            </div>
+            <div class="form-group">
+                <label>Message</label>
+                <textarea rows="4" placeholder="How can we help you?"></textarea>
+            </div>
+            <button type="submit" class="send-btn">Send Message</button>
+        </form>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-logo">
+                <img src="../Assets/Project_logo.png" alt="Counselly Logo">
+                <h2 class="brand">Counselly</h2>
+                <p>Your safe space for mental wellness. Connect with certified experts from the comfort of your home.
+                </p>
+            </div>
+            <div class="footer-links">
+                <div class="footer-column">
+                    <h3>Services</h3>
+                    <ul>
+                        <li><a href="./Counsellor.html">Individual Therapy</a></li>
+                        <li><a href="./Counsellor.html">Couples Counselling</a></li>
+                        <li><a href="./Counsellor.html">Teen Support</a></li>
+                        <li><a href="./Counsellor.html">Anxiety & Depression</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Company</h3>
+                    <ul>
+                        <li><a href="./About.html">About Us</a></li>
+                        <li><a href="./Blog.html">Success Stories</a></li>
+                        <li><a href="./Blog.html">Wellness Blog</a></li>
+                        <li><a href="./Contact.html">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Legal</h3>
+                    <ul>
+                        <li><a href="Privacy.html">Privacy Policy</a></li>
+                        <li><a href="Terms.html">Terms of Service</a></li>
+                        <li><a href="Cookies.html">Cookie Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div class="footer-bottom-links">
+                <a href="#">FAQs</a>
+                <a href="#">Support</a>
+            </div>
+            <p>Copyright © 2025 COUNSELLY INDIA PRIVATE LIMITED. All Rights Reserved</p>
+        </div>
+    </footer>
+</body>
+
+</html>

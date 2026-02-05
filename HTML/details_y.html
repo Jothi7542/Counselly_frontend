@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Counselly Navbar</title>
+    <link rel="stylesheet" href="../CSS/details.css">
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <img src="../Assets/Project_logo.png" alt="Counselly Logo">
+            <h1>Counselly</h1>
+        </div>
+        <ul class="nav-links">
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="./About.html">About</a></li>
+            <li><a href="./Blog.html">Blog</a></li>
+            <li><a href="./Contact.html">Contact</a></li>
+        </ul>
+        <div class="nav-buttons" id="navButtons">
+            <a class="login-btn" href="./auth.html">Login</a>
+        </div>
+    </nav>
+
+    <script src="../JS/api.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const user = UserManager.get();
+            const navButtons = document.getElementById("navButtons");
+
+            if (user) {
+                const dashboardUrl = user.role === 'client' ? './User_dashboard.html' : './Counsellor_dashboard.html';
+                navButtons.innerHTML = `
+              <div style="display: flex; gap: 15px; align-items: center;">
+                  <a class="login-btn" href="${dashboardUrl}">Dashboard</a>
+                  <a href="#" onclick="logout()" style="color: var(--text-muted); text-decoration: none; font-weight: 500; font-size: 14px;">Logout</a>
+              </div>
+          `;
+            }
+        });
+
+        function logout() {
+            TokenManager.remove();
+            UserManager.remove();
+            window.location.reload();
+        }
+    </script>
+
+    <h1 class="con">Review Session Details</h1>
+    <div class="confirm-box">
+        <img src="../Assets/Wirframep3.webp" alt="Profile" class="counsellor-img" id="confirmPhoto">
+        <div class="content-wrapper">
+            <div class="details" id="confirmDetails">
+                <h2 id="confirmName">Loading...</h2>
+                <p><strong>Session</strong> Initial Consultation</p>
+                <p><strong>Date</strong> ...</p>
+                <p><strong>Time</strong> ...</p>
+                <p><strong>Mode</strong> ...</p>
+                <p><strong>Therapy</strong> ...</p>
+            </div>
+            <div class="buttons">
+                <a href="./Theraphy_y.html" class="btn back-btn">Edit Details</a>
+                <button class="btn pay-btn" id="confirmBookingBtn">Confirm Booking</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../JS/booking.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const data = BookingManager.getCompleteData();
+            if (!data.counsellors_id || !data.therapy_type) {
+                alert("Session expired. Please start over.");
+                window.location.href = "./Counsellor.html";
+                return;
+            }
+
+            document.getElementById("confirmPhoto").src = data.counsellor_photo || "../Assets/Wireframep1.webp";
+            document.getElementById("confirmName").innerText = data.counsellor_name;
+
+            const detailsDiv = document.getElementById("confirmDetails");
+            detailsDiv.innerHTML = `
+                <h2>${data.counsellor_name}</h2>
+                <p><strong>Therapy Type</strong> ${data.therapy_type}</p>
+                <p><strong>Date</strong> ${data.date}</p>
+                <p><strong>Time</strong> ${data.time} (${data.session_period})</p>
+                <p><strong>Mode</strong> ${data.mode}</p>
+                <p><strong>Reason</strong> ${data.reason}</p>
+            `;
+
+            document.getElementById("confirmBookingBtn").addEventListener("click", async () => {
+                const btn = document.getElementById("confirmBookingBtn");
+                btn.disabled = true;
+                btn.innerText = "Processing...";
+
+                try {
+                    const appointmentData = {
+                        clients_id: data.clients_id,
+                        counsellors_id: data.counsellors_id,
+                        availability_id: data.availability_id,
+                        mode: data.mode,
+                        address: data.mode === "In Person" ? "49, Thomas Road, Chennai" : "Online",
+                        therapy_type: data.therapy_type,
+                        reason: data.reason
+                    };
+
+                    const res = await API.appointments.create(appointmentData);
+
+                    // Save for confirmation page
+                    localStorage.setItem("last_booking_id", res.appointment_id);
+                    localStorage.setItem("last_doctor", data.counsellor_name);
+                    localStorage.setItem("last_date", data.date);
+                    localStorage.setItem("last_time", data.time);
+                    BookingManager.clear(); // Clear booking data after successful booking
+                    window.location.href = "./Confirm.html";
+                } catch (err) {
+                    alert("Booking failed: " + err.message);
+                    btn.disabled = false;
+                    btn.innerText = "Confirm Booking";
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

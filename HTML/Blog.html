@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Counselly Navbar</title>
+    <link rel="stylesheet" href="../CSS/Blog.css">
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <img src="../Assets/Project_logo.png" alt="Counselly Logo">
+            <h1>Counselly</h1>
+        </div>
+        <ul class="nav-links">
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="./About.html">About</a></li>
+            <li><a href="./Blog.html">Blog</a></li>
+            <li><a href="./Contact.html">Contact</a></li>
+        </ul>
+        <div class="nav-buttons" id="navButtons">
+            <a class="login-btn" href="./auth.html">Login</a>
+        </div>
+    </nav>
+
+    <script src="../JS/api.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const user = UserManager.get();
+            const navButtons = document.getElementById("navButtons");
+
+            if (user) {
+                const dashboardUrl = user.role === 'client' ? './User_dashboard.html' : './Counsellor_dashboard.html';
+                navButtons.innerHTML = `
+              <div style="display: flex; gap: 15px; align-items: center;">
+                  <a class="login-btn" href="${dashboardUrl}">Dashboard</a>
+                  <a href="#" onclick="logout()" style="color: var(--text-muted); text-decoration: none; font-weight: 500; font-size: 14px;">Logout</a>
+              </div>
+          `;
+            }
+        });
+
+        function logout() {
+            TokenManager.remove();
+            UserManager.remove();
+            window.location.reload();
+        }
+    </script>
+
+    <header class="blog-header">
+        <h1>Wellness Insights</h1>
+        <p>Expert advice and resources to help you navigate your mental health journey with confidence.</p>
+    </header>
+
+    <div class="blog-container">
+        <article class="blog-card">
+            <img src="../Assets/Blog1.png" alt="Mindfulness" class="blog-img">
+            <div class="blog-info">
+                <span class="blog-tag">Mindfulness</span>
+                <h2>5 Simple Habits for a Calmer Mind</h2>
+                <p>Discover how small daily changes can lead to a significant reduction in stress and anxiety levels.
+                </p>
+                <a href="#" class="read-more">Read Full Article &rarr;</a>
+            </div>
+        </article>
+
+        <article class="blog-card">
+            <img src="../Assets/Blog2.png" alt="Relationships" class="blog-img">
+            <div class="blog-info">
+                <span class="blog-tag">Relationships</span>
+                <h2>Communication in Times of Conflict</h2>
+                <p>Expert tips on maintaining healthy boundaries and resolving disagreements with empathy and respect.
+                </p>
+                <a href="#" class="read-more">Read Full Article &rarr;</a>
+            </div>
+        </article>
+
+        <article class="blog-card">
+            <img src="../Assets/Discussion_1.png" alt="Self-Care" class="blog-img">
+            <div class="blog-info">
+                <span class="blog-tag">Self-Care</span>
+                <h2>The Importance of Professional Support</h2>
+                <p>Why seeking therapy is a sign of strength and how it can transform your approach to personal growth.
+                </p>
+                <a href="#" class="read-more">Read Full Article &rarr;</a>
+            </div>
+        </article>
+    </div>
+
+    <section class="wellness-section">
+        <h2>Yoga for Inner Peace</h2>
+        <div class="video-grid">
+            <div class="video-card">
+                <iframe src="https://www.youtube.com/embed/v7AYKMP6rOE" frameborder="0" allowfullscreen></iframe>
+                <p style="margin-top:10px; font-weight:600;">Morning Yoga for Anxiety</p>
+            </div>
+            <div class="video-card">
+                <iframe src="https://www.youtube.com/embed/sTANio_2E0Q" frameborder="0" allowfullscreen></iframe>
+                <p style="margin-top:10px; font-weight:600;">10 Min Meditation for Calm</p>
+            </div>
+            <div class="video-card">
+                <iframe src="https://www.youtube.com/embed/O-6f5wQXSu8" frameborder="0" allowfullscreen></iframe>
+                <p style="margin-top:10px; font-weight:600;">5-Minute Mindfulness Meditation</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="wellness-section">
+        <h2>Recommended Reading</h2>
+        <div class="book-list">
+            <div class="book-card">
+                <h3>The Noonday Demon</h3>
+                <p>By Andrew Solomon - An Atlas of Depression.</p>
+            </div>
+            <div class="book-card">
+                <h3>Feeling Good</h3>
+                <p>By David D. Burns - The New Mood Therapy.</p>
+            </div>
+            <div class="book-card">
+                <h3>The Upward Spiral</h3>
+                <p>By Alex Korb - Using Neuroscience to Reverse Depression.</p>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-logo">
+                <img src="../Assets/Project_logo.png" alt="Counselly Logo">
+                <h2 class="brand">Counselly</h2>
+                <p>Your safe space for mental wellness. Connect with certified experts from the comfort of your home.
+                </p>
+            </div>
+            <div class="footer-links">
+                <div class="footer-column">
+                    <h3>Services</h3>
+                    <ul>
+                        <li><a href="./Counsellor.html">Individual Therapy</a></li>
+                        <li><a href="./Counsellor.html">Couples Counselling</a></li>
+                        <li><a href="./Counsellor.html">Teen Support</a></li>
+                        <li><a href="./Counsellor.html">Anxiety & Depression</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Company</h3>
+                    <ul>
+                        <li><a href="./About.html">About Us</a></li>
+                        <li><a href="./Blog.html">Success Stories</a></li>
+                        <li><a href="./Blog.html">Wellness Blog</a></li>
+                        <li><a href="./Contact.html">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Legal</h3>
+                    <ul>
+                        <li><a href="Privacy.html">Privacy Policy</a></li>
+                        <li><a href="Terms.html">Terms of Service</a></li>
+                        <li><a href="Cookies.html">Cookie Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div class="footer-bottom-links">
+                <a href="#">FAQs</a>
+                <a href="#">Support</a>
+            </div>
+            <p>Copyright © 2025 COUNSELLY INDIA PRIVATE LIMITED. All Rights Reserved</p>
+        </div>
+    </footer>
+
+</html>

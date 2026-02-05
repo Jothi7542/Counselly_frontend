@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Counselly Navbar</title>
+  <link rel="stylesheet" href="../CSS/About.css">
+</head>
+
+<body>
+  <nav class="navbar">
+    <div class="logo">
+      <img src="../Assets/Project_logo.png" alt="Counselly Logo">
+      <h1>Counselly</h1>
+    </div>
+    <ul class="nav-links">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="./About.html">About</a></li>
+      <li><a href="./Blog.html">Blog</a></li>
+      <li><a href="./Contact.html">Contact</a></li>
+    </ul>
+    <div class="nav-buttons" id="navButtons">
+      <a class="login-btn" href="./auth.html">Login</a>
+    </div>
+  </nav>
+
+  <script src="../JS/api.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const user = UserManager.get();
+      const navButtons = document.getElementById("navButtons");
+
+      if (user) {
+        const dashboardUrl = user.role === 'client' ? './User_dashboard.html' : './Counsellor_dashboard.html';
+        navButtons.innerHTML = `
+            <div style="display: flex; gap: 15px; align-items: center;">
+                <a class="login-btn" href="${dashboardUrl}">Dashboard</a>
+                <a href="#" onclick="logout()" style="color: var(--text-muted); text-decoration: none; font-weight: 500; font-size: 14px;">Logout</a>
+            </div>
+        `;
+      }
+    });
+
+    function logout() {
+      TokenManager.remove();
+      UserManager.remove();
+      window.location.reload();
+    }
+  </script>
+
+  <h1 class="about">About Us</h1>
+  <figure class="banner">
+    <img src="../Assets/together.jpg" alt="Counselly banner">
+  </figure>
+
+  <article class="art">
+    <p>At Counselly, we believe that everyone deserves a safe space to talk, heal, and grow.</p>
+    <br>
+    <p>Our platform connects individuals with qualified psychologists and counsellors who provide professional mental
+      health support in a confidential and compassionate environment.</p>
+    <br>
+    <p>Whether you’re struggling with stress, anxiety, relationship issues, or simply need someone to listen, Counselly
+      is here to help. We make it easier to book sessions, choose your preferred language, and find the right
+      psychologist who truly understands you.</p>
+    <br>
+    <p>Our mission is to break the stigma around mental health and make emotional well-being accessible to
+      everyone—anytime, anywhere.</p>
+  </article>
+
+  <h1 class="theraphy">We provide all the therapy you need</h1>
+  <div class="therapy-container">
+    <div class="therapy-box">
+      <img src="../Assets/Foryou.svg" alt="for you">
+      <figcaption>Individual Therapy</figcaption>
+    </div>
+
+    <div class="therapy-box">
+      <img src="../Assets/For you&your partner.svg" alt="couples">
+      <figcaption>Couples Therapy</figcaption>
+    </div>
+
+    <div class="therapy-box">
+      <img src="../Assets/For your child.svg" alt="child">
+      <figcaption>Child Therapy</figcaption>
+    </div>
+
+    <div class="therapy-box">
+      <img src="../Assets/For you & your Family.svg" alt="family">
+      <figcaption>Family Therapy</figcaption>
+    </div>
+  </div>
+
+  <section class="mission-section">
+    <div class="mission-content">
+      <h3 class="mission-title">Mission and Vision</h3>
+      <h2 class="mission-heading">What we aim to be</h2>
+      <p>
+        We aim to educate that mental healthcare is beyond just therapy.
+        <strong>Everyone deserves the best mental healthcare.</strong>
+        Mental health is a universal human right.
+      </p>
+      <p>
+        Our goal is to extend our services throughout India, aiming for
+        <strong>omnipresence across the country</strong>, and focusing on
+        <strong>delivering quality mental wellness for everyone.</strong>
+      </p>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-logo">
+        <img src="../Assets/Project_logo.png" alt="Counselly Logo">
+        <h2 class="brand">Counselly</h2>
+        <p>Your safe space for mental wellness. Connect with certified experts from the comfort of your home.</p>
+      </div>
+      <div class="footer-links">
+        <div class="footer-column">
+          <h3>Services</h3>
+          <ul>
+            <li><a href="./Counsellor.html">Individual Therapy</a></li>
+            <li><a href="./Counsellor.html">Couples Counselling</a></li>
+            <li><a href="./Counsellor.html">Teen Support</a></li>
+            <li><a href="./Counsellor.html">Anxiety & Depression</a></li>
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h3>Company</h3>
+          <ul>
+            <li><a href="./About.html">About Us</a></li>
+            <li><a href="./Blog.html">Success Stories</a></li>
+            <li><a href="./Blog.html">Wellness Blog</a></li>
+            <li><a href="./Contact.html">Contact Us</a></li>
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h3>Legal</h3>
+          <ul>
+            <li><a href="Privacy.html">Privacy Policy</a></li>
+            <li><a href="Terms.html">Terms of Service</a></li>
+            <li><a href="Cookies.html">Cookie Policy</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-bottom-links">
+        <a href="#">FAQs</a>
+        <a href="#">Support</a>
+      </div>
+      <p>Copyright © 2025 COUNSELLY INDIA PRIVATE LIMITED. All Rights Reserved</p>
+    </div>
+  </footer>
+</body>
+
+</html>

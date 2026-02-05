@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Find Experts | Counselly</title>
+    <link rel="stylesheet" href="../CSS/Counsellor.css">
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <img src="../Assets/Project_logo.png" alt="Counselly Logo">
+            <h1>Counselly</h1>
+        </div>
+        <ul class="nav-links">
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="./About.html">About</a></li>
+            <li><a href="./Blog.html">Blog</a></li>
+            <li><a href="./Contact.html">Contact</a></li>
+        </ul>
+        <div class="nav-buttons" id="navButtons">
+            <a class="login-btn" href="./auth.html">Login</a>
+        </div>
+    </nav>
+
+    <script src="../JS/api.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const user = UserManager.get();
+            const navButtons = document.getElementById("navButtons");
+
+            if (user) {
+                const dashboardUrl = user.role === 'client' ? './User_dashboard.html' : './Counsellor_dashboard.html';
+                navButtons.innerHTML = `
+              <div style="display: flex; gap: 15px; align-items: center;">
+                  <a class="login-btn" href="${dashboardUrl}">Dashboard</a>
+                  <a href="#" onclick="logout()" style="color: var(--text-muted); text-decoration: none; font-weight: 500; font-size: 14px;">Logout</a>
+              </div>
+          `;
+            }
+        });
+
+        function logout() {
+            TokenManager.remove();
+            UserManager.remove();
+            window.location.reload();
+        }
+    </script>
+
+    <div class="search">
+        <input type="text" placeholder="Search by name, treatment, city, or language..." class="search-field"
+            id="searchInput">
+        <img src="../Assets/Search (2).png" class="search-icon-img" alt="search">
+    </div>
+
+    <div class="counsellor-grid" id="counsellorGrid">
+        <!-- Dynamic content will be loaded here -->
+        <div style="grid-column: 1/-1; text-align: center; padding: 50px; color: var(--text-muted);">
+            <div class="loader">Loading experts near you...</div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", async () => {
+            const grid = document.getElementById("counsellorGrid");
+            const searchInput = document.getElementById("searchInput");
+
+            async function loadCounsellors(filter = "") {
+                try {
+                    console.log("Fetching counsellors...");
+                    const counsellors = await API.counsellors.getAll();
+
+                    // Deduplicate by ID
+                    const uniqueCounsellors = Array.from(new Map(counsellors.map(c => [c.counsellors_id, c])).values());
+
+                    console.log(`Counsellors received: ${uniqueCounsellors.length}`);
+
+                    const term = filter.toLowerCase();
+                    const filtered = uniqueCounsellors.filter(c =>
+                        !filter ||
+                        (c.name && c.name.toLowerCase().includes(term)) ||
+                        (c.expertise && Array.isArray(c.expertise) && c.expertise.some(e => e.toLowerCase().includes(term))) ||
+                        (c.specialization && c.specialization.toLowerCase().includes(term)) ||
+                        (c.address && c.address.toLowerCase().includes(term)) ||
+                        (c.speaks && (Array.isArray(c.speaks) ? c.speaks.some(s => s.toLowerCase().includes(term)) : c.speaks.toLowerCase().includes(term)))
+                    );
+
+                    renderCounsellors(filtered);
+                } catch (err) {
+                    console.error("Load failed:", err);
+                    grid.innerHTML = `
+                        <div style="grid-column: 1/-1; text-align: center; padding: 40px;">
+                            <p style="color: #ef4444; font-weight: 600;">Connection Error: ${err.message}</p>
+                            <p style="color: var(--text-muted); margin-top: 10px;">Please ensure the backend server is running on port 8000.</p>
+                            <button onclick="location.reload()" style="margin-top: 20px; padding: 10px 20px; background: var(--primary); color: white; border: none; border-radius: 8px; cursor: pointer;">Retry Connection</button>
+                        </div>
+                    `;
+                }
+            }
+
+            function renderCounsellors(list) {
+                if (list.length === 0) {
+                    grid.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 40px;">No experts found matching your search.</p>`;
+                    return;
+                }
+
+                grid.innerHTML = list.map((c, index) => {
+                    const fallbacks = [
+                        '../Assets/wire5.webp',
+                        '../Assets/wire6.webp',
+                        '../Assets/wire7.webp',
+                        '../Assets/wire8.webp',
+                        '../Assets/wire9.webp',
+                        '../Assets/wire10.webp'
+                    ];
+                    const fallbackImg = fallbacks[index % fallbacks.length];
+
+                    // Generate Star Rating
+                    const stars = '★'.repeat(Math.round(c.rating || 0)) + '☆'.repeat(5 - Math.round(c.rating || 0));
+
+                    return `
+                    <div class="counsellor-card">
+                        <p class="role">${c.specialization || 'Counselling Psychologist'}</p>
+                        <div class="top-section">
+                            <h2 class="name">${c.name}</h2>
+                            <img src="${c.profile_image || fallbackImg}" alt="${c.name}" class="profile-img">
+                        </div>
+                        
+                        <!-- Review Stars -->
+                        <div class="rating-section" style="text-align: center; margin-bottom: 10px;">
+                            <span style="color: #FFD700; font-size: 1.2em; letter-spacing: 2px;">${stars}</span>
+                            <span style="color: #666; font-size: 0.9em; margin-left: 5px;">${c.rating || 0} (${c.reviews_count || 0} reviews)</span>
+                        </div>
+
+                        <p class="experience">${c.experience || '3.5'} years of experience</p>
+                        <p class="heading">Speaks</p>
+                        <p class="text">${Array.isArray(c.speaks) ? c.speaks.join(", ") : (c.speaks || "English, Tamil")}</p>
+                        <p class="heading">Expertise</p>
+                        <div class="tags">
+                            ${(Array.isArray(c.expertise) ? c.expertise : ['Anxiety', 'Depression']).map(tag => `<span>${tag}</span>`).join('')}
+                        </div>
+                        <a href="./Counsellor_profile.html?id=${c.counsellors_id}" class="book-btn">BOOK NOW</a>
+                    </div>
+                `}).join('');
+            }
+
+            if (searchInput) {
+                searchInput.addEventListener("input", (e) => {
+                    loadCounsellors(e.target.value);
+                });
+            }
+
+            // Initial load
+            loadCounsellors();
+        });
+    </script>
+
+
+    <!-- Additional sections like Footer are inferred to be updated via global changes or shared CSS -->
+
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-logo">
+                <img src="../Assets/Project_logo.png" alt="Counselly Logo">
+                <h2 class="brand">Counselly</h2>
+                <p>Your safe space for mental wellness. Connect with certified experts from the comfort of your home.
+                </p>
+            </div>
+            <div class="footer-links">
+                <div class="footer-column">
+                    <h3>Services</h3>
+                    <ul>
+                        <li><a href="./Counsellor.html">Individual Therapy</a></li>
+                        <li><a href="./Counsellor.html">Couples Counselling</a></li>
+                        <li><a href="./Counsellor.html">Teen Support</a></li>
+                        <li><a href="./Counsellor.html">Anxiety & Depression</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Company</h3>
+                    <ul>
+                        <li><a href="./About.html">About Us</a></li>
+                        <li><a href="./Blog.html">Success Stories</a></li>
+                        <li><a href="./Blog.html">Wellness Blog</a></li>
+                        <li><a href="./Contact.html">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Legal</h3>
+                    <ul>
+                        <li><a href="Privacy.html">Privacy Policy</a></li>
+                        <li><a href="Terms.html">Terms of Service</a></li>
+                        <li><a href="Cookies.html">Cookie Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div class="footer-bottom-links">
+                <a href="#">FAQs</a>
+                <a href="#">Support</a>
+            </div>
+            <p>Copyright © 2025 COUNSELLY INDIA PRIVATE LIMITED. All Rights Reserved</p>
+        </div>
+    </footer>
+</body>
+
+</html>

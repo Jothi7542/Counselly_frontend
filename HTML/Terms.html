@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terms of Service - Counselly</title>
+    <link rel="stylesheet" href="../CSS/style.css">
+    <style>
+        .legal-content {
+            padding: 80px 10%;
+            max-width: 1200px;
+            margin: 0 auto;
+            background: var(--bg-light);
+        }
+
+        .legal-content h1 {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .legal-content h2 {
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin: 30px 0 15px;
+            border-bottom: 2px solid var(--accent);
+            padding-bottom: 5px;
+            display: inline-block;
+        }
+
+        .legal-content p {
+            line-height: 1.8;
+            color: var(--text-dark);
+            margin-bottom: 20px;
+        }
+
+        .legal-content ul {
+            margin-bottom: 20px;
+            padding-left: 20px;
+        }
+
+        .legal-content li {
+            margin-bottom: 10px;
+            color: var(--text-dark);
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <img src="../Assets/Project_logo.png" alt="Counselly Logo">
+            <h1>Counselly</h1>
+        </div>
+        <ul class="nav-links">
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="./About.html">About</a></li>
+            <li><a href="./Blog.html">Blog</a></li>
+            <li><a href="./Contact.html">Contact</a></li>
+        </ul>
+        <div class="nav-buttons" id="navButtons">
+            <a class="login-btn" href="./auth.html">Login</a>
+        </div>
+    </nav>
+
+    <main class="legal-content">
+        <h1>Terms of Service</h1>
+        <p>Effective Date: January 1, 2025</p>
+
+        <p>Welcome to Counselly. By accessing or using our website and services, you agree to be bound by these Terms of
+            Service. If you do not agree to all of these terms, please do not use our services.</p>
+
+        <h2>1. Services Provided</h2>
+        <p>Counselly provides an online platform that connects clients with certified mental health professionals for
+            counselling and therapy sessions. Our services are provided via video call, voice call, or chat, as agreed
+            upon between the client and the professional.</p>
+
+        <h2>2. User Accounts</h2>
+        <p>To use certain features of the service, you must register for an account. You are responsible for maintaining
+            the confidentiality of your account credentials and for all activities that occur under your account.</p>
+
+        <h2>3. Booking and Payments</h2>
+        <p>Sessions must be booked through our platform. Payment is required at the time of booking or as specified for
+            the particular service. All payments are processed through secure third-party payment gateways.</p>
+
+        <h2>4. Cancellation and Refund Policy</h2>
+        <p>Cancellations made more than 24 hours before the scheduled session are eligible for a full refund or
+            rescheduling. Cancellations made less than 24 hours before the session may be subject to a cancellation fee.
+        </p>
+
+        <h2>5. Professional Standards</h2>
+        <p>All counsellors on our platform are independent professionals. While we verify their credentials, Counselly
+            is not responsible for the specific advice or treatment provided by any professional. If you are
+            experiencing a mental health emergency, please contact your local emergency services immediately.</p>
+
+        <h2>6. Prohibited Conduct</h2>
+        <p>You agree not to use the service for any unlawful purpose or in any way that could damage, disable, or impair
+            the service. Harassment of professionals or other users is strictly prohibited and will result in immediate
+            termination of your account.</p>
+
+        <h2>7. Limitation of Liability</h2>
+        <p>Counselly shall not be liable for any indirect, incidental, special, consequential, or punitive damages
+            resulting from your use of or inability to use the service.</p>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-logo">
+                <img src="../Assets/Project_logo.png" alt="Counselly Logo">
+                <h2 class="brand">Counselly</h2>
+                <p>Your safe space for mental wellness. Connect with certified experts from the comfort of your home.
+                </p>
+            </div>
+            <div class="footer-links">
+                <div class="footer-column">
+                    <h3>Services</h3>
+                    <ul>
+                        <li><a href="./Counsellor.html">Individual Therapy</a></li>
+                        <li><a href="./Counsellor.html">Couples Counselling</a></li>
+                        <li><a href="./Counsellor.html">Teen Support</a></li>
+                        <li><a href="./Counsellor.html">Anxiety & Depression</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Company</h3>
+                    <ul>
+                        <li><a href="./About.html">About Us</a></li>
+                        <li><a href="./Blog.html">Success Stories</a></li>
+                        <li><a href="./Blog.html">Wellness Blog</a></li>
+                        <li><a href="./Contact.html">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Legal</h3>
+                    <ul>
+                        <li><a href="Privacy.html">Privacy Policy</a></li>
+                        <li><a href="Terms.html">Terms of Service</a></li>
+                        <li><a href="Cookies.html">Cookie Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div class="footer-bottom-links">
+                <a href="#">FAQs</a>
+                <a href="#">Support</a>
+            </div>
+            <p>Copyright © 2025 COUNSELLY INDIA PRIVATE LIMITED. All Rights Reserved</p>
+        </div>
+    </footer>
+
+    <script src="../JS/api.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const user = UserManager.get();
+            const navButtons = document.getElementById("navButtons");
+
+            if (user) {
+                const dashboardUrl = user.role === 'client' ? './User_dashboard.html' : './Counsellor_dashboard.html';
+                navButtons.innerHTML = `
+                <div style="display: flex; gap: 15px; align-items: center;">
+                    <a class="login-btn" href="${dashboardUrl}">Dashboard</a>
+                    <a href="#" onclick="logout()" style="color: var(--text-muted); text-decoration: none; font-weight: 500; font-size: 14px;">Logout</a>
+                </div>
+                `;
+            }
+        });
+
+        function logout() {
+            TokenManager.remove();
+            UserManager.remove();
+            window.location.href = "../Index.html";
+        }
+    </script>
+</body>
+
+</html>

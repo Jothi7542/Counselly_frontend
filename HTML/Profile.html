@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile Settings</title>
+    <link rel="stylesheet" href="../CSS/UD.css">
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <img src="../Assets/Project_logo.png" alt="Counselly Logo">
+            <h1>Counselly</h1>
+        </div>
+        <ul class="nav-links">
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="./About.html">About</a></li>
+            <li><a href="./Blog.html">Blog</a></li>
+            <li><a href="./Contact.html">Contact</a></li>
+        </ul>
+        <div class="nav-buttons" id="navButtons">
+            <a class="login-btn" href="./auth.html">Login</a>
+        </div>
+    </nav>
+
+    <script src="../JS/api.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const user = UserManager.get();
+            const navButtons = document.getElementById("navButtons");
+
+            if (!user || user.role !== 'client') {
+                window.location.href = "./auth.html";
+                return;
+            }
+
+            const dashboardUrl = user.role === 'client' ? './User_dashboard.html' : './Counsellor_dashboard.html';
+            navButtons.innerHTML = `
+              <div style="display: flex; gap: 15px; align-items: center;">
+                  <a class="login-btn" href="${dashboardUrl}">Dashboard</a>
+                  <a href="#" onclick="logout()" style="color: var(--text-muted); text-decoration: none; font-weight: 500; font-size: 14px;">Logout</a>
+              </div>
+            `;
+
+            if (user.profile_image) {
+                document.getElementById("sidebarProfileImage").src = user.profile_image;
+            }
+        });
+
+        function logout() {
+            TokenManager.remove();
+            UserManager.remove();
+            window.location.href = "../Index.html";
+        }
+    </script>
+
+    <aside class="counselly-sidenav">
+        <div class="counselly-brand">
+            <div
+                style="width: 50px; height: 50px; border-radius: 50%; overflow: hidden; margin-right: 12px; border: 2px solid rgba(255,255,255,0.2); flex-shrink: 0;">
+                <img id="sidebarProfileImage" src="../Assets/wire5.webp" alt="Profile"
+                    style="width: 100%; height: 100%; object-fit: cover;">
+            </div>
+            <div class="counselly-brand-text">
+                <h2>Counselly</h2>
+                <p>Safe space for your mind</p>
+            </div>
+        </div>
+        <nav class="counselly-nav">
+            <a href="./User_dashboard.html" class="counselly-link">DASHBOARD</a>
+            <a href="./Upcoming_session.html" class="counselly-link">UPCOMING SESSIONS</a>
+            <a href="./History.html" class="counselly-link">HISTORY</a>
+            <a href="./Profile.html" class="counselly-link active">PROFILE SETTINGS</a>
+        </nav>
+        <div class="logout-wrapper">
+            <button class="logout-btn" onclick="logout()">Logout</button>
+        </div>
+    </aside>
+    <div class="profile-content">
+        <h1 class="Upcoming-session" id="profileWelcome">Welcome To Counselly</h1>
+        <p class="profile-subtitle">Manage your account settings and profile preferences</p>
+
+        <div class="profile-grid">
+            <!-- Left Side Card -->
+            <div class="profile-card">
+                <div class="avatar-wrapper" style="cursor: pointer;" title="Click to change photo">
+                    <img src="../Assets/Project_logo.png" alt="Avatar" class="avatar-img" id="displayAvatar">
+                    <input type="file" id="imageInput" accept="image/*" style="display: none;">
+                    <div class="edit-avatar">
+                        <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                            <path
+                                d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.707-6.707zM1.375 12.315L1 15l2.685-.375L13.125 5 11 2.875 1.375 12.315z" />
+                        </svg>
+                    </div>
+                </div>
+                <h3 id="displayName">Loading...</h3>
+                <p id="displayEmail">loading...</p>
+                <div style="margin-top: 25px; padding-top: 25px; border-top: 1px solid #F1F5F9;">
+                    <p style="font-weight: 600; color: var(--text-dark); margin-bottom: 5px;">Member since</p>
+                    <p id="memberSince">Jan 2026</p>
+                </div>
+            </div>
+
+            <!-- Right Side Form -->
+            <div class="profile-settings-box">
+                <h2>Account Settings</h2>
+                <form id="profileForm">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label>Full Name</label>
+                            <input type="text" id="profName" placeholder="Enter your name">
+                        </div>
+                        <div class="form-group">
+                            <label>Email Address</label>
+                            <input type="email" id="profEmail" placeholder="Enter your email" disabled>
+                        </div>
+                        <div class="form-group">
+                            <label>Phone Number</label>
+                            <input type="text" id="profPhone" placeholder="Enter phone number">
+                        </div>
+                        <div class="form-group">
+                            <label>Gender</label>
+                            <select id="profGender">
+                                <option value="">Select Gender</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Age</label>
+                            <input type="number" id="profAge" placeholder="Enter age">
+                        </div>
+                        <div class="form-group">
+                            <label>Location</label>
+                            <input type="text" id="profAddress" placeholder="Enter your address">
+                        </div>
+                        <div class="form-group full">
+                            <label>Preferred Language</label>
+                            <input type="text" id="profLanguage" placeholder="e.g. English, Tamil (comma separated)">
+                        </div>
+                    </div>
+
+                    <div class="button-group">
+                        <button type="button" class="cancel-btn" onclick="window.history.back()">Discard</button>
+                        <button type="submit" class="save-btn">Update Profile</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const user = UserManager.get();
+            if (!user || user.role !== 'client') {
+                window.location.href = "./auth.html";
+                return;
+            }
+
+            // Populate text
+            document.getElementById("profileWelcome").innerText = `Welcome Back, ${user.name.split(' ')[0]}`;
+            document.getElementById("displayName").innerText = user.name;
+            document.getElementById("displayEmail").innerText = user.email;
+
+            // Set profile image if available
+            if (user.profile_image) {
+                document.getElementById("displayAvatar").src = user.profile_image;
+            }
+
+            if (user.created_at) {
+                const date = new Date(user.created_at);
+                document.getElementById("memberSince").innerText = date.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+            }
+
+            // Populate form
+            document.getElementById("profName").value = user.name || "";
+            document.getElementById("profEmail").value = user.email || "";
+            document.getElementById("profPhone").value = user.phone_number || "";
+            document.getElementById("profGender").value = user.gender || "";
+            document.getElementById("profAge").value = user.age || "";
+            document.getElementById("profAddress").value = user.address || "";
+            document.getElementById("profLanguage").value = Array.isArray(user.language) ? user.language.join(", ") : (user.language || "");
+        });
+
+        // Trigger file input on click
+        document.querySelector('.avatar-wrapper').addEventListener('click', () => {
+            document.getElementById('imageInput').click();
+        });
+
+        // Handle File Selection and Preview
+        document.getElementById('imageInput').addEventListener('change', function (event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    document.getElementById('displayAvatar').src = e.target.result; // Preview
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        document.getElementById("profileForm").addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const user = UserManager.get();
+            const submitBtn = e.target.querySelector('.save-btn');
+            const originalText = submitBtn.innerText;
+
+            const languages = document.getElementById("profLanguage").value
+                .split(",")
+                .map(s => s.trim())
+                .filter(s => s !== "");
+
+            const currentObj = document.getElementById('displayAvatar');
+            const profileImage = currentObj.src;
+
+            const updatedData = {
+                name: document.getElementById("profName").value,
+                phone_number: document.getElementById("profPhone").value,
+                gender: document.getElementById("profGender").value,
+                age: parseInt(document.getElementById("profAge").value),
+                address: document.getElementById("profAddress").value,
+                language: languages,
+                profile_image: profileImage
+            };
+
+            try {
+                submitBtn.innerText = "Updating...";
+                submitBtn.disabled = true;
+
+                await API.clients.update(user.clients_id, updatedData);
+
+                // Update local storage
+                const newUser = { ...user, ...updatedData };
+                UserManager.set(newUser);
+
+                alert("Success: Your profile has been updated!");
+                window.location.reload();
+            } catch (err) {
+                alert("Error: " + err.message);
+            } finally {
+                submitBtn.innerText = originalText;
+                submitBtn.disabled = false;
+            }
+        });
+    </script>
+
+
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-logo">
+                <img src="../Assets/Project_logo.png" alt="Counselly Logo">
+                <h2 class="brand">Counselly</h2>
+                <p>Your safe space for mental wellness. Connect with certified experts from the comfort of your home.
+                </p>
+            </div>
+            <div class="footer-links">
+                <div class="footer-column">
+                    <h3>Services</h3>
+                    <ul>
+                        <li><a href="./Counsellor.html">Individual Therapy</a></li>
+                        <li><a href="./Counsellor.html">Couples Counselling</a></li>
+                        <li><a href="./Counsellor.html">Teen Support</a></li>
+                        <li><a href="./Counsellor.html">Anxiety & Depression</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Company</h3>
+                    <ul>
+                        <li><a href="./About.html">About Us</a></li>
+                        <li><a href="./Blog.html">Success Stories</a></li>
+                        <li><a href="./Blog.html">Wellness Blog</a></li>
+                        <li><a href="./Contact.html">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Legal</h3>
+                    <ul>
+                        <li><a href="Privacy.html">Privacy Policy</a></li>
+                        <li><a href="Terms.html">Terms of Service</a></li>
+                        <li><a href="Cookies.html">Cookie Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div class="footer-bottom-links">
+                <a href="#">FAQs</a>
+                <a href="#">Support</a>
+            </div>
+            <p>Copyright © 2025 COUNSELLY INDIA PRIVATE LIMITED. All Rights Reserved</p>
+        </div>
+    </footer>
+</body>
+
+</html>

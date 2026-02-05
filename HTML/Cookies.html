@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cookie Policy - Counselly</title>
+    <link rel="stylesheet" href="../CSS/style.css">
+    <style>
+        .legal-content {
+            padding: 80px 10%;
+            max-width: 1200px;
+            margin: 0 auto;
+            background: var(--bg-light);
+        }
+
+        .legal-content h1 {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .legal-content h2 {
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin: 30px 0 15px;
+            border-bottom: 2px solid var(--accent);
+            padding-bottom: 5px;
+            display: inline-block;
+        }
+
+        .legal-content p {
+            line-height: 1.8;
+            color: var(--text-dark);
+            margin-bottom: 20px;
+        }
+
+        .legal-content ul {
+            margin-bottom: 20px;
+            padding-left: 20px;
+        }
+
+        .legal-content li {
+            margin-bottom: 10px;
+            color: var(--text-dark);
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <img src="../Assets/Project_logo.png" alt="Counselly Logo">
+            <h1>Counselly</h1>
+        </div>
+        <ul class="nav-links">
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="./About.html">About</a></li>
+            <li><a href="./Blog.html">Blog</a></li>
+            <li><a href="./Contact.html">Contact</a></li>
+        </ul>
+        <div class="nav-buttons" id="navButtons">
+            <a class="login-btn" href="./auth.html">Login</a>
+        </div>
+    </nav>
+
+    <main class="legal-content">
+        <h1>Cookie Policy</h1>
+        <p>Effective Date: January 1, 2025</p>
+
+        <p>This Cookie Policy explains how Counselly uses cookies and similar technologies to recognize you when you
+            visit our website. It explains what these technologies are and why we use them, as well as your rights to
+            control our use of them.</p>
+
+        <h2>1. What are Cookies?</h2>
+        <p>Cookies are small data files that are placed on your computer or mobile device when you visit a website.
+            Cookies are widely used by website owners in order to make their websites work, or to work more efficiently,
+            as well as to provide reporting information.</p>
+
+        <h2>2. Why do we use Cookies?</h2>
+        <p>We use first-party and third-party cookies for several reasons. Some cookies are required for technical
+            reasons in order for our website to operate, and we refer to these as "essential" or "strictly necessary"
+            cookies. Other cookies also enable us to track and target the interests of our users to enhance the
+            experience on our website.</p>
+
+        <h2>3. Types of Cookies we use</h2>
+        <ul>
+            <li><strong>Essential Cookies:</strong> These cookies are strictly necessary to provide you with services
+                available through our website and to use some of its features, such as access to secure areas.</li>
+            <li><strong>Performance and Functionality Cookies:</strong> These cookies are used to enhance the
+                performance and functionality of our website but are non-essential to its use.</li>
+            <li><strong>Analytics and Customization Cookies:</strong> These cookies collect information that is used
+                either in aggregate form to help us understand how our website is being used or how effective our
+                marketing campaigns are.</li>
+        </ul>
+
+        <h2>4. How can I control Cookies?</h2>
+        <p>You have the right to decide whether to accept or reject cookies. You can set or amend your web browser
+            controls to accept or refuse cookies. If you choose to reject cookies, you may still use our website though
+            your access to some functionality and areas of our website may be restricted.</p>
+
+        <h2>5. Updates to this policy</h2>
+        <p>We may update this Cookie Policy from time to time in order to reflect, for example, changes to the cookies
+            we use or for other operational, legal, or regulatory reasons. Please therefore re-visit this Cookie Policy
+            regularly to stay informed about our use of cookies and related technologies.</p>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-logo">
+                <img src="../Assets/Project_logo.png" alt="Counselly Logo">
+                <h2 class="brand">Counselly</h2>
+                <p>Your safe space for mental wellness. Connect with certified experts from the comfort of your home.
+                </p>
+            </div>
+            <div class="footer-links">
+                <div class="footer-column">
+                    <h3>Services</h3>
+                    <ul>
+                        <li><a href="./Counsellor.html">Individual Therapy</a></li>
+                        <li><a href="./Counsellor.html">Couples Counselling</a></li>
+                        <li><a href="./Counsellor.html">Teen Support</a></li>
+                        <li><a href="./Counsellor.html">Anxiety & Depression</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Company</h3>
+                    <ul>
+                        <li><a href="./About.html">About Us</a></li>
+                        <li><a href="./Blog.html">Success Stories</a></li>
+                        <li><a href="./Blog.html">Wellness Blog</a></li>
+                        <li><a href="./Contact.html">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Legal</h3>
+                    <ul>
+                        <li><a href="Privacy.html">Privacy Policy</a></li>
+                        <li><a href="Terms.html">Terms of Service</a></li>
+                        <li><a href="Cookies.html">Cookie Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div class="footer-bottom-links">
+                <a href="#">FAQs</a>
+                <a href="#">Support</a>
+            </div>
+            <p>Copyright © 2025 COUNSELLY INDIA PRIVATE LIMITED. All Rights Reserved</p>
+        </div>
+    </footer>
+
+    <script src="../JS/api.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const user = UserManager.get();
+            const navButtons = document.getElementById("navButtons");
+
+            if (user) {
+                const dashboardUrl = user.role === 'client' ? './User_dashboard.html' : './Counsellor_dashboard.html';
+                navButtons.innerHTML = `
+                <div style="display: flex; gap: 15px; align-items: center;">
+                    <a class="login-btn" href="${dashboardUrl}">Dashboard</a>
+                    <a href="#" onclick="logout()" style="color: var(--text-muted); text-decoration: none; font-weight: 500; font-size: 14px;">Logout</a>
+                </div>
+                `;
+            }
+        });
+
+        function logout() {
+            TokenManager.remove();
+            UserManager.remove();
+            window.location.href = "../Index.html";
+        }
+    </script>
+</body>
+
+</html>

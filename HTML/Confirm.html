@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Counselly Navbar</title>
+    <link rel="stylesheet" href="../CSS/Confirm.css">
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <img src="../Assets/Project_logo.png" alt="Counselly Logo">
+            <h1>Counselly</h1>
+        </div>
+        <ul class="nav-links">
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="./About.html">About</a></li>
+            <li><a href="./Blog.html">Blog</a></li>
+            <li><a href="./Contact.html">Contact</a></li>
+        </ul>
+        <div class="nav-buttons" id="navButtons">
+            <a class="login-btn" href="./auth.html">Login</a>
+        </div>
+    </nav>
+
+    <script src="../JS/api.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const user = UserManager.get();
+            const navButtons = document.getElementById("navButtons");
+
+            if (user) {
+                const dashboardUrl = user.role === 'client' ? './User_dashboard.html' : './Counsellor_dashboard.html';
+                navButtons.innerHTML = `
+              <div style="display: flex; gap: 15px; align-items: center;">
+                  <a class="login-btn" href="${dashboardUrl}">Dashboard</a>
+                  <a href="#" onclick="logout()" style="color: var(--text-muted); text-decoration: none; font-weight: 500; font-size: 14px;">Logout</a>
+              </div>
+          `;
+            }
+        });
+
+        function logout() {
+            TokenManager.remove();
+            UserManager.remove();
+            window.location.reload();
+        }
+    </script>
+
+    <h1 class="final">Booking Confirmed!</h1>
+    <div class="confirm-box">
+        <h2>Success</h2>
+        <p class="success-msg">Your session has been scheduled.</p>
+        <img src="../Assets/icons8-checkmark-50.png" class="success-img" alt="Success">
+        <div class="details" id="confirmationDetails">
+            <p><strong>Booking ID</strong> #<span id="bookingId"></span></p>
+            <p><strong>Therapist</strong> <span id="doctorName"></span></p>
+            <p><strong>Date</strong> <span id="bookingDate"></span></p>
+            <p><strong>Time</strong> <span id="bookingTime"></span></p>
+        </div>
+        <div class="btn-row">
+            <a href="./User_dashboard.html" class="btn dash">Go to Dashboard</a>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            document.getElementById("bookingId").innerText = localStorage.getItem("last_booking_id") || "N/A";
+            document.getElementById("doctorName").innerText = localStorage.getItem("last_doctor") || "N/A";
+            document.getElementById("bookingDate").innerText = localStorage.getItem("last_date") || "N/A";
+            document.getElementById("bookingTime").innerText = localStorage.getItem("last_time") || "N/A";
+
+            // Clear booking state
+            localStorage.removeItem("booking_step1");
+            localStorage.removeItem("booking_step2");
+        });
+    </script>
+</body>
+
+</html>

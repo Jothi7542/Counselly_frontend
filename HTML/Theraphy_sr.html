@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Counselly Navbar</title>
+    <link rel="stylesheet" href="../CSS/Theraphy.css">
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <img src="../Assets/Project_logo.png" alt="Counselly Logo">
+            <h1>Counselly</h1>
+        </div>
+        <ul class="nav-links">
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="./About.html">About</a></li>
+            <li><a href="./Blog.html">Blog</a></li>
+            <li><a href="./Contact.html">Contact</a></li>
+        </ul>
+        <div class="nav-buttons" id="navButtons">
+            <a class="login-btn" href="./auth.html">Login</a>
+        </div>
+    </nav>
+
+    <script src="../JS/api.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const user = UserManager.get();
+            const navButtons = document.getElementById("navButtons");
+
+            if (user) {
+                const dashboardUrl = user.role === 'client' ? './User_dashboard.html' : './Counsellor_dashboard.html';
+                navButtons.innerHTML = `
+              <div style="display: flex; gap: 15px; align-items: center;">
+                  <a class="login-btn" href=\x22${dashboardUrl}\x22>Dashboard</a>
+                  <a href="#" onclick="logout()" style="color: var(--text-muted); text-decoration: none; font-weight: 500; font-size: 14px;">Logout</a>
+              </div>
+          `;
+            }
+        });
+
+        function logout() {
+            TokenManager.remove();
+            UserManager.remove();
+            window.location.reload();
+        }
+    </script>
+    <h1 class="journey">Start Your Therapy Journey</h1>
+    <div class="therapy-box">
+        <h2>Select Therapy</h2>
+        <label class="radio-label">
+            <input type="radio" name="therapy" value="you">
+            For You
+        </label>
+        <label class="radio-label">
+            <input type="radio" name="therapy" value="partner">
+            For You & Your Partner
+        </label>
+        <label class="radio-label">
+            <input type="radio" name="therapy" value="family">
+            For You & Your Family
+        </label>
+        <h2>Reason</h2>
+        <label class="check-label">
+            <input type="checkbox" name="reason" value="Anxiety">
+            Anxiety
+        </label>
+        <label class="check-label">
+            <input type="checkbox" name="reason" value="Depression">
+            Depression
+        </label>
+        <label class="check-label">
+            <input type="checkbox" name="reason" value="Relationship Issues">
+            Relationship Issues
+        </label>
+        <label class="check-label">
+            <input type="checkbox" name="reason" value="Family Concerns">
+            Family Concerns
+        </label>
+        <label class="check-label">
+            <input type="checkbox" name="reason" value="General Stress">
+            General Stress
+        </label>
+        <div class="btn-row">
+            <a href="./Sridevi.html" class="back-btn" id="backBtn">Back To Book Now</a>
+            <button class="submit-btn" id="continueBtn">Submit</button>
+        </div>
+    </div>
+
+    <script src="../JS/booking.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const data = BookingManager.getCompleteData();
+            if (!data.counsellors_id) {
+                alert("Session expired. Please start over.");
+                window.location.href = "./Counsellor.html";
+                return;
+            }
+
+            // Set back button link
+            document.getElementById("backBtn").href = `./Counsellor_profile.html?id=${data.counsellors_id}`;
+
+            document.getElementById("continueBtn").addEventListener("click", () => {
+                const selectedTherapy = document.querySelector('input[name="therapy"]:checked');
+                const selectedReasons = Array.from(document.querySelectorAll('input[name="reason"]:checked'))
+                    .map(cb => cb.value);
+
+                if (!selectedTherapy) {
+                    alert("Please select a therapy type.");
+                    return;
+                }
+
+                if (selectedReasons.length === 0) {
+                    alert("Please select at least one reason.");
+                    return;
+                }
+
+                BookingManager.saveStep2({
+                    therapy_type: selectedTherapy.value,
+                    reason: selectedReasons.join(", ")
+                });
+
+                window.location.href = "./details_sr.html";
+            });
+        });
+    </script>
+</body>
+
+</html>

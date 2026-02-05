@@ -1,0 +1,120 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payments - Counselly</title>
+    <link rel="stylesheet" href="../CSS/Payment.css">
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <img src="../Assets/Project_logo.png" alt="Counselly Logo">
+            <h1>Counselly</h1>
+        </div>
+        <ul class="nav-links">
+            <li><a href="../Index.html">Home</a></li>
+            <li><a href="./About.html">About</a></li>
+            <li><a href="./Blog.html">Blog</a></li>
+            <li><a href="#">Contact</a></li>
+        </ul>
+        <div class="nav-buttons" id="navButtons">
+            <a class="login-btn" href="./auth.html">Login</a>
+        </div>
+    </nav>
+
+    <script src="../JS/api.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const user = UserManager.get();
+            const navButtons = document.getElementById("navButtons");
+
+            if (user) {
+                const dashboardUrl = user.role === 'client' ? './User_dashboard.html' : './Counsellor_dashboard.html';
+                navButtons.innerHTML = `
+              <div style="display: flex; gap: 15px; align-items: center;">
+                  <a class="login-btn" href="${dashboardUrl}">Dashboard</a>
+                  <a href="#" onclick="logout()" style="color: var(--text-muted); text-decoration: none; font-weight: 500; font-size: 14px;">Logout</a>
+              </div>
+          `;
+
+                if (user.name) {
+                    document.getElementById("welcomeTitle").innerText = `Welcome, ${user.name}`;
+                }
+            }
+        });
+
+        function logout() {
+            TokenManager.remove();
+            UserManager.remove();
+            window.location.reload();
+        }
+    </script>
+
+    <aside class="counselly-sidenav">
+        <div class="counselly-brand">
+            <div class="counselly-brand-text">
+                <h2>Counselly</h2>
+                <p>Safe space for your mind</p>
+            </div>
+        </div>
+        <nav class="counselly-nav">
+            <a href="./User_dashboard.html" class="counselly-link">DASHBOARD</a>
+            <a href="./Upcoming_session.html" class="counselly-link">UPCOMING SESSIONS</a>
+            <a href="./History.html" class="counselly-link">HISTORY</a>
+            <a href="./Payment.html" class="counselly-link active">PAYMENTS</a>
+            <a href="./Profile.html" class="counselly-link">PROFILE SETTINGS</a>
+        </nav>
+    </aside>
+
+    <div class="payment-page">
+        <h1 class="Upcoming-session" id="welcomeTitle">Payments</h1>
+        <h2 class="title">Transaction History</h2>
+
+        <div class="payment-table-box">
+            <table class="payment-table">
+                <thead>
+                    <tr>
+                        <th>Booking ID</th>
+                        <th>Psychologist</th>
+                        <th>Date & Time</th>
+                        <th>Amount</th>
+                        <th>Method</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>#7542</td>
+                        <td>Dr. Akshaya</td>
+                        <td>30 Sep 2025 – 8:00 AM</td>
+                        <td>₹799</td>
+                        <td>UPI</td>
+                        <td><span class="paid">PAID</span></td>
+                    </tr>
+                    <tr>
+                        <td>#7543</td>
+                        <td>Dr. Swetha</td>
+                        <td>02 Oct 2025 – 10:00 AM</td>
+                        <td>₹899</td>
+                        <td>Card</td>
+                        <td><span class="paid">PAID</span></td>
+                    </tr>
+                    <tr>
+                        <td>#7544</td>
+                        <td>Dr. Yuvasree</td>
+                        <td>05 Oct 2025 – 6:00 PM</td>
+                        <td>₹999</td>
+                        <td>Netbanking</td>
+                        <td><span class="paid">PAID</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</body>
+
+</html> -->

@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Sessions</title>
+  <link rel="stylesheet" href="../CSS/CD.css">
+</head>
+
+<body>
+
+
+  <nav class="navbar">
+    <div class="logo">
+      <img src="../Assets/Project_logo.png" alt="Counselly Logo">
+      <h1>Counselly</h1>
+    </div>
+    <ul class="nav-links">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="./About.html">About</a></li>
+      <li><a href="./Blog.html">Blog</a></li>
+      <li><a href="./Contact.html">Contact</a></li>
+    </ul>
+    <div class="nav-buttons" id="navButtons">
+      <a class="login-btn" href="./auth.html">Login</a>
+    </div>
+  </nav>
+
+  <script src="../JS/api.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const user = UserManager.get();
+      const navButtons = document.getElementById("navButtons");
+
+      if (user) {
+        const dashboardUrl = user.role === 'client' ? './User_dashboard.html' : './Counsellor_dashboard.html';
+        navButtons.innerHTML = `
+              <div style="display: flex; gap: 15px; align-items: center;">
+                  <a class="login-btn" href="${dashboardUrl}">Dashboard</a>
+                  <a href="#" onclick="logout()" style="color: var(--text-muted); text-decoration: none; font-weight: 500; font-size: 14px;">Logout</a>
+              </div>
+          `;
+      }
+    });
+
+    function logout() {
+      TokenManager.remove();
+      UserManager.remove();
+      window.location.href = "../Index.html";
+    }
+  </script>
+
+  <aside class="counselly-sidenav">
+    <div class="counselly-brand">
+      <div class="counselly-brand-text">
+        <h2>Counselly</h2>
+        <p>Safe space for your mind</p>
+      </div>
+    </div>
+    <nav class="counselly-nav">
+      <a href="./Counsellor_dashboard.html" class="counselly-link">DASHBOARD</a>
+      <a href="./C_availability.html" class="counselly-link">AVAILABILITY</a>
+      <a href="./C_sessions.html" class="counselly-link active">SESSIONS</a>
+      <a href="./C_clients.html" class="counselly-link">CLIENTS</a>
+      <!-- <a href="./C_earnings.html" class="counselly-link">HISTORY</a> -->
+      <a href="./C_profile.html" class="counselly-link">PROFILE</a>
+    </nav>
+    <div class="logout-wrapper">
+      <button class="logout-btn" onclick="logout()">Logout Transition</button>
+    </div>
+  </aside>
+
+  <div class="dashboard-container">
+    <div class="welcome-box">
+      <h2>Appointments & Sessions</h2>
+      <p>View and manage all your upcoming and past counseling sessions.</p>
+    </div>
+
+    <div class="stat-box" style="margin-bottom: 40px;">
+      <h3 style="margin-bottom: 20px;">Upcoming Requests</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Time</th>
+            <th>Client</th>
+            <th>Mode</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody id="upcomingTable">
+          <!-- Dynamic data -->
+        </tbody>
+      </table>
+    </div>
+
+    <div class="stat-box" style="margin-bottom: 40px;">
+      <h3 style="margin-bottom: 20px;">Confirmed Upcoming Sessions</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Time</th>
+            <th>Client</th>
+            <th>Mode</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody id="confirmedTable">
+          <!-- Dynamic data -->
+        </tbody>
+      </table>
+    </div>
+
+    <div class="stat-box">
+      <h3 style="margin-bottom: 20px;">Session History</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Time</th>
+            <th>Client</th>
+            <th>Mode</th>
+            <th>Status</th>
+            <th>Notes</th>
+          </tr>
+        </thead>
+        <tbody id="historyTable">
+          <!-- Dynamic data -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", async () => {
+      const user = UserManager.get();
+      if (!user || user.role !== 'counsellor') {
+        window.location.href = "./auth.html";
+        return;
+      }
+
+      // Verify if the counsellor ID is still valid in the database
+      try {
+        const isValid = await API.counsellors.getById(user.counsellors_id);
+        if (!isValid) {
+          alert("Your session has expired or is invalid. Please login again.");
+          logout();
+          return;
+        }
+      } catch (err) {
+        console.error("Session verification failed:", err);
+      }
+
+      loadSessions(user.counsellors_id);
+    });
+
+    async function loadSessions(counsellorId) {
+      try {
+        const requests = await API.counsellors.getRequests(counsellorId);
+        const upcoming = await API.counsellors.getUpcomingSessions(counsellorId);
+        const completed = await API.counsellors.getCompletedSessions(counsellorId);
+
+        renderRequests(requests);
+        renderConfirmed(upcoming);
+        renderHistory(completed);
+      } catch (err) {
+        console.error("Load sessions failed:", err);
+        const errorMsg = `<div style="text-align:center; color: #ef4444; background: #fee2e2; padding: 20px; border-radius: 8px; margin: 20px 0;">
+          <strong>Failed to load session data</strong><br>
+          <small>${err.message}</small>
+        </div>`;
+        document.getElementById("upcomingTable").innerHTML = `<tr><td colspan="6">${errorMsg}</td></tr>`;
+        document.getElementById("confirmedTable").innerHTML = `<tr><td colspan="6">${errorMsg}</td></tr>`;
+        document.getElementById("historyTable").innerHTML = `<tr><td colspan="6">${errorMsg}</td></tr>`;
+      }
+    }
+
+    function renderRequests(sessions) {
+      const tbody = document.getElementById("upcomingTable");
+      tbody.innerHTML = sessions.length ? "" : '<tr><td colspan="6" style="text-align:center;">No pending requests</td></tr>';
+
+      sessions.forEach(s => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${s.date}</td>
+          <td>${s.time}</td>
+          <td>${s.client_name}</td>
+          <td>${s.mode}</td>
+          <td><span class="status-badge status-pending">Pending</span></td>
+          <td>
+             <button class="find-button btn-accept" style="padding: 8px 16px; font-size: 0.85rem;" onclick="handleResponse(${s.appointment_id}, 'accepted')">Accept</button>
+             <button class="find-button btn-reject" style="padding: 8px 16px; font-size: 0.85rem;" onclick="handleResponse(${s.appointment_id}, 'rejected')">Reject</button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function renderConfirmed(sessions) {
+      const tbody = document.getElementById("confirmedTable");
+      tbody.innerHTML = sessions.length ? "" : '<tr><td colspan="6" style="text-align:center;">No confirmed upcoming sessions</td></tr>';
+
+      sessions.forEach(s => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${s.date}</td>
+          <td>${s.time}</td>
+          <td>${s.client_name}</td>
+          <td>${s.mode}</td>
+          <td><span class="status-badge status-completed">Confirmed</span></td>
+          <td>
+            <button class="find-button btn-accept" style="padding: 8px 16px; font-size: 0.85rem;" onclick="completeSession(${s.appointment_id})">Complete</button>
+            <button class="find-button btn-reject" style="padding: 8px 16px; font-size: 0.85rem;" onclick="handleResponse(${s.appointment_id}, 'cancelled')">Cancel</button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    async function completeSession(appointmentId) {
+      if (!confirm("Are you sure you want to mark this session as completed?")) return;
+      try {
+        await API.appointments.update(appointmentId, { status: 'completed' });
+        alert("Session marked as completed successfully!");
+        location.reload();
+      } catch (err) {
+        alert("Failed to complete session: " + err.message);
+      }
+    }
+
+    function renderHistory(sessions) {
+      const tbody = document.getElementById("historyTable");
+      tbody.innerHTML = sessions.length ? "" : '<tr><td colspan="6" style="text-align:center;">No session history</td></tr>';
+
+      sessions.forEach(s => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${s.date}</td>
+          <td>${s.time}</td>
+          <td>${s.client_name}</td>
+          <td>${s.mode}</td>
+          <td><span class="status-badge status-completed">${s.status}</span></td>
+          <td>${s.notes || '---'}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    async function handleResponse(appointmentId, response) {
+      if (!confirm(`Are you sure you want to ${response} this appointment?`)) return;
+
+      try {
+        await API.appointments.updateResponse(appointmentId, response);
+        alert(`Appointment ${response} successfully`);
+        location.reload();
+      } catch (err) {
+        alert("Failed to update response: " + err.message);
+      }
+    }
+  </script>
+
+  <footer class="footer" style="margin-left: var(--sidebar-w);">
+    <div class="footer-container">
+      <div class="footer-logo">
+        <img src="../Assets/Project_logo.png" alt="Counselly Logo">
+        <h2 class="brand">Counselly</h2>
+        <p>Your safe space for mental wellness. Connect with certified experts from the comfort of your home.</p>
+      </div>
+      <div class="footer-links">
+        <div class="footer-column">
+          <h3>Services</h3>
+          <ul>
+            <li><a href="./Counsellor.html">Individual Therapy</a></li>
+            <li><a href="./Counsellor.html">Couples Counselling</a></li>
+            <li><a href="./Counsellor.html">Teen Support</a></li>
+            <li><a href="./Counsellor.html">Anxiety & Depression</a></li>
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h3>Company</h3>
+          <ul>
+            <li><a href="./About.html">About Us</a></li>
+            <li><a href="./Blog.html">Success Stories</a></li>
+            <li><a href="./Blog.html">Wellness Blog</a></li>
+            <li><a href="./Contact.html">Contact Us</a></li>
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h3>Legal</h3>
+          <ul>
+            <li><a href="Privacy.html">Privacy Policy</a></li>
+            <li><a href="Terms.html">Terms of Service</a></li>
+            <li><a href="Cookies.html">Cookie Policy</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-bottom-links">
+        <a href="#">FAQs</a>
+        <a href="#">Support</a>
+      </div>
+      <p>Copyright © 2025 COUNSELLY INDIA PRIVATE LIMITED. All Rights Reserved</p>
+    </div>
+  </footer>
+</body>
+
+</html>

@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Earnings - Counselly</title>
+    <link rel="stylesheet" href="../CSS/CD.css">
+</head>
+
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <img src="../Assets/Project_logo.png" alt="Counselly Logo">
+            <h1>Counselly</h1>
+        </div>
+        <ul class="nav-links">
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="./About.html">About</a></li>
+            <li><a href="./Blog.html">Blog</a></li>
+            <li><a href="#">Contact</a></li>
+        </ul>
+        <div class="nav-buttons" id="navButtons">
+            <a class="login-btn" href="./auth.html">Login</a>
+        </div>
+    </nav>
+
+    <script src="../JS/api.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const user = UserManager.get();
+            const navButtons = document.getElementById("navButtons");
+
+            if (user) {
+                const dashboardUrl = user.role === 'client' ? './User_dashboard.html' : './Counsellor_dashboard.html';
+                navButtons.innerHTML = `
+              <div style="display: flex; gap: 15px; align-items: center;">
+                  <a class="login-btn" href="${dashboardUrl}">Dashboard</a>
+                  <a href="#" onclick="logout()" style="color: var(--text-muted); text-decoration: none; font-weight: 500; font-size: 14px;">Logout</a>
+              </div>
+          `;
+            }
+        });
+
+        function logout() {
+            TokenManager.remove();
+            UserManager.remove();
+            window.location.reload();
+        }
+    </script>
+
+    <aside class="counselly-sidenav">
+        <div class="counselly-brand">
+            <div class="counselly-brand-text">
+                <h2>Counselly</h2>
+                <p>Safe space for your mind</p>
+            </div>
+        </div>
+        <nav class="counselly-nav">
+            <a href="./Counsellor_dashboard.html" class="counselly-link">DASHBOARD</a>
+            <a href="./C_availability.html" class="counselly-link">AVAILABILITY</a>
+            <a href="./C_sessions.html" class="counselly-link">SESSIONS</a>
+            <a href="./C_clients.html" class="counselly-link">CLIENTS</a>
+            <!-- <a href="./C_earnings.html" class="counselly-link active">HISTORY</a> -->
+            <a href="./C_profile.html" class="counselly-link">PROFILE</a>
+        </nav>
+        <div class="logout-wrapper">
+            <button class="logout-btn" onclick="logout()">Logout Transition</button>
+        </div>
+    </aside>
+
+    <div class="dashboard-container">
+        <div class="welcome-box">
+            <h2>Earnings & History</h2>
+            <p>Track your professional growth and financial performance.</p>
+        </div>
+
+        <div class="stats" style="margin-bottom: 40px;">
+            <div class="stat-box">
+                <h3>Total Earnings</h3>
+                <p>₹15,400</p>
+            </div>
+            <div class="stat-box">
+                <h3>This Month</h3>
+                <p>₹4,200</p>
+            </div>
+            <div class="stat-box">
+                <h3>Pending Payout</h3>
+                <p>₹1,800</p>
+            </div>
+        </div>
+
+        <div class="stat-box">
+            <h3 style="margin-bottom: 20px;">Payout History</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Reference ID</th>
+                        <th>Month</th>
+                        <th>Amount</th>
+                        <th>Status</th>
+                        <th>Date Paid</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>#PAY-8821</td>
+                        <td>December 2025</td>
+                        <td>₹5,200</td>
+                        <td><span class="status-badge status-completed">Completed</span></td>
+                        <td>03-01-2026</td>
+                    </tr>
+                    <tr>
+                        <td>#PAY-8710</td>
+                        <td>November 2025</td>
+                        <td>₹6,000</td>
+                        <td><span class="status-badge status-completed">Completed</span></td>
+                        <td>02-12-2025</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", async () => {
+            const user = UserManager.get();
+            if (!user || user.role !== 'counsellor') return;
+
+            try {
+                const sessions = await API.counsellors.getCompletedSessions(user.counsellors_id);
+                const totalEarnings = sessions.length * 800; // Assuming 800 per session
+                const thisMonth = sessions.filter(s => {
+                    const d = new Date(s.date);
+                    return d.getMonth() === new Date().getMonth();
+                }).length * 800;
+
+                document.querySelectorAll(".stat-box p")[0].innerText = `₹${totalEarnings}`;
+                document.querySelectorAll(".stat-box p")[1].innerText = `₹${thisMonth}`;
+                document.querySelectorAll(".stat-box p")[2].innerText = `₹${Math.floor(totalEarnings * 0.15)}`;
+
+                const tbody = document.querySelector("table tbody");
+                if (sessions.length > 0) {
+                    tbody.innerHTML = sessions.map(s => `
+                        <tr>
+                            <td>#SESS-${s.appointment_id}</td>
+                            <td>${new Date(s.date).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}</td>
+                            <td>₹800</td>
+                            <td><span class="status-badge status-completed">Completed</span></td>
+                            <td>${s.date}</td>
+                        </tr>
+                    `).join('');
+                }
+            } catch (err) {
+                console.error("Failed to load earnings:", err);
+            }
+        });
+    </script>
+    <footer class="footer" style="margin-left: var(--sidebar-w);">
+        <div class="footer-container">
+            <div class="footer-logo">
+                <img src="../Assets/Project_logo.png" alt="Counselly Logo">
+                <h2 class="brand">Counselly</h2>
+                <p>Your safe space for mental wellness. Connect with certified experts from the comfort of your home.
+                </p>
+            </div>
+            <div class="footer-links">
+                <div class="footer-column">
+                    <h3>Services</h3>
+                    <ul>
+                        <li><a href="./Counsellor.html">Individual Therapy</a></li>
+                        <li><a href="./Counsellor.html">Couples Counselling</a></li>
+                        <li><a href="./Counsellor.html">Teen Support</a></li>
+                        <li><a href="./Counsellor.html">Anxiety & Depression</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Company</h3>
+                    <ul>
+                        <li><a href="./About.html">About Us</a></li>
+                        <li><a href="./Blog.html">Success Stories</a></li>
+                        <li><a href="./Blog.html">Wellness Blog</a></li>
+                        <li><a href="./Contact.html">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Legal</h3>
+                    <ul>
+                        <li><a href="Privacy.html">Privacy Policy</a></li>
+                        <li><a href="Terms.html">Terms of Service</a></li>
+                        <li><a href="Cookies.html">Cookie Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div class="footer-bottom-links">
+                <a href="#">FAQs</a>
+                <a href="#">Support</a>
+            </div>
+            <p>Copyright © 2025 COUNSELLY INDIA PRIVATE LIMITED. All Rights Reserved</p>
+        </div>
+    </footer>
+</body>
+
+</html>

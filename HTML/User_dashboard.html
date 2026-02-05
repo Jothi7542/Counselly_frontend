@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Counselly Navbar</title>
+  <link rel="stylesheet" href="../CSS/UD.css">
+</head>
+
+<body>
+  <nav class="navbar">
+    <div class="logo">
+      <img src="../Assets/Project_logo.png" alt="Counselly Logo">
+      <h1>Counselly</h1>
+    </div>
+    <ul class="nav-links">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="./About.html">About</a></li>
+      <li><a href="./Blog.html">Blog</a></li>
+      <li><a href="./Contact.html">Contact</a></li>
+    </ul>
+    <div class="nav-buttons" id="navButtons">
+      <a class="login-btn" href="./auth.html">Login</a>
+    </div>
+  </nav>
+
+  <aside class="counselly-sidenav" aria-label="Counselly side navigation">
+    <div class="counselly-brand">
+      <div
+        style="width: 50px; height: 50px; border-radius: 50%; overflow: hidden; margin-right: 12px; border: 2px solid rgba(255,255,255,0.2); flex-shrink: 0;">
+        <img id="sidebarProfileImage" src="../Assets/wire5.webp" alt="Profile"
+          style="width: 100%; height: 100%; object-fit: cover;">
+      </div>
+      <div class="counselly-brand-text">
+        <h2>Counselly</h2>
+        <p>Safe space for your mind</p>
+      </div>
+    </div>
+
+    <nav class="counselly-nav">
+      <a href="./User_dashboard.html" class="counselly-link active">DASHBOARD</a>
+      <a href="./Upcoming_session.html" class="counselly-link">UPCOMING SESSIONS</a>
+      <a href="./History.html" class="counselly-link">HISTORY</a>
+      <a href="./Profile.html" class="counselly-link">PROFILE SETTINGS</a>
+    </nav>
+    <div class="logout-wrapper">
+      <button class="logout-btn" onclick="logout()">Logout</button>
+    </div>
+  </aside>
+  <div class="dashboard-container">
+    <div class="welcome-box">
+      <h2 id="welcomeText">Welcome Back 👋</h2>
+      <p style="color: var(--text-muted); margin-bottom: 30px;">Here's what's happening with your sessions today.</p>
+
+      <div class="stats">
+        <div class="stat-box">
+          <h3>Upcoming</h3>
+          <p id="upcomingCount">0</p>
+          <span style="font-size: 0.8rem; color: var(--primary);">Sessions booked</span>
+        </div>
+
+        <div class="stat-box">
+          <h3>Completed</h3>
+          <p id="completedCount">0</p>
+          <span style="font-size: 0.8rem; color: #10B981;">Total sessions</span>
+        </div>
+
+        <div class="stat-box">
+          <h3>Progress</h3>
+          <p>85%</p>
+          <span style="font-size: 0.8rem; color: var(--accent);">Wellness score</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="quick-actions">
+      <div class="action-card">
+        <h3>Book a Session</h3>
+        <p>Find the right therapist for your needs and schedule a meeting.</p>
+        <button class="find-button">
+          <a href="./Counsellor.html">Find Counselors</a>
+        </button>
+      </div>
+      <div class="action-card">
+        <h3>Recent Highlights</h3>
+        <p>Check out our latest blog posts on mental wellness and self-care.</p>
+        <button class="find-button">
+          <a href="./Blog.html">Read Blog</a>
+        </button>
+      </div>
+    </div>
+  </div>
+  <script src="../JS/api.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", async () => {
+      const user = UserManager.get();
+
+      if (!user || user.role !== 'client') {
+        window.location.href = "./auth.html";
+        return;
+      }
+
+      // Initialize Navbar
+      const navButtons = document.getElementById("navButtons");
+      const dashboardUrl = user.role === 'client' ? './User_dashboard.html' : './Counsellor_dashboard.html';
+      navButtons.innerHTML = `
+        <div style="display: flex; gap: 15px; align-items: center;">
+            <a class="login-btn" href="${dashboardUrl}">Dashboard</a>
+            <a href="#" onclick="logout()" style="color: var(--text-muted); text-decoration: none; font-weight: 500; font-size: 14px;">Logout</a>
+        </div>
+      `;
+
+      document.getElementById("welcomeText").innerText = "Welcome, " + user.name + " 👋";
+
+      if (user.profile_image) {
+        document.getElementById("sidebarProfileImage").src = user.profile_image;
+      }
+
+      try {
+        const upcoming = await API.clients.getUpcomingSessions(user.clients_id);
+        const completed = await API.clients.getCompletedSessions(user.clients_id);
+
+        document.getElementById("upcomingCount").innerText = `${upcoming.length} Sessions`;
+        document.getElementById("completedCount").innerText = `${completed.length} Sessions`;
+      } catch (err) {
+        console.error("Failed to fetch dashboard data:", err);
+      }
+    });
+
+    function logout() {
+      TokenManager.remove();
+      UserManager.remove();
+      window.location.href = "../Index.html";
+    }
+  </script>
+
+  <footer class="footer" style="margin-left: var(--sidebar-w);">
+    <div class="footer-container">
+      <div class="footer-logo">
+        <img src="../Assets/Project_logo.png" alt="Counselly Logo">
+        <h2 class="brand">Counselly</h2>
+        <p>Your safe space for mental wellness. Connect with certified experts from the comfort of your home.</p>
+      </div>
+      <div class="footer-links">
+        <div class="footer-column">
+          <h3>Services</h3>
+          <ul>
+            <li><a href="./Counsellor.html">Individual Therapy</a></li>
+            <li><a href="./Counsellor.html">Couples Counselling</a></li>
+            <li><a href="./Counsellor.html">Teen Support</a></li>
+            <li><a href="./Counsellor.html">Anxiety & Depression</a></li>
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h3>Company</h3>
+          <ul>
+            <li><a href="./About.html">About Us</a></li>
+            <li><a href="./Blog.html">Success Stories</a></li>
+            <li><a href="./Blog.html">Wellness Blog</a></li>
+            <li><a href="./Contact.html">Contact Us</a></li>
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h3>Legal</h3>
+          <ul>
+            <li><a href="Privacy.html">Privacy Policy</a></li>
+            <li><a href="Terms.html">Terms of Service</a></li>
+            <li><a href="Cookies.html">Cookie Policy</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-bottom-links">
+        <a href="#">FAQs</a>
+        <a href="#">Support</a>
+      </div>
+      <p>Copyright © 2025 COUNSELLY INDIA PRIVATE LIMITED. All Rights Reserved</p>
+    </div>
+  </footer>
+</body>
+
+</html>

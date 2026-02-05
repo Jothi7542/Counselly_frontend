@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Profile</title>
+  <link rel="stylesheet" href="../CSS/CD.css">
+</head>
+
+<body>
+
+  <nav class="navbar">
+    <div class="logo">
+      <img src="../Assets/Project_logo.png" alt="Counselly Logo">
+      <h1>Counselly</h1>
+    </div>
+    <ul class="nav-links">
+      <li><a href="../index.html">Home</a></li>
+      <li><a href="./About.html">About</a></li>
+      <li><a href="./Blog.html">Blog</a></li>
+      <li><a href="./Contact.html">Contact</a></li>
+    </ul>
+    <div class="nav-buttons" id="navButtons">
+      <a class="login-btn" href="./auth.html">Login</a>
+    </div>
+  </nav>
+
+  <script src="../JS/api.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", async () => {
+      const user = UserManager.get();
+      const navButtons = document.getElementById("navButtons");
+
+      if (user) {
+        const dashboardUrl = user.role === 'client' ? './User_dashboard.html' : './Counsellor_dashboard.html';
+        navButtons.innerHTML = `
+              <div style="display: flex; gap: 15px; align-items: center;">
+                  <a class="login-btn" href="${dashboardUrl}">Dashboard</a>
+                  <a href="#" onclick="logout()" style="color: var(--text-muted); text-decoration: none; font-weight: 500; font-size: 14px;">Logout</a>
+              </div>
+          `;
+
+        if (user.role === 'counsellor') {
+          // Fetch fresh data from server to ensure accuracy
+          try {
+            const freshUser = await API.counsellors.getById(user.counsellors_id);
+
+            document.getElementById("profileName").value = freshUser.name || "";
+            document.getElementById("profileEmail").value = freshUser.email || "";
+            if (freshUser.specialization) document.getElementById("profileSpecialization").value = freshUser.specialization;
+            if (freshUser.experience) document.getElementById("profileExperience").value = freshUser.experience;
+
+            const imgUrl = freshUser.profile_image || user.profile_image;
+            if (imgUrl) {
+              document.getElementById("currentProfileImage").src = imgUrl;
+              if (document.getElementById("sidebarProfileImage")) {
+                document.getElementById("sidebarProfileImage").src = imgUrl;
+              }
+            }
+          } catch (err) {
+            console.error("Failed to fetch fresh profile:", err);
+            // Fallback to local storage if fetch fails
+            document.getElementById("profileName").value = user.name || "";
+            document.getElementById("profileEmail").value = user.email || "";
+            if (user.profile_image) {
+              document.getElementById("currentProfileImage").src = user.profile_image;
+              if (document.getElementById("sidebarProfileImage")) {
+                document.getElementById("sidebarProfileImage").src = user.profile_image;
+              }
+            }
+          }
+
+          // Handle Image Upload
+          const imageInput = document.getElementById("profileImageInput");
+          imageInput.addEventListener("change", async (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const statusMsg = document.getElementById("uploadStatus");
+            statusMsg.innerText = "Uploading...";
+
+            try {
+              const result = await API.counsellors.uploadProfileImage(user.counsellors_id, file);
+              console.log("Upload result:", result);
+
+              // Update UI
+              document.getElementById("currentProfileImage").src = result.image_url;
+              if (document.getElementById("sidebarProfileImage")) {
+                document.getElementById("sidebarProfileImage").src = result.image_url;
+              }
+              statusMsg.innerText = "Updated successfully!";
+              statusMsg.style.color = "green";
+
+              // Update User Object in LocalStorage
+              user.profile_image = result.image_url;
+              UserManager.set(user);
+
+            } catch (err) {
+              console.error("Upload failed", err);
+              statusMsg.innerText = "Upload failed. Try again.";
+              statusMsg.style.color = "red";
+            }
+          });
+        }
+      }
+    });
+
+    function logout() {
+      TokenManager.remove();
+      UserManager.remove();
+      window.location.href = "../Index.html";
+    }
+  </script>
+
+  <aside class="counselly-sidenav">
+    <div class="counselly-brand">
+      <div
+        style="width: 50px; height: 50px; border-radius: 50%; overflow: hidden; margin-right: 12px; border: 2px solid rgba(255,255,255,0.2); flex-shrink: 0;">
+        <img id="sidebarProfileImage" src="../Assets/wire5.webp" alt="Profile"
+          style="width: 100%; height: 100%; object-fit: cover;">
+      </div>
+      <div class="counselly-brand-text">
+        <h2>Counselly</h2>
+        <p>Safe space for your mind</p>
+      </div>
+    </div>
+    <nav class="counselly-nav">
+      <a href="./Counsellor_dashboard.html" class="counselly-link">DASHBOARD</a>
+      <a href="./C_availability.html" class="counselly-link">AVAILABILITY</a>
+      <a href="./C_sessions.html" class="counselly-link">SESSIONS</a>
+      <a href="./C_clients.html" class="counselly-link">CLIENTS</a>
+      <!-- <a href="./C_earnings.html" class="counselly-link">HISTORY</a> -->
+      <a href="./C_profile.html" class="counselly-link active">PROFILE</a>
+    </nav>
+    <div class="logout-wrapper">
+      <button class="logout-btn" onclick="logout()">Logout Transition</button>
+    </div>
+  </aside>
+
+  <div class="dashboard-container">
+    <div class="welcome-box">
+      <h2>Counsellor Profile</h2>
+      <p>Manage your professional information and credentials.</p>
+    </div>
+
+    <div class="stat-box">
+      <form id="profileForm">
+        <div class="form-group" style="text-align: center; margin-bottom: 20px;">
+          <div
+            style="width: 120px; height: 120px; margin: 0 auto 15px; border-radius: 50%; overflow: hidden; background: #e0e0e0;">
+            <img id="currentProfileImage" src="../Assets/wire5.webp" alt="Profile"
+              style="width: 100%; height: 100%; object-fit: cover;">
+          </div>
+          <label for="profileImageInput" class="find-button"
+            style="cursor: pointer; font-size: 0.9rem; padding: 8px 16px;">Change Photo</label>
+          <input type="file" id="profileImageInput" style="display: none;" accept="image/*">
+          <p id="uploadStatus" style="font-size: 0.8rem; margin-top: 5px; color: var(--text-muted);"></p>
+        </div>
+
+        <div class="form-group">
+          <label>Professional Name</label>
+          <input type="text" id="profileName" placeholder="Dr. Jane Doe">
+        </div>
+
+        <div class="form-group">
+          <label>Email Address</label>
+          <input type="email" id="profileEmail" placeholder="jane.doe@counselly.com" readonly>
+        </div>
+
+        <div class="form-group">
+          <label>Specialization</label>
+          <input type="text" id="profileSpecialization" placeholder="e.g. Clinical Psychology, Marriage Therapy">
+        </div>
+
+        <div class="form-group">
+          <label>Years of Experience</label>
+          <input type="number" id="profileExperience" placeholder="e.g. 10">
+        </div>
+
+        <button type="submit" class="find-button">Save Changes</button>
+      </form>
+    </div>
+  </div>
+
+  <footer class="footer" style="margin-left: var(--sidebar-w);">
+    <div class="footer-container">
+      <div class="footer-logo">
+        <img src="../Assets/Project_logo.png" alt="Counselly Logo">
+        <h2 class="brand">Counselly</h2>
+        <p>Your safe space for mental wellness. Connect with certified experts from the comfort of your home.</p>
+      </div>
+      <div class="footer-links">
+        <div class="footer-column">
+          <h3>Services</h3>
+          <ul>
+            <li><a href="./Counsellor.html">Individual Therapy</a></li>
+            <li><a href="./Counsellor.html">Couples Counselling</a></li>
+            <li><a href="./Counsellor.html">Teen Support</a></li>
+            <li><a href="./Counsellor.html">Anxiety & Depression</a></li>
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h3>Company</h3>
+          <ul>
+            <li><a href="./About.html">About Us</a></li>
+            <li><a href="./Blog.html">Success Stories</a></li>
+            <li><a href="./Blog.html">Wellness Blog</a></li>
+            <li><a href="./Contact.html">Contact Us</a></li>
+          </ul>
+        </div>
+        <div class="footer-column">
+          <h3>Legal</h3>
+          <ul>
+            <li><a href="Privacy.html">Privacy Policy</a></li>
+            <li><a href="Terms.html">Terms of Service</a></li>
+            <li><a href="Cookies.html">Cookie Policy</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-bottom-links">
+        <a href="#">FAQs</a>
+        <a href="#">Support</a>
+      </div>
+      <p>Copyright © 2025 COUNSELLY INDIA PRIVATE LIMITED. All Rights Reserved</p>
+    </div>
+  </footer>
+</body>
+
+</html>

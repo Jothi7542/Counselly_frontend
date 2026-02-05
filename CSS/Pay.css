@@ -1,0 +1,195 @@
+/* 
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+}
+body {
+    background-color:#e1d3c1;
+}
+.navbar {
+    position: sticky;
+    top: 0;
+    width: 100%;
+    height: 90px;
+    background-color: #c4a378; 
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 60px;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+    z-index: 1000;
+}
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.logo img {
+    height: 45px;
+    width: 45px;
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3); 
+    padding: 5px;
+}
+.logo h1 {
+    color: #070101;
+    font-size: 30px;
+    font-weight: 700;
+}
+.nav-links,.nav-buttons {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+}
+.navbar {
+    display: flex;
+    align-items: center;
+}
+.nav-right {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+    margin-left: auto; 
+}
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 25px;
+}
+.nav-links li a {
+    color: #080808;
+    text-decoration: none;
+    font-size: 20px;
+    font-weight: 600;
+    position: relative;
+    transition: color 0.3s ease;
+}
+.nav-links li a::after {
+    content: "";
+    position: absolute;
+    width: 0%;
+    height: 2px;
+    bottom: -4px;
+    left: 0;
+    background-color: #131212;
+    transition: width 0.3s ease;
+}
+.nav-links li a:hover::after {
+    width: 100%;
+}
+.nav-buttons {
+    gap: 10px;
+}
+.nav-buttons button {
+    border: none;
+    border-radius: 20px;
+    padding: 8px 16px;
+    font-weight: 800;
+    font-size: 30px;
+    font-family: 'Times New Roman', Times, serif;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+.login-btn {
+    background-color: #101010;
+    color: #efeaea;
+}
+.signup-btn {
+    background-color: #100f0f;
+    color: #f4f0f0;
+}
+.nav-buttons button:hover {
+    background-color: #6b696b;
+    transform: scale(1.05);
+}
+.login-btn, .signup-btn {
+    padding: 10px 20px;
+    background-color: #090909;
+    color: rgb(241, 234, 234);
+    border: none;
+    border-radius: 40px;
+    text-decoration: none;
+    cursor: pointer;
+}
+.login-btn:hover, .signup-btn:hover {
+    background-color: #636462;
+}
+.details{
+  text-align: center;
+  font-size: 3rem;
+  font-weight: bold;
+  color: #3e2723;
+  margin-top: 5%;
+  text-shadow: 1px 1px 6px rgba(0,0,0,0.18); 
+}
+.payment-container {
+    width: 600px;
+    background: #faf5f3;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    margin-top: 5%;
+    font-size: 20px;
+    font-family: Arial, sans-serif;
+    margin-left: 30%;
+}
+input[type="radio"] {
+    display: none;
+}
+.payment-tabs {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 25px;
+}
+.tab-btn {
+    width: 47%;
+    margin-top: 10px;
+    padding: 15px;
+    background: #ddd;
+    text-align: center;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 25px;
+}
+#tab-upi:checked ~ .payment-tabs label[for="tab-upi"],
+#tab-card:checked ~ .payment-tabs label[for="tab-card"] {
+    background: black;
+    color: white;
+}
+.tab-content {
+    display: none;
+}
+#tab-upi:checked ~ .upi-content {
+    display: block;
+}
+#tab-card:checked ~ .card-content {
+    display: block;
+}
+.buttons {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+}
+.btn {
+    margin-top: 30px;
+    padding: 5px 28px;
+    background: black;
+    color: white;
+    border-radius: 25px;
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: bold;
+    transition: 0.3s ease;
+    gap: 30px;
+}
+
+.btn:hover {
+    background: #333;
+} */
+
+
