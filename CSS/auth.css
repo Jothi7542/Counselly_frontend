@@ -24,53 +24,6 @@ body {
   min-height: 100vh;
 }
 
-/* Navbar */
-.navbar {
-  height: 80px;
-  background: white;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 60px;
-  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.05);
-}
-
-.logo {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.logo img {
-  height: 48px;
-  width: 48px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 2px solid var(--accent);
-}
-
-.logo h1 {
-  font-size: 24px;
-  font-weight: 700;
-  color: var(--primary);
-}
-
-.nav-links {
-  list-style: none;
-  display: flex;
-  gap: 30px;
-}
-
-.nav-links a {
-  text-decoration: none;
-  color: var(--text-dark);
-  font-weight: 500;
-  transition: var(--transition);
-}
-
-.nav-links a:hover {
-  color: var(--primary);
-}
 
 /* Auth Wrapper */
 .auth-wrapper {

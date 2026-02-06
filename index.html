@@ -5,6 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Counselly Navbar</title>
+  <link rel="stylesheet" href="./CSS/navbar.css">
   <link rel="stylesheet" href="./CSS/style.css">
 </head>
 
@@ -127,8 +128,12 @@
             <div style="margin: 20px 0; padding: 15px 0; border-top: 1px solid #F1F5F9; border-bottom: 1px solid #F1F5F9;">
               <p class="meta"><span class="label">Experience:</span> ${c.experience || '3.5'}+ years</p>
               <p class="meta"><span class="label">Languages:</span> ${Array.isArray(c.speaks) ? c.speaks.join(", ") : (c.speaks || "Tamil, English")}</p>
-              <p class="meta"><span class="label">Location:</span> ${c.address || 'Chennai'}</p>
-            </div>
+                <p class="meta"><span class="label">Location:</span> ${c.address || 'Chennai'}</p>
+                <div class="rating-section" style="margin-top: 10px; display: flex; align-items: center; gap: 8px;">
+                  <span style="color: #FFD700; font-size: 1.1em;">${'★'.repeat(Math.round(c.rating || 0))}${'☆'.repeat(5 - Math.round(c.rating || 0))}</span>
+                  <span style="color: var(--text-muted); font-size: 0.85rem;">${c.rating || 0} (${c.reviews_count || 0} reviews)</span>
+                </div>
+              </div>
             <div class="cta">
               <a class="btn secondary" href="./HTML/Counsellor_profile.html?id=${c.counsellors_id}">View profile</a>
             </div>
