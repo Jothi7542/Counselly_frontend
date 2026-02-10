@@ -54,7 +54,7 @@ async function request(endpoint, options = {}) {
         headers,
     };
 
-    console.log(`[API] Fetching: ${url}`, { method: config.method, hasToken: !!token });
+    console.log(`[API] Fetching: ${url}`, { method: config.method, hasToken: !!token && !options.skipAuth });
 
     try {
         const response = await fetch(url, config);
@@ -122,8 +122,8 @@ const API = {
 
     // Clients
     clients: {
-        getAll: () => request("/clients/"),
-        getById: (id) => request(`/clients/${id}`),
+        getAll: () => request("/clients/", { skipAuth: true }),
+        getById: (id) => request(`/clients/${id}`, { skipAuth: true }),
         update: (id, data) =>
             request(`/clients/update/${id}`, {
                 method: "PUT",
@@ -139,11 +139,11 @@ const API = {
 
     // Counsellors
     counsellors: {
-        getAll: () => request("/counsellors/"),
-        getById: (id) => request(`/counsellors/${id}`),
+        getAll: () => request("/counsellors/", { skipAuth: true }),
+        getById: (id) => request(`/counsellors/${id}`, { skipAuth: true }),
         search: (params) => {
             const queryString = new URLSearchParams(params).toString();
-            return request(`/counsellors/search?${queryString}`);
+            return request(`/counsellors/search?${queryString}`, { skipAuth: true });
         },
         update: (id, data) =>
             request(`/counsellors/update/${id}`, {
@@ -158,7 +158,7 @@ const API = {
         getRequests: (id) => request(`/counsellors/${id}/requests`),
         getUpcomingSessions: (id) => request(`/counsellors/${id}/upcoming-sessions`),
         getCompletedSessions: (id) => request(`/counsellors/${id}/completed-sessions`),
-        getCard: (id) => request(`/counsellors/${id}/card`),
+        getCard: (id) => request(`/counsellors/${id}/card`, { skipAuth: true }),
         addAvailability: (data) => API.availability.create(data),
         uploadProfileImage: (id, file) => {
             const formData = new FormData();
@@ -204,7 +204,7 @@ const API = {
                 body: JSON.stringify(data),
             }),
         getFreeSlots: (counsellorId, date) =>
-            request(`/availability/counsellor/${counsellorId}?date=${date}`),
+            request(`/availability/counsellor/${counsellorId}?date=${date}`, { skipAuth: true }),
     },
 
     // Reviews
@@ -214,9 +214,9 @@ const API = {
                 method: "POST",
                 body: JSON.stringify(data),
             }),
-        getAll: () => request("/reviews/all"),
+        getAll: () => request("/reviews/all", { skipAuth: true }),
         getByCounsellor: (counsellorId) =>
-            request(`/reviews/counsellor/${counsellorId}`),
+            request(`/reviews/counsellor/${counsellorId}`, { skipAuth: true }),
         update: (id, data) =>
             request(`/reviews/${id}`, {
                 method: "PUT",
@@ -227,9 +227,9 @@ const API = {
                 method: "DELETE",
             }),
         getAverageRating: (counsellorId) =>
-            request(`/reviews/counsellor/${counsellorId}/average-rating`),
+            request(`/reviews/counsellor/${counsellorId}/average-rating`, { skipAuth: true }),
         getCount: (counsellorId) =>
-            request(`/reviews/counsellor/${counsellorId}/count`),
+            request(`/reviews/counsellor/${counsellorId}/count`, { skipAuth: true }),
     },
 
     // Messages

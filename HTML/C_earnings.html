@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Earnings - Counselly</title>
+    <link rel="stylesheet" href="../CSS/navbar.css">
     <link rel="stylesheet" href="../CSS/CD.css">
 </head>
 
@@ -32,13 +33,19 @@
             const navButtons = document.getElementById("navButtons");
 
             if (user) {
+                // Initialize Navbar
                 const dashboardUrl = user.role === 'client' ? './User_dashboard.html' : './Counsellor_dashboard.html';
                 navButtons.innerHTML = `
-              <div style="display: flex; gap: 15px; align-items: center;">
-                  <a class="login-btn" href="${dashboardUrl}">Dashboard</a>
-                  <a href="#" onclick="logout()" style="color: var(--text-muted); text-decoration: none; font-weight: 500; font-size: 14px;">Logout</a>
-              </div>
-          `;
+                <div style="display: flex; gap: 15px; align-items: center;">
+                    <a class="login-btn" href="${dashboardUrl}">Dashboard</a>
+                    <a href="#" onclick="logout()" style="color: var(--text-muted); text-decoration: none; font-weight: 500; font-size: 14px;">Logout</a>
+                </div>
+              `;
+
+                // Initialize Profile Image
+                if (user.profile_image && document.getElementById("sidebarProfileImage")) {
+                    document.getElementById("sidebarProfileImage").src = user.profile_image;
+                }
             }
         });
 
@@ -49,8 +56,13 @@
         }
     </script>
 
-    <aside class="counselly-sidenav">
+    <aside class="counselly-sidenav" aria-label="Counselly side navigation">
         <div class="counselly-brand">
+            <div
+                style="width: 50px; height: 50px; border-radius: 50%; overflow: hidden; margin-right: 12px; border: 2px solid rgba(255,255,255,0.2); flex-shrink: 0;">
+                <img id="sidebarProfileImage" src="../Assets/wire5.webp" alt="Profile"
+                    style="width: 100%; height: 100%; object-fit: cover;">
+            </div>
             <div class="counselly-brand-text">
                 <h2>Counselly</h2>
                 <p>Safe space for your mind</p>
@@ -61,18 +73,19 @@
             <a href="./C_availability.html" class="counselly-link">AVAILABILITY</a>
             <a href="./C_sessions.html" class="counselly-link">SESSIONS</a>
             <a href="./C_clients.html" class="counselly-link">CLIENTS</a>
-            <!-- <a href="./C_earnings.html" class="counselly-link active">HISTORY</a> -->
+            <a href="./C_earnings.html" class="counselly-link active">HISTORY</a>
             <a href="./C_profile.html" class="counselly-link">PROFILE</a>
         </nav>
         <div class="logout-wrapper">
-            <button class="logout-btn" onclick="logout()">Logout Transition</button>
+            <button class="logout-btn" onclick="logout()">Logout</button>
         </div>
     </aside>
 
     <div class="dashboard-container">
         <div class="welcome-box">
-            <h2>Earnings & History</h2>
-            <p>Track your professional growth and financial performance.</p>
+            <h2>Earnings & History 👋</h2>
+            <p style="color: var(--text-muted); margin-bottom: 0;">Track your professional growth and financial
+                performance.</p>
         </div>
 
         <div class="stats" style="margin-bottom: 40px;">

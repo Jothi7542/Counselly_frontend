@@ -81,7 +81,7 @@ body {
 .counselly-link.active {
   background: var(--primary);
   color: white;
-  box-shadow: 0 4px 12px rgba(43, 97, 225, 0.2);
+  box-shadow: 0 4px 12px rgba(62, 39, 35, 0.3);
 }
 
 .logout-wrapper {

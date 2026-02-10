@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profile Settings</title>
+    <link rel="stylesheet" href="../CSS/navbar.css">
     <link rel="stylesheet" href="../CSS/UD.css">
 </head>
 
@@ -56,7 +57,7 @@
         }
     </script>
 
-    <aside class="counselly-sidenav">
+    <aside class="counselly-sidenav" aria-label="Counselly side navigation">
         <div class="counselly-brand">
             <div
                 style="width: 50px; height: 50px; border-radius: 50%; overflow: hidden; margin-right: 12px; border: 2px solid rgba(255,255,255,0.2); flex-shrink: 0;">
@@ -78,9 +79,13 @@
             <button class="logout-btn" onclick="logout()">Logout</button>
         </div>
     </aside>
+
     <div class="profile-content">
-        <h1 class="Upcoming-session" id="profileWelcome">Welcome To Counselly</h1>
-        <p class="profile-subtitle">Manage your account settings and profile preferences</p>
+        <div class="welcome-box">
+            <h2 id="profileWelcome">Profile Settings 👋</h2>
+            <p style="color: var(--text-muted); margin-bottom: 0;">Manage your account settings and profile preferences.
+            </p>
+        </div>
 
         <div class="profile-grid">
             <!-- Left Side Card -->
@@ -249,7 +254,7 @@
     </script>
 
 
-    <footer class="footer">
+    <footer class="footer" style="margin-left: var(--sidebar-w);">
         <div class="footer-container">
             <div class="footer-logo">
                 <img src="../Assets/Project_logo.png" alt="Counselly Logo">
