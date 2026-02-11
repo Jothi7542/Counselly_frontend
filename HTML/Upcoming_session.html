@@ -134,9 +134,16 @@
                 box.className = "session-box";
 
                 const isPending = s.status === 'pending';
-                const statusBadge = isPending ?
-                    `<span style="background:#fef3c7; color:#d97706; padding:4px 8px; border-radius:4px; font-size:0.8rem;">Pending Approval</span>` :
-                    `<span style="background:#d1fae5; color:#059669; padding:4px 8px; border-radius:4px; font-size:0.8rem;">Confirmed</span>`;
+                const isRejected = s.status === 'rejected' || s.status === 'cancelled';
+
+                let statusBadge = '';
+                if (isPending) {
+                    statusBadge = `<span style="background:#fef3c7; color:#d97706; padding:4px 8px; border-radius:4px; font-size:0.8rem;">Pending Approval</span>`;
+                } else if (isRejected) {
+                    statusBadge = `<span style="background:#fee2e2; color:#ef4444; padding:4px 8px; border-radius:4px; font-size:0.8rem;">Rejected</span>`;
+                } else {
+                    statusBadge = `<span style="background:#d1fae5; color:#059669; padding:4px 8px; border-radius:4px; font-size:0.8rem;">Confirmed</span>`;
+                }
 
                 box.innerHTML = `
                     <div class="session-info">
@@ -148,7 +155,9 @@
                     </div>
                     ${isPending ?
                         `<button class="join-btn" style="background:#ccc; cursor:not-allowed;" disabled>Waiting for Approval</button>` :
-                        `<button class="join-btn" onclick="joinSession(${s.appointment_id})">Join Session</button>`
+                        isRejected ?
+                            `<button class="join-btn" style="background:#ef4444; cursor:not-allowed;" disabled>Declined</button>` :
+                            `<button class="join-btn" onclick="joinSession(${s.appointment_id})">Join Session</button>`
                     }
                 `;
                 container.appendChild(box);

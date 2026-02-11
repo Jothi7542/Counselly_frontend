@@ -150,29 +150,40 @@
 
       async function loadRequests(id) {
         try {
-          const sessions = await API.counsellors.getRequests(id);
-          const tbody = document.getElementById("requestTable");
-          tbody.innerHTML = sessions.length ? "" : '<tr><td colspan="6" style="text-align:center;">No pending requests</td></tr>';
+          const [pending, accepted] = await Promise.all([
+            API.counsellors.getRequests(id),
+            API.counsellors.getUpcomingSessions(id)
+          ]);
 
-          sessions.forEach(s => {
+          const allSessions = [...pending, ...accepted];
+          const tbody = document.getElementById("requestTable");
+          tbody.innerHTML = allSessions.length ? "" : '<tr><td colspan="6" style="text-align:center;">No active sessions or requests</td></tr>';
+
+          allSessions.forEach(s => {
             const tr = document.createElement("tr");
+            const isPending = s.status === 'pending';
+
             tr.innerHTML = `
               <td>${s.date}</td>
               <td>${s.time}</td>
               <td>${s.client_name}</td>
               <td>${s.mode}</td>
-              <td><span class="status-badge status-pending">Pending</span></td>
+              <td><span class="status-badge status-${isPending ? 'pending' : 'completed'}">${isPending ? 'Pending' : 'Confirmed'}</span></td>
               <td>
-                 <button class="find-button btn-accept" style="padding: 8px 16px; font-size: 0.85rem;" onclick="handleResponse(${s.appointment_id}, 'accepted')">Accept</button>
-                 <button class="find-button btn-reject" style="padding: 8px 16px; font-size: 0.85rem;" onclick="handleResponse(${s.appointment_id}, 'rejected')">Reject</button>
+                 ${isPending ? `
+                   <button class="find-button btn-accept" style="padding: 8px 16px; font-size: 0.85rem;" onclick="handleResponse(${s.appointment_id}, 'accepted')">Accept</button>
+                   <button class="find-button btn-reject" style="padding: 8px 16px; font-size: 0.85rem;" onclick="handleResponse(${s.appointment_id}, 'rejected')">Reject</button>
+                 ` : `
+                   <button class="find-button btn-accept" style="padding: 8px 16px; font-size: 0.85rem;" onclick="completeSession(${s.appointment_id})">Complete</button>
+                 `}
               </td>
             `;
             tbody.appendChild(tr);
           });
         } catch (err) {
-          console.error("Failed to load requests:", err);
+          console.error("Failed to load sessions:", err);
           document.getElementById("requestTable").innerHTML = `<tr><td colspan="6" style="text-align:center; color: #ef4444; background: #fee2e2; padding: 20px; border-radius: 8px;">
-            <strong>Failed to load requests</strong><br>
+            <strong>Failed to load data</strong><br>
             <small>${err.message}</small>
           </td></tr>`;
         }
