@@ -98,23 +98,44 @@
             <th>Status</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody id="clientsTable">
           <tr>
-            <td>Priya</td>
-            <td>4</td>
-            <td>02-01-2026</td>
-            <td><span class="status-badge status-completed">Active</span></td>
-          </tr>
-          <tr>
-            <td>Arun</td>
-            <td>2</td>
-            <td>05-01-2026</td>
-            <td><span class="status-badge status-completed">Active</span></td>
+            <td colspan="4" style="text-align: center;">Loading clients...</td>
           </tr>
         </tbody>
       </table>
     </div>
   </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", async () => {
+      const user = UserManager.get();
+      if (!user || user.role !== 'counsellor') {
+        window.location.href = "./auth.html";
+        return;
+      }
+
+      try {
+        const clients = await API.counsellors.getClients(user.counsellors_id);
+        const tbody = document.getElementById("clientsTable");
+        tbody.innerHTML = clients.length ? "" : '<tr><td colspan="4" style="text-align:center;">No clients yet.</td></tr>';
+
+        clients.forEach(c => {
+          const tr = document.createElement("tr");
+          tr.innerHTML = `
+            <td>${c.name}</td>
+            <td>${c.total_sessions}</td>
+            <td>${c.last_session}</td>
+            <td><span class="status-badge status-completed">${c.status}</span></td>
+          `;
+          tbody.appendChild(tr);
+        });
+      } catch (err) {
+        console.error("Failed to load clients:", err);
+        document.getElementById("clientsTable").innerHTML = `<tr><td colspan="4" style="text-align:center; color: #ef4444;">Failed to load clients.</td></tr>`;
+      }
+    });
+  </script>
 
   <footer class="footer" style="margin-left: var(--sidebar-w);">
     <div class="footer-container">

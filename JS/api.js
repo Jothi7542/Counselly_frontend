@@ -158,6 +158,7 @@ const API = {
         getRequests: (id) => request(`/counsellors/${id}/requests`),
         getUpcomingSessions: (id) => request(`/counsellors/${id}/upcoming-sessions`),
         getCompletedSessions: (id) => request(`/counsellors/${id}/completed-sessions`),
+        getClients: (id) => request(`/counsellors/${id}/clients`),
         getCard: (id) => request(`/counsellors/${id}/card`, { skipAuth: true }),
         addAvailability: (data) => API.availability.create(data),
         uploadProfileImage: (id, file) => {
