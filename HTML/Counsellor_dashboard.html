@@ -96,26 +96,7 @@
       </table>
     </div>
 
-    <div class="stat-box" style="margin-top: 40px; border: 1px solid var(--accent);">
-      <h3 style="margin-bottom: 20px;">Confirmed Sessions</h3>
-      <table>
-        <thead>
-          <tr>
-            <th>Date</th>
-            <th>Time</th>
-            <th>Client</th>
-            <th>Mode</th>
-            <th>Status</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody id="confirmedTable">
-          <tr>
-            <td colspan="6" style="text-align:center;">No confirmed sessions</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+
   </div>
 
   <script src="../JS/api.js"></script>
@@ -147,7 +128,6 @@
       // Load Data
       loadDashboardStats(counsellor.counsellors_id);
       loadRequests(counsellor.counsellors_id);
-      loadConfirmed(counsellor.counsellors_id);
 
       async function loadDashboardStats(id) {
         try {

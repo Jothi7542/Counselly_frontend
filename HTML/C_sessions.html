@@ -89,43 +89,7 @@
         sessions.</p>
     </div>
 
-    <div class="stat-box" style="margin-bottom: 40px;">
-      <h3 style="margin-bottom: 20px;">Upcoming Requests</h3>
-      <table>
-        <thead>
-          <tr>
-            <th>Date</th>
-            <th>Time</th>
-            <th>Client</th>
-            <th>Mode</th>
-            <th>Status</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody id="upcomingTable">
-          <!-- Dynamic data -->
-        </tbody>
-      </table>
-    </div>
 
-    <div class="stat-box" style="margin-bottom: 40px;">
-      <h3 style="margin-bottom: 20px;">Confirmed Upcoming Sessions</h3>
-      <table>
-        <thead>
-          <tr>
-            <th>Date</th>
-            <th>Time</th>
-            <th>Client</th>
-            <th>Mode</th>
-            <th>Status</th>
-            <th>Action</th>
-          </tr>
-        </thead>
-        <tbody id="confirmedTable">
-          <!-- Dynamic data -->
-        </tbody>
-      </table>
-    </div>
 
     <div class="stat-box">
       <h3 style="margin-bottom: 20px;">Session History</h3>
@@ -171,78 +135,11 @@
     });
 
     async function loadSessions(counsellorId) {
-      try {
-        const requests = await API.counsellors.getRequests(counsellorId);
-        const upcoming = await API.counsellors.getUpcomingSessions(counsellorId);
-        const completed = await API.counsellors.getCompletedSessions(counsellorId);
-
-        renderRequests(requests);
-        renderConfirmed(upcoming);
-        renderHistory(completed);
-      } catch (err) {
-        console.error("Load sessions failed:", err);
-        const errorMsg = `<div style="text-align:center; color: #ef4444; background: #fee2e2; padding: 20px; border-radius: 8px; margin: 20px 0;">
-          <strong>Failed to load session data</strong><br>
-          <small>${err.message}</small>
-        </div>`;
-        document.getElementById("upcomingTable").innerHTML = `<tr><td colspan="6">${errorMsg}</td></tr>`;
-        document.getElementById("confirmedTable").innerHTML = `<tr><td colspan="6">${errorMsg}</td></tr>`;
-        document.getElementById("historyTable").innerHTML = `<tr><td colspan="6">${errorMsg}</td></tr>`;
-      }
+      const completed = await API.counsellors.getCompletedSessions(counsellorId);
+      renderHistory(completed);
     }
 
-    function renderRequests(sessions) {
-      const tbody = document.getElementById("upcomingTable");
-      tbody.innerHTML = sessions.length ? "" : '<tr><td colspan="6" style="text-align:center;">No pending requests</td></tr>';
 
-      sessions.forEach(s => {
-        const tr = document.createElement("tr");
-        tr.innerHTML = `
-          <td>${s.date}</td>
-          <td>${s.time}</td>
-          <td>${s.client_name}</td>
-          <td>${s.mode}</td>
-          <td><span class="status-badge status-pending">Pending</span></td>
-          <td>
-             <button class="find-button btn-accept" style="padding: 8px 16px; font-size: 0.85rem;" onclick="handleResponse(${s.appointment_id}, 'accepted')">Accept</button>
-             <button class="find-button btn-reject" style="padding: 8px 16px; font-size: 0.85rem;" onclick="handleResponse(${s.appointment_id}, 'rejected')">Reject</button>
-          </td>
-        `;
-        tbody.appendChild(tr);
-      });
-    }
-
-    function renderConfirmed(sessions) {
-      const tbody = document.getElementById("confirmedTable");
-      tbody.innerHTML = sessions.length ? "" : '<tr><td colspan="6" style="text-align:center;">No confirmed upcoming sessions</td></tr>';
-
-      sessions.forEach(s => {
-        const tr = document.createElement("tr");
-        tr.innerHTML = `
-          <td>${s.date}</td>
-          <td>${s.time}</td>
-          <td>${s.client_name}</td>
-          <td>${s.mode}</td>
-          <td><span class="status-badge status-completed">Confirmed</span></td>
-          <td>
-            <button class="find-button btn-accept" style="padding: 8px 16px; font-size: 0.85rem;" onclick="completeSession(${s.appointment_id})">Complete</button>
-            <button class="find-button btn-reject" style="padding: 8px 16px; font-size: 0.85rem;" onclick="handleResponse(${s.appointment_id}, 'cancelled')">Cancel</button>
-          </td>
-        `;
-        tbody.appendChild(tr);
-      });
-    }
-
-    async function completeSession(appointmentId) {
-      if (!confirm("Are you sure you want to mark this session as completed?")) return;
-      try {
-        await API.appointments.update(appointmentId, { status: 'completed' });
-        alert("Session marked as completed successfully!");
-        location.reload();
-      } catch (err) {
-        alert("Failed to complete session: " + err.message);
-      }
-    }
 
     function renderHistory(sessions) {
       const tbody = document.getElementById("historyTable");
@@ -262,17 +159,7 @@
       });
     }
 
-    async function handleResponse(appointmentId, response) {
-      if (!confirm(`Are you sure you want to ${response} this appointment?`)) return;
 
-      try {
-        await API.appointments.updateResponse(appointmentId, response);
-        alert(`Appointment ${response} successfully`);
-        location.reload();
-      } catch (err) {
-        alert("Failed to update response: " + err.message);
-      }
-    }
   </script>
 
   <footer class="footer" style="margin-left: var(--sidebar-w);">
