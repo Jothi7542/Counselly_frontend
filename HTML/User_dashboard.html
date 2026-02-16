@@ -92,49 +92,16 @@
       </div>
     </div>
   </div>
-  <script src="../JS/api.js"></script>
-  <script>
-    document.addEventListener("DOMContentLoaded", async () => {
-      const user = UserManager.get();
+  <!-- Core JS -->
+  <script src="../JS/auth-manager.js"></script>
+  <script src="../JS/api-client.js"></script>
+  <script src="../JS/common.js"></script>
 
-      if (!user || user.role !== 'client') {
-        window.location.href = "./auth.html";
-        return;
-      }
+  <!-- API Definitions -->
+  <script src="../JS/client-api.js"></script>
 
-      // Initialize Navbar
-      const navButtons = document.getElementById("navButtons");
-      const dashboardUrl = user.role === 'client' ? './User_dashboard.html' : './Counsellor_dashboard.html';
-      navButtons.innerHTML = `
-        <div style="display: flex; gap: 15px; align-items: center;">
-            <a class="login-btn" href="${dashboardUrl}">Dashboard</a>
-            <a href="#" onclick="logout()" style="color: var(--text-muted); text-decoration: none; font-weight: 500; font-size: 14px;">Logout</a>
-        </div>
-      `;
-
-      document.getElementById("welcomeText").innerText = "Welcome, " + user.name + " 👋";
-
-      if (user.profile_image) {
-        document.getElementById("sidebarProfileImage").src = user.profile_image;
-      }
-
-      try {
-        const upcoming = await API.clients.getUpcomingSessions(user.clients_id);
-        const completed = await API.clients.getCompletedSessions(user.clients_id);
-
-        document.getElementById("upcomingCount").innerText = `${upcoming.length} Sessions`;
-        document.getElementById("completedCount").innerText = `${completed.length} Sessions`;
-      } catch (err) {
-        console.error("Failed to fetch dashboard data:", err);
-      }
-    });
-
-    function logout() {
-      TokenManager.remove();
-      UserManager.remove();
-      window.location.href = "../Index.html";
-    }
-  </script>
+  <!-- Page Logic -->
+  <script src="../JS/user-dashboard.js"></script>
 
   <footer class="footer" style="margin-left: var(--sidebar-w);">
     <div class="footer-container">

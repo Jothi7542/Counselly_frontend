@@ -75,155 +75,18 @@
         </div>
     </div>
 
-    <script src="../JS/api.js"></script>
-    <script src="../JS/booking.js"></script>
-    <script>
-        const urlParams = new URLSearchParams(window.location.search);
-        const counsellorId = urlParams.get('id');
-        let currentCounsellor = null;
-        let availabilityData = {};
+    <!-- Core JS -->
+    <script src="../JS/auth-manager.js"></script>
+    <script src="../JS/api-client.js"></script>
+    <script src="../JS/common.js"></script>
+    <script src="../JS/booking-manager.js"></script>
 
-        document.addEventListener("DOMContentLoaded", async () => {
-            if (!counsellorId) {
-                alert("Invalid expert selection.");
-                window.location.href = "./Counsellor.html";
-                return;
-            }
+    <!-- API Definitions -->
+    <script src="../JS/counsellor-api.js"></script>
+    <script src="../JS/availability-api.js"></script>
 
-            // Auth check for navbar
-            const user = UserManager.get();
-            const navButtons = document.getElementById("navButtons");
-            if (user) {
-                const dashboardUrl = user.role === 'client' ? './User_dashboard.html' : './Counsellor_dashboard.html';
-                navButtons.innerHTML = `
-                    <div style="display: flex; gap: 15px; align-items: center;">
-                        <a class="login-btn" href="${dashboardUrl}">Dashboard</a>
-                        <a href="#" onclick="logout()" style="color: var(--text-muted); text-decoration: none; font-weight: 500; font-size: 14px;">Logout</a>
-                    </div>
-                `;
-            }
-
-            try {
-                currentCounsellor = await API.counsellors.getById(counsellorId);
-                if (!currentCounsellor) throw new Error("Expert not found");
-                renderProfile(currentCounsellor);
-            } catch (err) {
-                console.error("Profile load failed:", err);
-                document.getElementById("counsellorName").innerText = "Expert Not Found";
-                alert("Failed to load expert details: " + err.message);
-            }
-        });
-
-        function renderProfile(c) {
-            document.getElementById("counsellorName").innerText = c.name;
-            document.getElementById("counsellorExp").innerText = `${c.experience || '3.5'} years of experience`;
-            document.getElementById("counsellorLangs").innerText = Array.isArray(c.speaks) ? c.speaks.join(" / ") : (c.speaks || "Tamil / English");
-            document.getElementById("counsellorImage").src = c.profile_image || "../Assets/Wireframep1.webp";
-            document.getElementById("counsellorBio").innerText = c.about || "Biography not available.";
-
-            const isInPerson = c.mode && (c.mode.includes("In Person") || c.mode.includes("in person"));
-            document.getElementById("counsellorDisplayLocation").innerText = `📍 ${isInPerson ? "Online, In-person" : "Online"} (${c.address || "Chennai"})`;
-            document.getElementById("displayAddress").innerText = `📍 ${c.address || "49, Thomas Road, Chennai 603 108"}`;
-
-            const modeContainer = document.getElementById("modeButtons");
-            const modes = Array.isArray(c.mode) ? c.mode : ["Online", "In Person"];
-            modeContainer.innerHTML = modes.map((m, idx) => `
-                <button class="mode ${idx === 0 ? 'active' : ''}" onclick="toggleMode(this)">${m}</button>
-            `).join('');
-        }
-
-        function toggleMode(btn) {
-            document.querySelectorAll(".mode").forEach(b => b.classList.remove("active"));
-            btn.classList.add("active");
-        }
-
-        function logout() {
-            TokenManager.remove();
-            UserManager.remove();
-            window.location.reload();
-        }
-
-        // Real-time Availability Sync
-        document.getElementById("datePicker").addEventListener("change", async function () {
-            const date = this.value;
-            const container = document.getElementById("timeSlots");
-            container.innerHTML = "<p>Fetching expert's schedule...</p>";
-
-            try {
-                const res = await API.availability.getFreeSlots(counsellorId, date);
-                availabilityData = res;
-                const period = document.getElementById("sessionPeriod").value;
-                if (period) updateTimeSlots(period);
-                else container.innerHTML = "<p>Select a time period to see available slots</p>";
-            } catch (err) {
-                container.innerHTML = "<p style='color: #ef4444;'>Expert hasn't set slots for this date yet.</p>";
-                availabilityData = {};
-            }
-        });
-
-        function updateTimeSlots(period) {
-            const slots = availabilityData[period] || [];
-            const container = document.getElementById("timeSlots");
-            container.innerHTML = "";
-
-            if (slots.length === 0) {
-                container.innerHTML = "<p>No slots released for this period.</p>";
-                return;
-            }
-
-            slots.forEach(slot => {
-                const btn = document.createElement("button");
-                btn.className = "time-slot";
-                btn.innerText = slot.time;
-                btn.onclick = () => {
-                    document.querySelectorAll(".time-slot").forEach(b => b.classList.remove("active"));
-                    btn.classList.add("active");
-                    localStorage.setItem("selected_time", slot.time);
-                    localStorage.setItem("selected_slot_id", slot.id);
-                };
-                container.appendChild(btn);
-            });
-        }
-
-        document.getElementById("sessionPeriod").addEventListener("change", function () {
-            updateTimeSlots(this.value);
-        });
-
-        async function handleBooking() {
-            const user = UserManager.get();
-            if (!user || user.role !== 'client') {
-                alert("Please login as a client to book a session");
-                window.location.href = `./auth.html?redirect=${encodeURIComponent(window.location.pathname + window.location.search)}`;
-                return;
-            }
-
-            const date = document.getElementById("datePicker").value;
-            const session_period = document.getElementById("sessionPeriod").value;
-            const time = localStorage.getItem("selected_time");
-            const slotId = localStorage.getItem("selected_slot_id");
-            const activeMode = document.querySelector(".mode.active");
-            const mode = activeMode ? activeMode.innerText : "Online";
-
-            if (!date || !session_period || !time || !slotId) {
-                alert("Please select date, period and an available time slot");
-                return;
-            }
-
-            BookingManager.saveStep1({
-                counsellors_id: counsellorId,
-                counsellor_name: currentCounsellor.name,
-                counsellor_photo: currentCounsellor.profile_image || "../Assets/Wireframep1.webp",
-                date: date,
-                time: time,
-                availability_id: slotId,
-                session_period: session_period,
-                mode: mode,
-                clients_id: user.clients_id
-            });
-
-            window.location.href = `./Theraphy_p.html`;
-        }
-    </script>
+    <!-- Page Logic -->
+    <script src="../JS/counsellor-profile.js"></script>
     <footer class="footer">
         <div class="footer-container">
             <div class="footer-logo">

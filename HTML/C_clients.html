@@ -26,35 +26,16 @@
     </div>
   </nav>
 
-  <script src="../JS/api.js"></script>
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      const user = UserManager.get();
-      const navButtons = document.getElementById("navButtons");
+  <!-- Core JS -->
+  <script src="../JS/auth-manager.js"></script>
+  <script src="../JS/api-client.js"></script>
+  <script src="../JS/common.js"></script>
 
-      if (user) {
-        // Initialize Navbar
-        const dashboardUrl = user.role === 'client' ? './User_dashboard.html' : './Counsellor_dashboard.html';
-        navButtons.innerHTML = `
-        <div style="display: flex; gap: 15px; align-items: center;">
-            <a class="login-btn" href="${dashboardUrl}">Dashboard</a>
-            <a href="#" onclick="logout()" style="color: var(--text-muted); text-decoration: none; font-weight: 500; font-size: 14px;">Logout</a>
-        </div>
-      `;
+  <!-- APi Definitions -->
+  <script src="../JS/counsellor-api.js"></script>
 
-        // Initialize Profile Image
-        if (user.profile_image && document.getElementById("sidebarProfileImage")) {
-          document.getElementById("sidebarProfileImage").src = user.profile_image;
-        }
-      }
-    });
-
-    function logout() {
-      TokenManager.remove();
-      UserManager.remove();
-      window.location.href = "../Index.html";
-    }
-  </script>
+  <!-- Page Logic -->
+  <script src="../JS/counsellor-clients.js"></script>
 
   <aside class="counselly-sidenav" aria-label="Counselly side navigation">
     <div class="counselly-brand">
@@ -107,35 +88,7 @@
     </div>
   </div>
 
-  <script>
-    document.addEventListener("DOMContentLoaded", async () => {
-      const user = UserManager.get();
-      if (!user || user.role !== 'counsellor') {
-        window.location.href = "./auth.html";
-        return;
-      }
-
-      try {
-        const clients = await API.counsellors.getClients(user.counsellors_id);
-        const tbody = document.getElementById("clientsTable");
-        tbody.innerHTML = clients.length ? "" : '<tr><td colspan="4" style="text-align:center;">No clients yet.</td></tr>';
-
-        clients.forEach(c => {
-          const tr = document.createElement("tr");
-          tr.innerHTML = `
-            <td>${c.name}</td>
-            <td>${c.total_sessions}</td>
-            <td>${c.last_session}</td>
-            <td><span class="status-badge status-completed">${c.status}</span></td>
-          `;
-          tbody.appendChild(tr);
-        });
-      } catch (err) {
-        console.error("Failed to load clients:", err);
-        document.getElementById("clientsTable").innerHTML = `<tr><td colspan="4" style="text-align:center; color: #ef4444;">Failed to load clients.</td></tr>`;
-      }
-    });
-  </script>
+  <!-- Local script removed as it is now in ../JS/pages/counsellor-clients.js -->
 
   <footer class="footer" style="margin-left: var(--sidebar-w);">
     <div class="footer-container">

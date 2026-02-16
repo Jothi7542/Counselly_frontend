@@ -99,154 +99,17 @@
 
   </div>
 
-  <script src="../JS/api.js"></script>
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      const counsellor = UserManager.get();
+  <!-- Core JS -->
+  <script src="../JS/auth-manager.js"></script>
+  <script src="../JS/api-client.js"></script>
+  <script src="../JS/common.js"></script>
 
-      if (!counsellor || counsellor.role !== 'counsellor') {
-        window.location.href = "./auth.html";
-        return;
-      }
+  <!-- API Definitions -->
+  <script src="../JS/counsellor-api.js"></script>
+  <script src="../JS/appointment-api.js"></script>
 
-      // Initialize Navbar
-      const navButtons = document.getElementById("navButtons");
-      const dashboardUrl = counsellor.role === 'client' ? './User_dashboard.html' : './Counsellor_dashboard.html';
-      navButtons.innerHTML = `
-        <div style="display: flex; gap: 15px; align-items: center;">
-            <a class="login-btn" href="${dashboardUrl}">Dashboard</a>
-            <a href="#" onclick="logout()" style="color: var(--text-muted); text-decoration: none; font-weight: 500; font-size: 14px;">Logout</a>
-        </div>
-      `;
-
-      // Initialize Profile Info
-      document.getElementById("welcomeText").innerText = "Welcome back, Dr. " + (counsellor.name || "Counsellor") + " 👋";
-      if (counsellor.profile_image) {
-        document.getElementById("sidebarProfileImage").src = counsellor.profile_image;
-      }
-
-      // Load Data
-      loadDashboardStats(counsellor.counsellors_id);
-      loadRequests(counsellor.counsellors_id);
-
-      async function loadDashboardStats(id) {
-        try {
-          const stats = await API.counsellors.getStats(id);
-          document.getElementById("todayCount").innerText = stats.today_sessions || 0;
-          document.getElementById("clientCount").innerText = stats.total_clients || 0;
-          document.getElementById("upcomingCount").innerText = stats.upcoming_sessions || 0;
-
-          const latestProfile = await API.counsellors.getById(id);
-          if (latestProfile && latestProfile.profile_image) {
-            document.getElementById("sidebarProfileImage").src = latestProfile.profile_image;
-            const currentUser = UserManager.get();
-            currentUser.profile_image = latestProfile.profile_image;
-            UserManager.set(currentUser);
-          }
-        } catch (err) {
-          console.error("Failed to load dashboard data:", err);
-        }
-      }
-
-      async function loadRequests(id) {
-        try {
-          const [pending, accepted] = await Promise.all([
-            API.counsellors.getRequests(id),
-            API.counsellors.getUpcomingSessions(id)
-          ]);
-
-          const allSessions = [...pending, ...accepted];
-          const tbody = document.getElementById("requestTable");
-          tbody.innerHTML = allSessions.length ? "" : '<tr><td colspan="6" style="text-align:center;">No active sessions or requests</td></tr>';
-
-          allSessions.forEach(s => {
-            const tr = document.createElement("tr");
-            const isPending = s.status === 'pending';
-
-            tr.innerHTML = `
-              <td>${s.date}</td>
-              <td>${s.time}</td>
-              <td>${s.client_name}</td>
-              <td>${s.mode}</td>
-              <td><span class="status-badge status-${isPending ? 'pending' : 'completed'}">${isPending ? 'Pending' : 'Confirmed'}</span></td>
-              <td>
-                 ${isPending ? `
-                   <button class="find-button btn-accept" style="padding: 8px 16px; font-size: 0.85rem;" onclick="handleResponse(${s.appointment_id}, 'accepted')">Accept</button>
-                   <button class="find-button btn-reject" style="padding: 8px 16px; font-size: 0.85rem;" onclick="handleResponse(${s.appointment_id}, 'rejected')">Reject</button>
-                 ` : `
-                   <button class="find-button btn-accept" style="padding: 8px 16px; font-size: 0.85rem;" onclick="completeSession(${s.appointment_id})">Complete</button>
-                 `}
-              </td>
-            `;
-            tbody.appendChild(tr);
-          });
-        } catch (err) {
-          console.error("Failed to load sessions:", err);
-          document.getElementById("requestTable").innerHTML = `<tr><td colspan="6" style="text-align:center; color: #ef4444; background: #fee2e2; padding: 20px; border-radius: 8px;">
-            <strong>Failed to load data</strong><br>
-            <small>${err.message}</small>
-          </td></tr>`;
-        }
-      }
-
-      async function loadConfirmed(id) {
-        try {
-          const sessions = await API.counsellors.getUpcomingSessions(id);
-          const tbody = document.getElementById("confirmedTable");
-          tbody.innerHTML = sessions.length ? "" : '<tr><td colspan="6" style="text-align:center;">No confirmed sessions</td></tr>';
-
-          sessions.forEach(s => {
-            const tr = document.createElement("tr");
-            tr.innerHTML = `
-              <td>${s.date}</td>
-              <td>${s.time}</td>
-              <td>${s.client_name}</td>
-              <td>${s.mode}</td>
-              <td><span class="status-badge status-completed">Confirmed</span></td>
-              <td>
-                 <button class="find-button btn-accept" style="padding: 8px 16px; font-size: 0.85rem;" onclick="completeSession(${s.appointment_id})">Complete</button>
-              </td>
-            `;
-            tbody.appendChild(tr);
-          });
-        } catch (err) {
-          console.error("Failed to load confirmed sessions:", err);
-          document.getElementById("confirmedTable").innerHTML = `<tr><td colspan="6" style="text-align:center; color: #ef4444; background: #fee2e2; padding: 20px; border-radius: 8px;">
-            <strong>Failed to load sessions</strong><br>
-            <small>${err.message}</small>
-          </td></tr>`;
-        }
-      }
-
-      window.handleResponse = async function (appointmentId, response) {
-        if (!confirm(`Are you sure you want to ${response} this appointment?`)) return;
-        try {
-          await API.appointments.updateResponse(appointmentId, response);
-          alert(`Appointment ${response} successfully`);
-          location.reload();
-        } catch (err) {
-          alert("Failed to update response: " + err.message);
-        }
-      };
-
-      window.completeSession = async function (appointmentId) {
-        if (!confirm("Are you sure you want to mark this session as completed?")) return;
-        try {
-          await API.appointments.update(appointmentId, { status: 'completed' });
-          alert("Session marked as completed successfully!");
-          location.reload();
-        } catch (err) {
-          alert("Failed to complete session: " + err.message);
-        }
-      };
-    });
-
-    function logout() {
-      TokenManager.remove();
-      UserManager.remove();
-      window.location.href = "../Index.html";
-    }
-  </script>
+  <!-- Page Logic -->
+  <script src="../JS/counsellor-dashboard.js"></script>
 
 
   <footer class="footer" style="margin-left: var(--sidebar-w);">

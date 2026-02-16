@@ -157,101 +157,16 @@
         </div>
     </div>
 
+    <!-- Core JS -->
+    <script src="../JS/auth-manager.js"></script>
+    <script src="../JS/api-client.js"></script>
+    <script src="../JS/common.js"></script>
 
-    <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            const user = UserManager.get();
-            if (!user || user.role !== 'client') {
-                window.location.href = "./auth.html";
-                return;
-            }
+    <!-- API Definitions -->
+    <script src="../JS/client-api.js"></script>
 
-            // Populate text
-            document.getElementById("profileWelcome").innerText = `Welcome Back, ${user.name.split(' ')[0]}`;
-            document.getElementById("displayName").innerText = user.name;
-            document.getElementById("displayEmail").innerText = user.email;
-
-            // Set profile image if available
-            if (user.profile_image) {
-                document.getElementById("displayAvatar").src = user.profile_image;
-            }
-
-            if (user.created_at) {
-                const date = new Date(user.created_at);
-                document.getElementById("memberSince").innerText = date.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
-            }
-
-            // Populate form
-            document.getElementById("profName").value = user.name || "";
-            document.getElementById("profEmail").value = user.email || "";
-            document.getElementById("profPhone").value = user.phone_number || "";
-            document.getElementById("profGender").value = user.gender || "";
-            document.getElementById("profAge").value = user.age || "";
-            document.getElementById("profAddress").value = user.address || "";
-            document.getElementById("profLanguage").value = Array.isArray(user.language) ? user.language.join(", ") : (user.language || "");
-        });
-
-        // Trigger file input on click
-        document.querySelector('.avatar-wrapper').addEventListener('click', () => {
-            document.getElementById('imageInput').click();
-        });
-
-        // Handle File Selection and Preview
-        document.getElementById('imageInput').addEventListener('change', function (event) {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function (e) {
-                    document.getElementById('displayAvatar').src = e.target.result; // Preview
-                };
-                reader.readAsDataURL(file);
-            }
-        });
-
-        document.getElementById("profileForm").addEventListener("submit", async (e) => {
-            e.preventDefault();
-            const user = UserManager.get();
-            const submitBtn = e.target.querySelector('.save-btn');
-            const originalText = submitBtn.innerText;
-
-            const languages = document.getElementById("profLanguage").value
-                .split(",")
-                .map(s => s.trim())
-                .filter(s => s !== "");
-
-            const currentObj = document.getElementById('displayAvatar');
-            const profileImage = currentObj.src;
-
-            const updatedData = {
-                name: document.getElementById("profName").value,
-                phone_number: document.getElementById("profPhone").value,
-                gender: document.getElementById("profGender").value,
-                age: parseInt(document.getElementById("profAge").value),
-                address: document.getElementById("profAddress").value,
-                language: languages,
-                profile_image: profileImage
-            };
-
-            try {
-                submitBtn.innerText = "Updating...";
-                submitBtn.disabled = true;
-
-                await API.clients.update(user.clients_id, updatedData);
-
-                // Update local storage
-                const newUser = { ...user, ...updatedData };
-                UserManager.set(newUser);
-
-                alert("Success: Your profile has been updated!");
-                window.location.reload();
-            } catch (err) {
-                alert("Error: " + err.message);
-            } finally {
-                submitBtn.innerText = originalText;
-                submitBtn.disabled = false;
-            }
-        });
-    </script>
+    <!-- Page Logic -->
+    <script src="../JS/user-profile.js"></script>
 
 
     <footer class="footer" style="margin-left: var(--sidebar-w);">

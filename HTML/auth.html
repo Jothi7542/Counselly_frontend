@@ -120,20 +120,16 @@
       </p>
     </form>
 
-    <script src="../JS/api.js"></script>
-    <script src="../JS/auth.js"></script>
-    <script>
-      function handleRoleSwitch(role) {
-        document.getElementById('btnClient').classList.toggle('active', role === 'client');
-        document.getElementById('btnCounsellor').classList.toggle('active', role === 'counsellor');
+    <!-- Core JS -->
+    <script src="../JS/auth-manager.js"></script>
+    <script src="../JS/api-client.js"></script>
+    <script src="../JS/common.js"></script>
 
-        if (role === 'client') {
-          showClientLogin();
-        } else {
-          showCounsellorLogin();
-        }
-      }
-    </script>
+    <!-- API Definitions -->
+    <script src="../JS/auth-api.js"></script>
+
+    <!-- Page Logic -->
+    <script src="../JS/auth-page.js"></script>
   </div>
 
 </body>

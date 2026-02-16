@@ -27,95 +27,17 @@
     </div>
   </nav>
 
-  <script src="../JS/api.js"></script>
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      const user = UserManager.get();
-      const navButtons = document.getElementById("navButtons");
+  <!-- Core JS -->
+  <script src="../JS/auth-manager.js"></script>
+  <script src="../JS/api-client.js"></script>
+  <script src="../JS/common.js"></script>
 
-      if (user) {
-        // Initialize Navbar
-        const dashboardUrl = user.role === 'client' ? './User_dashboard.html' : './Counsellor_dashboard.html';
-        navButtons.innerHTML = `
-        <div style="display: flex; gap: 15px; align-items: center;">
-            <a class="login-btn" href="${dashboardUrl}">Dashboard</a>
-            <a href="#" onclick="logout()" style="color: var(--text-muted); text-decoration: none; font-weight: 500; font-size: 14px;">Logout</a>
-        </div>
-      `;
+  <!-- API Definitions -->
+  <script src="../JS/counsellor-api.js"></script>
+  <script src="../JS/availability-api.js"></script>
 
-        // Initialize Profile Image
-        if (user.profile_image && document.getElementById("sidebarProfileImage")) {
-          document.getElementById("sidebarProfileImage").src = user.profile_image;
-        }
-      }
-    });
-
-    function logout() {
-      TokenManager.remove();
-      UserManager.remove();
-      window.location.href = "../Index.html";
-    }
-
-    async function handleAvailability(event) {
-      event.preventDefault();
-      const user = UserManager.get();
-      if (!user || user.role !== 'counsellor') {
-        alert("Please login as a counsellor");
-        return;
-      }
-
-      const dateStr = document.getElementById("date").value;
-      const period = document.getElementById("session_period").value;
-      const times = [
-        document.getElementById("time1").value,
-        document.getElementById("time2").value,
-        document.getElementById("time3").value
-      ].filter(t => t !== "");
-
-      if (times.length === 0) {
-        alert("Please provide at least one time slot");
-        return;
-      }
-
-      const selectedDate = new Date(dateStr);
-      const day = selectedDate.toLocaleDateString('en-US', { weekday: 'long' });
-      const month = selectedDate.toLocaleDateString('en-US', { month: 'long' });
-
-      const btn = event.target.querySelector('button');
-      btn.disabled = true;
-      btn.innerText = "Saving...";
-
-      try {
-        await Promise.all(times.map(time => {
-          // Convert 24h to 12h for display consistency if needed
-          const [h, m] = time.split(':');
-          const hNum = parseInt(h);
-          const ampm = hNum >= 12 ? 'PM' : 'AM';
-          const displayHour = hNum % 12 || 12;
-          const timeSlot = `${displayHour.toString().padStart(2, '0')}:${m} ${ampm}`;
-
-          return API.counsellors.addAvailability({
-            counsellors_id: user.counsellors_id,
-            date: dateStr,
-            day: day,
-            month: month,
-            time_slot: timeSlot,
-            session_period: period
-          });
-        }));
-
-        alert("Availability added successfully");
-        document.getElementById("availabilityForm").reset();
-      } catch (err) {
-        console.error(err);
-        alert("Success! Availability has been updated in the system.");
-        document.getElementById("availabilityForm").reset();
-      } finally {
-        btn.disabled = false;
-        btn.innerText = "Save Availability";
-      }
-    }
-  </script>
+  <!-- Page Logic -->
+  <script src="../JS/counsellor-availability.js"></script>
 
   <aside class="counselly-sidenav" aria-label="Counselly side navigation">
     <div class="counselly-brand">

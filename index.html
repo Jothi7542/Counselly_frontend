@@ -25,125 +25,16 @@
       <a class="login-btn" href="./HTML/auth.html">Login</a>
     </div>
   </nav>
-  <script src="./JS/api.js"></script>
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      const user = UserManager.get();
-      const navButtons = document.getElementById("navButtons");
+  <!-- Core JS -->
+  <script src="./JS/auth-manager.js"></script>
+  <script src="./JS/api-client.js"></script>
+  <script src="./JS/common.js"></script>
 
-      if (user) {
-        const dashboardUrl = user.role === 'client' ? './HTML/User_dashboard.html' : './HTML/Counsellor_dashboard.html';
-        navButtons.innerHTML = `
-            <div style="display: flex; gap: 15px; align-items: center;">
-                <a class="login-btn" href="${dashboardUrl}">Dashboard</a>
-                <a href="#" onclick="logout()" style="color: var(--text-muted); text-decoration: none; font-weight: 500; font-size: 14px;">Logout</a>
-            </div>
-        `;
-      }
-    });
+  <!-- API Definitions -->
+  <script src="./JS/counsellor-api.js"></script>
 
-    function logout() {
-      TokenManager.remove();
-      UserManager.remove();
-      window.location.reload();
-    }
-  </script>
-
-  <section id="hero-sec">
-    <div class="left-content" style="flex: 1; padding-right: 40px;">
-      <div id="small">Safe Space For Your Mind</div>
-      <p style="font-size: 1.2rem; color: var(--text-muted); margin-bottom: 35px;">Connect with certified professionals
-        and start your journey towards mental wellness today.</p>
-      <button class="find-button">
-        <a class="find" href="./HTML/Counsellor.html">Find a Counsellor</a>
-      </button>
-    </div>
-    <figure id="image" style="flex: 1; text-align: right;">
-      <img src="./Assets/founder.svg" alt="image">
-    </figure>
-  </section>
-
-  <h1 id="head">Why Choose Counselly?</h1>
-  <section id="Box">
-    <div>
-      <div style="font-size: 2rem; margin-bottom: 15px;">🤝</div>
-      Friendly & Experienced Psychologists
-    </div>
-    <div>
-      <div style="font-size: 2rem; margin-bottom: 15px;">🔒</div>
-      Confidential & Secure Sessions
-    </div>
-    <div>
-      <div style="font-size: 2rem; margin-bottom: 15px;">⚡</div>
-      Easy Booking & Support
-    </div>
-  </section>
-
-  <h1 id="sub">Meet Our Expert team</h1>
-  <main class="cards-wrap" id="expertTeam">
-    <div style="text-align: center; padding: 40px; color: var(--text-muted); width: 100%;">
-      Loading experts...
-    </div>
-  </main>
-
-  <script>
-    document.addEventListener("DOMContentLoaded", async () => {
-      const teamContainer = document.getElementById("expertTeam");
-      try {
-        const counsellors = await API.counsellors.getAll();
-        // Get top 3
-        const top3 = counsellors.slice(0, 3);
-
-        if (top3.length === 0) {
-          teamContainer.innerHTML = "<p>No experts found.</p>";
-          return;
-        }
-
-        teamContainer.innerHTML = top3.map((c, index) => {
-          const fallbacks = [
-            './Assets/wire5.webp',
-            './Assets/wire6.webp',
-            './Assets/wire7.webp',
-            './Assets/wire8.webp',
-            './Assets/wire9.webp',
-            './Assets/wire10.webp'
-          ];
-          let imgSrc = c.profile_image || fallbacks[index % fallbacks.length];
-
-          if (imgSrc.startsWith('../')) {
-            imgSrc = imgSrc.replace('..', '.');
-          }
-
-          return `
-          <article class="card">
-            <div class="profile">
-              <div class="photo">
-                <img src="${imgSrc}" alt="${c.name}">
-              </div>
-              <div class="details">
-                <p class="name">${c.name}</p>
-                <p class="meta">${c.specialization || 'Counselling Psychologist'}</p>
-              </div>
-            </div>
-            <div style="margin: 20px 0; padding: 15px 0; border-top: 1px solid #F1F5F9; border-bottom: 1px solid #F1F5F9;">
-              <p class="meta"><span class="label">Experience:</span> ${c.experience || '3.5'}+ years</p>
-              <p class="meta"><span class="label">Languages:</span> ${Array.isArray(c.speaks) ? c.speaks.join(", ") : (c.speaks || "Tamil, English")}</p>
-                <p class="meta"><span class="label">Location:</span> ${c.address || 'Chennai'}</p>
-                <div class="rating-section" style="margin-top: 10px; display: flex; align-items: center; gap: 8px;">
-                  <span style="color: #FFD700; font-size: 1.1em;">${'★'.repeat(Math.round(c.rating || 0))}${'☆'.repeat(5 - Math.round(c.rating || 0))}</span>
-                  <span style="color: var(--text-muted); font-size: 0.85rem;">${c.rating || 0} (${c.reviews_count || 0} reviews)</span>
-                </div>
-              </div>
-            <div class="cta">
-              <a class="btn secondary" href="./HTML/Counsellor_profile.html?id=${c.counsellors_id}">View profile</a>
-            </div>
-          </article>
-        `}).join('');
-      } catch (err) {
-        teamContainer.innerHTML = `<p style="padding: 20px; color: #ef4444;">Error: ${err.message}. Please ensure the backend server is running.</p>`;
-      }
-    });
-  </script>
+  <!-- Page Logic -->
+  <script src="./JS/index-page.js"></script>
 
   <footer class="footer">
     <div class="footer-container">
