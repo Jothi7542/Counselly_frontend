@@ -10,7 +10,64 @@ document.addEventListener("DOMContentLoaded", () => {
     if (sidebarImg && user.profile_image) {
         sidebarImg.src = user.profile_image;
     }
+
+    // Initial load for today's date if selected
+    const dateInput = document.getElementById("date");
+    if (dateInput) {
+        // Set default to today
+        const today = new Date().toISOString().split('T')[0];
+        dateInput.value = today;
+        loadCurrentSchedule(today);
+
+        dateInput.addEventListener("change", (e) => {
+            loadCurrentSchedule(e.target.value);
+        });
+    }
 });
+
+async function loadCurrentSchedule(date) {
+    const user = UserManager.get();
+    const container = document.getElementById("scheduledSlotsList");
+    if (!container || !user) return;
+
+    container.innerHTML = "<p>Loading your schedule...</p>";
+
+    try {
+        const slots = await API.availability.getFreeSlots(user.counsellors_id, date);
+
+        // slots is expected to be an object: { morning: [], afternoon: [], evening: [] }
+        let html = "";
+        let hasSlots = false;
+
+        const periods = ['morning', 'afternoon', 'evening'];
+        periods.forEach(p => {
+            if (slots[p] && slots[p].length > 0) {
+                hasSlots = true;
+                html += `
+                    <div style="grid-column: 1/-1; margin-top: 10px;">
+                        <strong style="text-transform: capitalize; color: var(--primary);">${p}:</strong>
+                    </div>
+                `;
+                slots[p].forEach(s => {
+                    html += `
+                        <div style="background: #f8fafc; padding: 10px; border-radius: 8px; border: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center;">
+                            <span>${s.time}</span>
+                        </div>
+                    `;
+                });
+            }
+        });
+
+        if (!hasSlots) {
+            container.innerHTML = "<p style='color: var(--text-muted);'>No slots scheduled for this date.</p>";
+        } else {
+            container.innerHTML = html;
+        }
+    } catch (err) {
+        console.error("Failed to fetch slots:", err);
+        container.innerHTML = "<p style='color: var(--text-muted);'>No slots scheduled for this date.</p>";
+    }
+}
 
 async function handleAvailability(event) {
     event.preventDefault();
@@ -81,6 +138,9 @@ async function handleAvailability(event) {
 
         alert("Availability added successfully");
         document.getElementById("availabilityForm").reset();
+
+        // Refresh the list for the same date
+        if (dateStr) loadCurrentSchedule(dateStr);
     } catch (err) {
         console.error(err);
         alert("Success! Availability has been updated in the system.");
