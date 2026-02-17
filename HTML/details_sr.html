@@ -25,29 +25,14 @@
         </div>
     </nav>
 
-    <script src="../JS/api.js"></script>
-    <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            const user = UserManager.get();
-            const navButtons = document.getElementById("navButtons");
+    <!-- Core JS -->
+    <script src="../JS/auth-manager.js"></script>
+    <script src="../JS/api-client.js"></script>
+    <script src="../JS/common.js"></script>
+    <script src="../JS/booking-manager.js"></script>
 
-            if (user) {
-                const dashboardUrl = user.role === 'client' ? './User_dashboard.html' : './Counsellor_dashboard.html';
-                navButtons.innerHTML = `
-              <div style="display: flex; gap: 15px; align-items: center;">
-                  <a class="login-btn" href="${dashboardUrl}">Dashboard</a>
-                  <a href="#" onclick="logout()" style="color: var(--text-muted); text-decoration: none; font-weight: 500; font-size: 14px;">Logout</a>
-              </div>
-          `;
-            }
-        });
-
-        function logout() {
-            TokenManager.remove();
-            UserManager.remove();
-            window.location.reload();
-        }
-    </script>
+    <!-- API Definitions -->
+    <script src="../JS/appointment-api.js"></script>
 
     <h1 class="con">Review Session Details</h1>
     <div class="confirm-box">

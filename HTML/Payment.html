@@ -15,43 +15,20 @@
             <h1>Counselly</h1>
         </div>
         <ul class="nav-links">
-            <li><a href="../Index.html">Home</a></li>
+            <li><a href="../index.html">Home</a></li>
             <li><a href="./About.html">About</a></li>
             <li><a href="./Blog.html">Blog</a></li>
-            <li><a href="#">Contact</a></li>
+            <li><a href="./Contact.html">Contact</a></li>
         </ul>
         <div class="nav-buttons" id="navButtons">
             <a class="login-btn" href="./auth.html">Login</a>
         </div>
     </nav>
 
-    <script src="../JS/api.js"></script>
-    <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            const user = UserManager.get();
-            const navButtons = document.getElementById("navButtons");
-
-            if (user) {
-                const dashboardUrl = user.role === 'client' ? './User_dashboard.html' : './Counsellor_dashboard.html';
-                navButtons.innerHTML = `
-              <div style="display: flex; gap: 15px; align-items: center;">
-                  <a class="login-btn" href="${dashboardUrl}">Dashboard</a>
-                  <a href="#" onclick="logout()" style="color: var(--text-muted); text-decoration: none; font-weight: 500; font-size: 14px;">Logout</a>
-              </div>
-          `;
-
-                if (user.name) {
-                    document.getElementById("welcomeTitle").innerText = `Welcome, ${user.name}`;
-                }
-            }
-        });
-
-        function logout() {
-            TokenManager.remove();
-            UserManager.remove();
-            window.location.reload();
-        }
-    </script>
+    Core JS
+    <script src="../JS/auth-manager.js"></script>
+    <script src="../JS/api-client.js"></script>
+    <script src="../JS/common.js"></script>
 
     <aside class="counselly-sidenav">
         <div class="counselly-brand">
@@ -105,7 +82,7 @@
                     <tr>
                         <td>#7544</td>
                         <td>Dr. Yuvasree</td>
-                        <td>05 Oct 2025 – 6:00 PM</td>
+                        <td>02 Oct 2025 – 10:00 AM</td>
                         <td>₹999</td>
                         <td>Netbanking</td>
                         <td><span class="paid">PAID</span></td>

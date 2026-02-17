@@ -26,40 +26,10 @@
         </div>
     </nav>
 
-    <script src="../JS/api.js"></script>
-    <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            const user = UserManager.get();
-            const navButtons = document.getElementById("navButtons");
-
-            if (!user || user.role !== 'client') {
-                window.location.href = "./auth.html";
-                return;
-            }
-
-            const dashboardUrl = user.role === 'client' ? './User_dashboard.html' : './Counsellor_dashboard.html';
-            navButtons.innerHTML = `
-              <div style="display: flex; gap: 15px; align-items: center;">
-                  <a class="login-btn" href="${dashboardUrl}">Dashboard</a>
-                  <a href="#" onclick="logout()" style="color: var(--text-muted); text-decoration: none; font-weight: 500; font-size: 14px;">Logout</a>
-              </div>
-            `;
-
-            if (user.name) {
-                document.getElementById("welcomeTitle").innerText = `History for ${user.name}`;
-            }
-
-            if (user.profile_image) {
-                document.getElementById("sidebarProfileImage").src = user.profile_image;
-            }
-        });
-
-        function logout() {
-            TokenManager.remove();
-            UserManager.remove();
-            window.location.href = "../Index.html";
-        }
-    </script>
+    <!-- Core JS -->
+    <script src="../JS/auth-manager.js"></script>
+    <script src="../JS/api-client.js"></script>
+    <script src="../JS/common.js"></script>
 
     <aside class="counselly-sidenav" aria-label="Counselly side navigation">
         <div class="counselly-brand">
@@ -109,46 +79,11 @@
         </div>
     </div>
 
-    <script>
-        document.addEventListener("DOMContentLoaded", async () => {
-            const user = UserManager.get();
-            if (!user || user.role !== 'client') {
-                window.location.href = "./auth.html";
-                return;
-            }
+    <!-- API Definitions -->
+    <script src="../JS/client-api.js"></script>
 
-            try {
-                const history = await API.clients.getCompletedSessions(user.clients_id);
-                renderHistory(history);
-            } catch (err) {
-                console.error("Load history failed:", err);
-            }
-        });
-
-        function renderHistory(sessions) {
-            const container = document.getElementById("historyList");
-            container.innerHTML = sessions.length ? "" : '<p style="text-align:center; padding: 20px;">No completed sessions found.</p>';
-
-            sessions.forEach(s => {
-                const box = document.createElement("div");
-                box.className = "session-box";
-                box.innerHTML = `
-                    <div class="session-info">
-                        <span class="status-badge status-completed">Completed</span>
-                        <h3>${s.counsellor_name}</h3>
-                        <p><strong>Type:</strong> ${s.therapy_type || 'General Counselling'}</p>
-                        <p><strong>Date:</strong> ${s.date} at ${s.time}</p>
-                    </div>
-                    <button class="feedback-btn" onclick="giveFeedback(${s.appointment_id})">Give Feedback</button>
-                `;
-                container.appendChild(box);
-            });
-        }
-
-        function giveFeedback(id) {
-            alert("Feedback system coming soon!");
-        }
-    </script>
+    <!-- Page Logic -->
+    <script src="../JS/history-page.js"></script>
 
 
     <footer class="footer" style="margin-left: var(--sidebar-w);">

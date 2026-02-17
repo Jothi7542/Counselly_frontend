@@ -2,7 +2,7 @@
 window.API = window.API || {};
 
 window.API.counsellors = {
-    getAll: () => request("/counsellors", { skipAuth: true }),
+    getAll: () => request("/counsellors/search", { skipAuth: true }),
     getById: (id) => request(`/counsellors/${id}`, { skipAuth: true }),
     search: (params) => {
         const queryString = new URLSearchParams(params).toString();

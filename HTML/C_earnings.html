@@ -19,42 +19,16 @@
             <li><a href="../index.html">Home</a></li>
             <li><a href="./About.html">About</a></li>
             <li><a href="./Blog.html">Blog</a></li>
-            <li><a href="#">Contact</a></li>
+            <li><a href="./Contact.html">Contact</a></li>
         </ul>
         <div class="nav-buttons" id="navButtons">
             <a class="login-btn" href="./auth.html">Login</a>
         </div>
     </nav>
 
-    <script src="../JS/api.js"></script>
-    <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            const user = UserManager.get();
-            const navButtons = document.getElementById("navButtons");
-
-            if (user) {
-                // Initialize Navbar
-                const dashboardUrl = user.role === 'client' ? './User_dashboard.html' : './Counsellor_dashboard.html';
-                navButtons.innerHTML = `
-                <div style="display: flex; gap: 15px; align-items: center;">
-                    <a class="login-btn" href="${dashboardUrl}">Dashboard</a>
-                    <a href="#" onclick="logout()" style="color: var(--text-muted); text-decoration: none; font-weight: 500; font-size: 14px;">Logout</a>
-                </div>
-              `;
-
-                // Initialize Profile Image
-                if (user.profile_image && document.getElementById("sidebarProfileImage")) {
-                    document.getElementById("sidebarProfileImage").src = user.profile_image;
-                }
-            }
-        });
-
-        function logout() {
-            TokenManager.remove();
-            UserManager.remove();
-            window.location.reload();
-        }
-    </script>
+    <script src="../JS/auth-manager.js"></script>
+    <script src="../JS/api-client.js"></script>
+    <script src="../JS/common.js"></script>
 
     <aside class="counselly-sidenav" aria-label="Counselly side navigation">
         <div class="counselly-brand">
@@ -135,34 +109,40 @@
         </div>
     </div>
 
+    
+    <script src="../JS/counsellor-api.js"></script>
+
     <script>
         document.addEventListener("DOMContentLoaded", async () => {
             const user = UserManager.get();
             if (!user || user.role !== 'counsellor') return;
 
             try {
-                const sessions = await API.counsellors.getCompletedSessions(user.counsellors_id);
-                const totalEarnings = sessions.length * 800; // Assuming 800 per session
-                const thisMonth = sessions.filter(s => {
-                    const d = new Date(s.date);
-                    return d.getMonth() === new Date().getMonth();
-                }).length * 800;
+                // Ensure API.counsellors is available
+                if (typeof API !== 'undefined' && API.counsellors && API.counsellors.getCompletedSessions) {
+                    const sessions = await API.counsellors.getCompletedSessions(user.counsellors_id);
+                    const totalEarnings = sessions.length * 800; // Assuming 800 per session
+                    const thisMonth = sessions.filter(s => {
+                        const d = new Date(s.date);
+                        return d.getMonth() === new Date().getMonth();
+                    }).length * 800;
 
-                document.querySelectorAll(".stat-box p")[0].innerText = `₹${totalEarnings}`;
-                document.querySelectorAll(".stat-box p")[1].innerText = `₹${thisMonth}`;
-                document.querySelectorAll(".stat-box p")[2].innerText = `₹${Math.floor(totalEarnings * 0.15)}`;
+                    document.querySelectorAll(".stat-box p")[0].innerText = `₹${totalEarnings}`;
+                    document.querySelectorAll(".stat-box p")[1].innerText = `₹${thisMonth}`;
+                    document.querySelectorAll(".stat-box p")[2].innerText = `₹${Math.floor(totalEarnings * 0.15)}`;
 
-                const tbody = document.querySelector("table tbody");
-                if (sessions.length > 0) {
-                    tbody.innerHTML = sessions.map(s => `
-                        <tr>
-                            <td>#SESS-${s.appointment_id}</td>
-                            <td>${new Date(s.date).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}</td>
-                            <td>₹800</td>
-                            <td><span class="status-badge status-completed">Completed</span></td>
-                            <td>${s.date}</td>
-                        </tr>
-                    `).join('');
+                    const tbody = document.querySelector("table tbody");
+                    if (sessions.length > 0) {
+                        tbody.innerHTML = sessions.map(s => `
+                            <tr>
+                                <td>#SESS-${s.appointment_id}</td>
+                                <td>${new Date(s.date).toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}</td>
+                                <td>₹800</td>
+                                <td><span class="status-badge status-completed">Completed</span></td>
+                                <td>${s.date}</td>
+                            </tr>
+                        `).join('');
+                    }
                 }
             } catch (err) {
                 console.error("Failed to load earnings:", err);

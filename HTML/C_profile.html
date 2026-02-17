@@ -26,93 +26,10 @@
     </div>
   </nav>
 
-  <script src="../JS/api.js"></script>
-  <script>
-    document.addEventListener("DOMContentLoaded", async () => {
-      const user = UserManager.get();
-      const navButtons = document.getElementById("navButtons");
-
-      if (user) {
-        // Initialize Navbar
-        const dashboardUrl = user.role === 'client' ? './User_dashboard.html' : './Counsellor_dashboard.html';
-        navButtons.innerHTML = `
-        <div style="display: flex; gap: 15px; align-items: center;">
-            <a class="login-btn" href="${dashboardUrl}">Dashboard</a>
-            <a href="#" onclick="logout()" style="color: var(--text-muted); text-decoration: none; font-weight: 500; font-size: 14px;">Logout</a>
-        </div>
-      `;
-
-        if (user.role === 'counsellor') {
-          // Fetch fresh data from server to ensure accuracy
-          try {
-            const freshUser = await API.counsellors.getById(user.counsellors_id);
-
-            document.getElementById("profileName").value = freshUser.name || "";
-            document.getElementById("profileEmail").value = freshUser.email || "";
-            if (freshUser.specialization) document.getElementById("profileSpecialization").value = freshUser.specialization;
-            if (freshUser.experience) document.getElementById("profileExperience").value = freshUser.experience;
-
-            const imgUrl = freshUser.profile_image || user.profile_image;
-            if (imgUrl) {
-              document.getElementById("currentProfileImage").src = imgUrl;
-              if (document.getElementById("sidebarProfileImage")) {
-                document.getElementById("sidebarProfileImage").src = imgUrl;
-              }
-            }
-          } catch (err) {
-            console.error("Failed to fetch fresh profile:", err);
-            // Fallback to local storage if fetch fails
-            document.getElementById("profileName").value = user.name || "";
-            document.getElementById("profileEmail").value = user.email || "";
-            if (user.profile_image) {
-              document.getElementById("currentProfileImage").src = user.profile_image;
-              if (document.getElementById("sidebarProfileImage")) {
-                document.getElementById("sidebarProfileImage").src = user.profile_image;
-              }
-            }
-          }
-
-          // Handle Image Upload
-          const imageInput = document.getElementById("profileImageInput");
-          imageInput.addEventListener("change", async (e) => {
-            const file = e.target.files[0];
-            if (!file) return;
-
-            const statusMsg = document.getElementById("uploadStatus");
-            statusMsg.innerText = "Uploading...";
-
-            try {
-              const result = await API.counsellors.uploadProfileImage(user.counsellors_id, file);
-              console.log("Upload result:", result);
-
-              // Update UI
-              document.getElementById("currentProfileImage").src = result.image_url;
-              if (document.getElementById("sidebarProfileImage")) {
-                document.getElementById("sidebarProfileImage").src = result.image_url;
-              }
-              statusMsg.innerText = "Updated successfully!";
-              statusMsg.style.color = "green";
-
-              // Update User Object in LocalStorage
-              user.profile_image = result.image_url;
-              UserManager.set(user);
-
-            } catch (err) {
-              console.error("Upload failed", err);
-              statusMsg.innerText = "Upload failed. Try again.";
-              statusMsg.style.color = "red";
-            }
-          });
-        }
-      }
-    });
-
-    function logout() {
-      TokenManager.remove();
-      UserManager.remove();
-      window.location.href = "../Index.html";
-    }
-  </script>
+  <!-- Core JS -->
+  <script src="../JS/auth-manager.js"></script>
+  <script src="../JS/api-client.js"></script>
+  <script src="../JS/common.js"></script>
 
   <aside class="counselly-sidenav" aria-label="Counselly side navigation">
     <div class="counselly-brand">
@@ -228,6 +145,11 @@
       <p>Copyright © 2025 COUNSELLY INDIA PRIVATE LIMITED. All Rights Reserved</p>
     </div>
   </footer>
+  <!-- API Definitions -->
+  <script src="../JS/counsellor-api.js"></script>
+
+  <!-- Page Logic -->
+  <script src="../JS/counsellor-settings.js"></script>
 </body>
 
 </html>
