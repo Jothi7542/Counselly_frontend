@@ -28,51 +28,61 @@
     <div class="container">
         <div class="left-box">
             <div class="profile-header">
-                <div>
-                    <h2 id="counsellorName">Loading...</h2>
-                    <p class="exp" id="counsellorExp">-- years of experience</p>
-                    <p><strong>Speaks</strong> &nbsp; <span id="counsellorLangs">...</span></p>
-                    <p id="counsellorDisplayLocation">📍 Loading...</p>
+                <div class="rating-badge" style="margin-top: 10px; display: flex; align-items: center; gap: 8px;">
+                    <span id="counsellorStars" style="color: #FFD700; font-size: 1.2rem;"></span>
+                    <span id="counsellorRatingVal" style="font-weight: 600;">--</span>
+                    <span id="counsellorReviewsCount" style="color: var(--text-muted); font-size: 0.9rem;">(--
+                        reviews)</span>
                 </div>
-                <img src="../Assets/Wireframep1.webp" class="profile-img" alt="profile" id="counsellorImage">
             </div>
-            <div class="bio-section">
-                <h3>Biography</h3>
-                <p id="counsellorBio">
-                    Loading biography...
-                </p>
-                <a href="./Counsellor.html" class="back-btn">← Back to experts</a>
-            </div>
+            <img src="../Assets/Wireframep1.webp" class="profile-img" alt="profile" id="counsellorImage">
+        </div>
+        <div class="bio-section">
+            <h3>Biography</h3>
+            <p id="counsellorBio">
+                Loading biography...
+            </p>
         </div>
 
-        <div class="right-box">
-            <h2 class="heading">Book Your Session</h2>
-
-            <div class="sub-title">Counselling Mode</div>
-            <div class="mode-buttons" id="modeButtons">
-                <button class="mode active">In Person</button>
-                <button class="mode">Online</button>
+        <div class="reviews-section" style="margin-top: 40px; padding-top: 30px; border-top: 1px solid #eee;">
+            <h3>Client Reviews</h3>
+            <div id="reviewsList">
+                <!-- Dynamic reviews -->
+                <p style="color: var(--text-muted);">Loading reviews...</p>
             </div>
-
-            <div class="sub-title">Select Date</div>
-            <input type="date" id="datePicker" />
-
-            <div class="sub-title">Time of Day</div>
-            <select id="sessionPeriod">
-                <option value="">Select Period</option>
-                <option value="morning">Morning</option>
-                <option value="afternoon">Afternoon</option>
-                <option value="evening">Evening</option>
-            </select>
-
-            <div id="timeSlots" class="time-row"></div>
-
-            <div class="location-box">
-                <p id="displayAddress">📍 49, Thomas Road, Chennai 603 108</p>
-            </div>
-
-            <button class="book-btn" onclick="handleBooking()">Reserve Slot</button>
+            <a href="./Counsellor.html" class="back-btn" style="margin-top: 30px; display: inline-block;">← Back to
+                experts</a>
         </div>
+    </div>
+
+    <div class="right-box">
+        <h2 class="heading">Book Your Session</h2>
+
+        <div class="sub-title">Counselling Mode</div>
+        <div class="mode-buttons" id="modeButtons">
+            <button class="mode active">In Person</button>
+            <button class="mode">Online</button>
+        </div>
+
+        <div class="sub-title">Select Date</div>
+        <input type="date" id="datePicker" />
+
+        <div class="sub-title">Time of Day</div>
+        <select id="sessionPeriod">
+            <option value="">Select Period</option>
+            <option value="morning">Morning</option>
+            <option value="afternoon">Afternoon</option>
+            <option value="evening">Evening</option>
+        </select>
+
+        <div id="timeSlots" class="time-row"></div>
+
+        <div class="location-box">
+            <p id="displayAddress">📍 49, Thomas Road, Chennai 603 108</p>
+        </div>
+
+        <button class="book-btn" onclick="handleBooking()">Reserve Slot</button>
+    </div>
     </div>
 
     <!-- Core JS -->

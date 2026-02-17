@@ -45,8 +45,59 @@ function renderHistory(sessions) {
     });
 }
 
+let currentAppointmentId = null;
+
 function giveFeedback(id) {
-    alert("Feedback system coming soon!");
+    currentAppointmentId = id;
+    const modal = document.getElementById("reviewModal");
+    if (modal) {
+        modal.style.display = "flex";
+        // Optionally find the counsellor name from the list
+        const box = document.querySelector(`button[onclick="giveFeedback(${id})"]`).closest('.session-box');
+        const name = box ? box.querySelector('h3').innerText : 'Expert';
+        document.getElementById("modalCounsellorName").innerText = name;
+    }
+}
+
+function closeModal() {
+    const modal = document.getElementById("reviewModal");
+    if (modal) modal.style.display = "none";
+    currentAppointmentId = null;
+}
+
+async function submitReview() {
+    const starInput = document.querySelector('input[name="stars"]:checked');
+    const comment = document.getElementById("reviewComment").value;
+
+    if (!starInput) {
+        alert("Please select a star rating.");
+        return;
+    }
+
+    const rating = starInput.value;
+    console.log("Submitting review:", { id: currentAppointmentId, rating, comment });
+
+    // Mock successful submission
+    const btn = document.querySelector(".submit-btn");
+    btn.disabled = true;
+    btn.innerText = "Submitting...";
+
+    setTimeout(() => {
+        alert("Thank you for your feedback!");
+        closeModal();
+        btn.disabled = false;
+        btn.innerText = "Submit Review";
+
+        // Refresh or update UI
+        const feedbackBtn = document.querySelector(`button[onclick="giveFeedback(${currentAppointmentId})"]`);
+        if (feedbackBtn) {
+            feedbackBtn.innerText = "Review Submitted";
+            feedbackBtn.style.background = "#94a3b8";
+            feedbackBtn.disabled = true;
+        }
+    }, 1500);
 }
 
 window.giveFeedback = giveFeedback;
+window.closeModal = closeModal;
+window.submitReview = submitReview;

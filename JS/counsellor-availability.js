@@ -42,6 +42,25 @@ async function handleAvailability(event) {
     btn.innerText = "Saving...";
 
     try {
+        // Validation: Ensure times match the period
+        const periodConstraints = {
+            morning: { start: 8, end: 12, label: "8 AM - 12 PM" },
+            afternoon: { start: 12, end: 17, label: "12 PM - 5 PM" },
+            evening: { start: 17, end: 21, label: "5 PM - 9 PM" }
+        };
+
+        const constraint = periodConstraints[period];
+
+        for (const time of times) {
+            const [h] = time.split(':').map(Number);
+            if (h < constraint.start || h >= constraint.end) {
+                alert(`Invalid time: ${time}. For ${period}, please select time between ${constraint.label}.`);
+                btn.disabled = false;
+                btn.innerText = "Save Availability";
+                return;
+            }
+        }
+
         await Promise.all(times.map(time => {
             // Convert 24h to 12h for display consistency
             const [h, m] = time.split(':');
