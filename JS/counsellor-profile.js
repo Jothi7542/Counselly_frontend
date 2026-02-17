@@ -12,14 +12,24 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     try {
-        currentCounsellor = await API.counsellors.getById(counsellorId);
+        // Try to get from full list first as it's more reliable given backend 500s
+        const all = await API.counsellors.getAll();
+        currentCounsellor = all.find(c => String(c.counsellors_id) === String(counsellorId));
+
+        if (!currentCounsellor) {
+            // Fallback to specific endpoint
+            currentCounsellor = await API.counsellors.getById(counsellorId);
+        }
+
         if (!currentCounsellor) throw new Error("Expert not found");
         renderProfile(currentCounsellor);
     } catch (err) {
         console.error("Profile load failed:", err);
         const nameEl = document.getElementById("counsellorName");
         if (nameEl) nameEl.innerText = "Expert Not Found";
-        alert("Failed to load expert details: " + err.message);
+        // Do not alert if we have partial data or just show a small error
+        const bioEl = document.getElementById("counsellorBio");
+        if (bioEl) bioEl.innerText = "Failed to load expert details. Please try again later.";
     }
 
     function renderProfile(c) {
@@ -35,13 +45,13 @@ document.addEventListener("DOMContentLoaded", async () => {
         if (expEl) expEl.innerText = `${c.experience || '3.5'} years of experience`;
         if (langsEl) langsEl.innerText = Array.isArray(c.speaks) ? c.speaks.join(" / ") : (c.speaks || "Tamil / English");
         if (imgEl) imgEl.src = c.profile_image || "../Assets/Wireframep1.webp";
-        if (bioEl) bioEl.innerText = c.about || "Biography not available.";
+        if (bioEl) bioEl.innerText = c.about || c.biography || c.bio || "Biography details are coming soon. This expert is dedicated to helping you achieve mental wellness.";
 
         const isInPerson = c.mode && (c.mode.includes("In Person") || c.mode.includes("in person"));
         if (locEl) locEl.innerText = `📍 ${isInPerson ? "Online, In-person" : "Online"} (${c.address || "Chennai"})`;
         if (addrEl) addrEl.innerText = `📍 ${c.address || "49, Thomas Road, Chennai 603 108"}`;
 
-        const modeContainer = document.getElementById("modeButtons");
+        const modeContainer = document.getElementById("idModeButtons");
         if (modeContainer) {
             const modes = Array.isArray(c.mode) ? c.mode : ["Online", "In Person"];
             modeContainer.innerHTML = modes.map((m, idx) => `
