@@ -14,12 +14,18 @@ async function request(endpoint, options = {}) {
     if (options.skipAuth) {
         console.log(`[API] Fetching (skipAuth): ${url}`);
         try {
-            const response = await fetch(url, {
+            const fetchConfig = {
                 method: options.method || 'GET'
-            });
+            };
+            if (options.body) {
+                fetchConfig.body = options.body;
+                fetchConfig.headers = { "Content-Type": "application/json" };
+            }
+            const response = await fetch(url, fetchConfig);
             const data = await response.json();
             if (!response.ok) {
-                throw new Error(data.detail || `HTTP error! status: ${response.status}`);
+                const msg = typeof data.detail === 'string' ? data.detail : JSON.stringify(data.detail);
+                throw new Error(msg || `HTTP error! status: ${response.status}`);
             }
             return data;
         } catch (error) {
@@ -68,7 +74,8 @@ async function request(endpoint, options = {}) {
         const data = await response.json();
 
         if (!response.ok) {
-            throw new Error(data.detail || `HTTP error! status: ${response.status}`);
+            const msg = typeof data.detail === 'string' ? data.detail : JSON.stringify(data.detail);
+            throw new Error(msg || `HTTP error! status: ${response.status}`);
         }
 
         return data;
