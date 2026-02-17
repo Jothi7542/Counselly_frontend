@@ -44,95 +44,94 @@
                 <a href="./Counsellor.html" class="back-btn">← Back to experts</a>
             </div>
         </div>
-    </div>
 
-    <div class="right-box">
-        <h2 class="heading">Book Your Session</h2>
+        <div class="right-box">
+            <h2 class="heading">Book Your Session</h2>
 
-        <div class="sub-title">Counselling Mode</div>
-        <div class="mode-buttons" id="modeButtons">
-            <button class="mode active">In Person</button>
-            <button class="mode">Online</button>
-        </div>
-
-        <div class="sub-title">Select Date</div>
-        <input type="date" id="datePicker" />
-
-        <div class="sub-title">Time of Day</div>
-        <select id="sessionPeriod">
-            <option value="">Select Period</option>
-            <option value="morning">Morning</option>
-            <option value="afternoon">Afternoon</option>
-            <option value="evening">Evening</option>
-        </select>
-
-        <div id="timeSlots" class="time-row"></div>
-
-        <div class="location-box">
-            <p id="displayAddress">📍 49, Thomas Road, Chennai 603 108</p>
-        </div>
-
-        <button class="book-btn" onclick="handleBooking()">Reserve Slot</button>
-    </div>
-    </div>
-
-    <!-- Core JS -->
-    <script src="../JS/auth-manager.js"></script>
-    <script src="../JS/api-client.js"></script>
-    <script src="../JS/common.js"></script>
-    <script src="../JS/booking-manager.js"></script>
-
-    <!-- API Definitions -->
-    <script src="../JS/counsellor-api.js"></script>
-    <script src="../JS/availability-api.js"></script>
-
-    <!-- Page Logic -->
-    <script src="../JS/counsellor-profile.js"></script>
-    <footer class="footer">
-        <div class="footer-container">
-            <div class="footer-logo">
-                <img src="../Assets/Project_logo.png" alt="Counselly Logo">
-                <h2 class="brand">Counselly</h2>
-                <p>Your safe space for mental wellness. Connect with certified experts from the comfort of your home.
-                </p>
+            <div class="sub-title">Counselling Mode</div>
+            <div class="mode-buttons" id="modeButtons">
+                <button class="mode active">In Person</button>
+                <button class="mode">Online</button>
             </div>
-            <div class="footer-links">
-                <div class="footer-column">
-                    <h3>Services</h3>
-                    <ul>
-                        <li><a href="./Counsellor.html">Individual Therapy</a></li>
-                        <li><a href="./Counsellor.html">Couples Counselling</a></li>
-                        <li><a href="./Counsellor.html">Teen Support</a></li>
-                        <li><a href="./Counsellor.html">Anxiety & Depression</a></li>
-                    </ul>
+
+            <div class="sub-title">Select Date</div>
+            <input type="date" id="datePicker" />
+
+            <div class="sub-title">Time of Day</div>
+            <select id="sessionPeriod">
+                <option value="">Select Period</option>
+                <option value="morning">Morning</option>
+                <option value="afternoon">Afternoon</option>
+                <option value="evening">Evening</option>
+            </select>
+
+            <div id="timeSlots" class="time-row"></div>
+
+            <div class="location-box">
+                <p id="displayAddress">📍 49, Thomas Road, Chennai 603 108</p>
+            </div>
+
+            <button class="book-btn" onclick="handleBooking()">Reserve Slot</button>
+        </div>
+
+        <!-- Core JS -->
+        <script src="../JS/auth-manager.js"></script>
+        <script src="../JS/api-client.js"></script>
+        <script src="../JS/common.js"></script>
+        <script src="../JS/booking-manager.js"></script>
+
+        <!-- API Definitions -->
+        <script src="../JS/counsellor-api.js"></script>
+        <script src="../JS/availability-api.js"></script>
+
+        <!-- Page Logic -->
+        <script src="../JS/counsellor-profile.js"></script>
+        <footer class="footer">
+            <div class="footer-container">
+                <div class="footer-logo">
+                    <img src="../Assets/Project_logo.png" alt="Counselly Logo">
+                    <h2 class="brand">Counselly</h2>
+                    <p>Your safe space for mental wellness. Connect with certified experts from the comfort of your
+                        home.
+                    </p>
                 </div>
-                <div class="footer-column">
-                    <h3>Company</h3>
-                    <ul>
-                        <li><a href="./About.html">About Us</a></li>
-                        <li><a href="./Blog.html">Success Stories</a></li>
-                        <li><a href="./Blog.html">Wellness Blog</a></li>
-                        <li><a href="./Contact.html">Contact Us</a></li>
-                    </ul>
-                </div>
-                <div class="footer-column">
-                    <h3>Legal</h3>
-                    <ul>
-                        <li><a href="Privacy.html">Privacy Policy</a></li>
-                        <li><a href="Terms.html">Terms of Service</a></li>
-                        <li><a href="Cookies.html">Cookie Policy</a></li>
-                    </ul>
+                <div class="footer-links">
+                    <div class="footer-column">
+                        <h3>Services</h3>
+                        <ul>
+                            <li><a href="./Counsellor.html">Individual Therapy</a></li>
+                            <li><a href="./Counsellor.html">Couples Counselling</a></li>
+                            <li><a href="./Counsellor.html">Teen Support</a></li>
+                            <li><a href="./Counsellor.html">Anxiety & Depression</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-column">
+                        <h3>Company</h3>
+                        <ul>
+                            <li><a href="./About.html">About Us</a></li>
+                            <li><a href="./Blog.html">Success Stories</a></li>
+                            <li><a href="./Blog.html">Wellness Blog</a></li>
+                            <li><a href="./Contact.html">Contact Us</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-column">
+                        <h3>Legal</h3>
+                        <ul>
+                            <li><a href="Privacy.html">Privacy Policy</a></li>
+                            <li><a href="Terms.html">Terms of Service</a></li>
+                            <li><a href="Cookies.html">Cookie Policy</a></li>
+                        </ul>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="footer-bottom">
-            <div class="footer-bottom-links">
-                <a href="#">FAQs</a>
-                <a href="#">Support</a>
+            <div class="footer-bottom">
+                <div class="footer-bottom-links">
+                    <a href="#">FAQs</a>
+                    <a href="#">Support</a>
+                </div>
+                <p>Copyright © 2025 COUNSELLY INDIA PRIVATE LIMITED. All Rights Reserved</p>
             </div>
-            <p>Copyright © 2025 COUNSELLY INDIA PRIVATE LIMITED. All Rights Reserved</p>
-        </div>
-    </footer>
+        </footer>
 </body>
 
 </html>

@@ -148,4 +148,3 @@ document.addEventListener("DOMContentLoaded", async () => {
         window.location.href = `./Theraphy_p.html`;
     };
 });
-```
