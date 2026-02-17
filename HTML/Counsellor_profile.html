@@ -28,30 +28,21 @@
     <div class="container">
         <div class="left-box">
             <div class="profile-header">
-                <div class="rating-badge" style="margin-top: 10px; display: flex; align-items: center; gap: 8px;">
-                    <span id="counsellorStars" style="color: #FFD700; font-size: 1.2rem;"></span>
-                    <span id="counsellorRatingVal" style="font-weight: 600;">--</span>
-                    <span id="counsellorReviewsCount" style="color: var(--text-muted); font-size: 0.9rem;">(--
-                        reviews)</span>
+                <div>
+                    <h2 id="counsellorName">Loading...</h2>
+                    <p class="exp" id="counsellorExp">-- years of experience</p>
+                    <p><strong>Speaks</strong> &nbsp; <span id="counsellorLangs">...</span></p>
+                    <p id="counsellorDisplayLocation">📍 Loading...</p>
                 </div>
+                <img src="../Assets/Wireframep1.webp" class="profile-img" alt="profile" id="counsellorImage">
             </div>
-            <img src="../Assets/Wireframep1.webp" class="profile-img" alt="profile" id="counsellorImage">
-        </div>
-        <div class="bio-section">
-            <h3>Biography</h3>
-            <p id="counsellorBio">
-                Loading biography...
-            </p>
-        </div>
-
-        <div class="reviews-section" style="margin-top: 40px; padding-top: 30px; border-top: 1px solid #eee;">
-            <h3>Client Reviews</h3>
-            <div id="reviewsList">
-                <!-- Dynamic reviews -->
-                <p style="color: var(--text-muted);">Loading reviews...</p>
+            <div class="bio-section">
+                <h3>Biography</h3>
+                <p id="counsellorBio">
+                    Loading biography...
+                </p>
+                <a href="./Counsellor.html" class="back-btn">← Back to experts</a>
             </div>
-            <a href="./Counsellor.html" class="back-btn" style="margin-top: 30px; display: inline-block;">← Back to
-                experts</a>
         </div>
     </div>
 

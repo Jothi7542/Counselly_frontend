@@ -37,19 +37,9 @@ document.addEventListener("DOMContentLoaded", async () => {
         if (imgEl) imgEl.src = c.profile_image || "../Assets/Wireframep1.webp";
         if (bioEl) bioEl.innerText = c.about || "Biography not available.";
 
-        // Rating injection
-        const starsEl = document.getElementById("counsellorStars");
-        const ratingValEl = document.getElementById("counsellorRatingVal");
-        const countEl = document.getElementById("counsellorReviewsCount");
-        if (starsEl) starsEl.innerText = '★'.repeat(Math.round(c.rating || 0)) + '☆'.repeat(5 - Math.round(c.rating || 0));
-        if (ratingValEl) ratingValEl.innerText = c.rating || "0.0";
-        if (countEl) countEl.innerText = `(${c.reviews_count || 0} reviews)`;
-
         const isInPerson = c.mode && (c.mode.includes("In Person") || c.mode.includes("in person"));
         if (locEl) locEl.innerText = `📍 ${isInPerson ? "Online, In-person" : "Online"} (${c.address || "Chennai"})`;
         if (addrEl) addrEl.innerText = `📍 ${c.address || "49, Thomas Road, Chennai 603 108"}`;
-
-        renderReviews(c);
 
         const modeContainer = document.getElementById("modeButtons");
         if (modeContainer) {
@@ -157,26 +147,5 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         window.location.href = `./Theraphy_p.html`;
     };
-
-    function renderReviews(c) {
-        const container = document.getElementById("reviewsList");
-        if (!container) return;
-
-        const mockReviews = [
-            { name: "Sathish K.", rating: 5, date: "2 days ago", text: "Excellent listener. Helped me navigate through my anxiety issues with practical steps. Highly recommend!" },
-            { name: "Priya R.", rating: 4, date: "1 week ago", text: "Very professional and empathetic. The session felt very safe and non-judgmental." },
-            { name: "Anish M.", rating: 5, date: "2 weeks ago", text: "The best experience I've had with a psychologist so far. Extremely insightful." }
-        ];
-
-        container.innerHTML = mockReviews.map(r => `
-            <div class="review-item" style="margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid #f8fafc;">
-                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 5px;">
-                    <strong style="color: var(--text-main);">${r.name}</strong>
-                    <span style="color: #64748b; font-size: 0.8rem;">${r.date}</span>
-                </div>
-                <div style="color: #FFD700; font-size: 0.9rem; margin-bottom: 8px;">${'★'.repeat(r.rating)}${'☆'.repeat(5 - r.rating)}</div>
-                <p style="color: #475569; font-size: 0.95rem; line-height: 1.5; margin: 0;">${r.text}</p>
-            </div>
-        `).join('');
-    }
 });
+```
