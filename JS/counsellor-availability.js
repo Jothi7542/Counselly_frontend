@@ -51,7 +51,14 @@ async function loadFullSchedule() {
             });
         }
 
-        const results = await Promise.all(datePromises.map(dp => dp.promise.catch(e => ({ morning: [], afternoon: [], evening: [] }))));
+        const results = await Promise.all(datePromises.map(dp => {
+            return dp.promise.catch(e => {
+                console.error(`Error fetching slots for ${dp.dateStr}:`, e);
+                return { morning: [], afternoon: [], evening: [] };
+            });
+        }));
+
+        console.log("[Availability] 7-day results:", results);
 
         results.forEach((slots, index) => {
             const dp = datePromises[index];
@@ -60,14 +67,14 @@ async function loadFullSchedule() {
 
             const periods = ['morning', 'afternoon', 'evening'];
             periods.forEach(p => {
-                if (slots[p] && slots[p].length > 0) {
+                if (slots && slots[p] && Array.isArray(slots[p]) && slots[p].length > 0) {
                     hasSlotsForDate = true;
                     hasAnySlots = true;
                     slots[p].forEach(s => {
                         dateHtml += `
                             <div style="background: #f8fafc; padding: 8px 12px; border-radius: 8px; border: 1px solid #e2e8f0; font-size: 0.9rem; display: flex; align-items: center; gap: 8px;">
                                 <span style="background: #64748b; color: white; padding: 2px 6px; border-radius: 4px; font-size: 0.75rem; text-transform: uppercase;">${p}</span>
-                                <span>${s.time}</span>
+                                <span>${s.time || s.time_slot}</span>
                             </div>
                         `;
                     });
@@ -90,13 +97,13 @@ async function loadFullSchedule() {
         });
 
         if (!hasAnySlots) {
-            container.innerHTML = "<p style='color: var(--text-muted);'>You have no slots scheduled for the next 7 days.</p>";
+            container.innerHTML = "<p style='color: var(--text-muted);'>No availability slots found for the next 7 days. Use the form above to add some!</p>";
         } else {
             container.innerHTML = fullHtml;
         }
     } catch (err) {
-        console.error("Failed to fetch schedule:", err);
-        container.innerHTML = "<p style='color: var(--text-muted);'>Error loading schedule. Please try again.</p>";
+        console.error("Critical failure in loadFullSchedule:", err);
+        container.innerHTML = `<p style='color: var(--text-muted);'>Error loading schedule: ${err.message}. Please refresh the page.</p>`;
     }
 }
 
