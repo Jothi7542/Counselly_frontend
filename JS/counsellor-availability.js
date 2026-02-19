@@ -17,55 +17,86 @@ document.addEventListener("DOMContentLoaded", () => {
         // Set default to today
         const today = new Date().toISOString().split('T')[0];
         dateInput.value = today;
-        loadCurrentSchedule(today);
+        loadFullSchedule();
 
         dateInput.addEventListener("change", (e) => {
-            loadCurrentSchedule(e.target.value);
+            loadFullSchedule();
         });
     }
 });
 
-async function loadCurrentSchedule(date) {
+async function loadFullSchedule() {
     const user = UserManager.get();
-    const container = document.getElementById("scheduledSlotsList");
+    const container = document.getElementById("fullScheduleList");
     if (!container || !user) return;
 
-    container.innerHTML = "<p>Loading your schedule...</p>";
+    container.innerHTML = "<p>Fetching your 7-day schedule...</p>";
 
     try {
-        const slots = await API.availability.getFreeSlots(user.counsellors_id, date);
+        const today = new Date();
+        let fullHtml = "";
+        let hasAnySlots = false;
 
-        // slots is expected to be an object: { morning: [], afternoon: [], evening: [] }
-        let html = "";
-        let hasSlots = false;
+        // Fetch next 7 days in parallel for speed
+        const datePromises = [];
+        for (let i = 0; i < 7; i++) {
+            const d = new Date(today);
+            d.setDate(today.getDate() + i);
+            const dateStr = d.toISOString().split('T')[0];
+            const displayDate = d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+            datePromises.push({
+                dateStr,
+                displayDate,
+                promise: API.availability.getFreeSlots(user.counsellors_id, dateStr)
+            });
+        }
 
-        const periods = ['morning', 'afternoon', 'evening'];
-        periods.forEach(p => {
-            if (slots[p] && slots[p].length > 0) {
-                hasSlots = true;
-                html += `
-                    <div style="grid-column: 1/-1; margin-top: 10px;">
-                        <strong style="text-transform: capitalize; color: var(--primary);">${p}:</strong>
+        const results = await Promise.all(datePromises.map(dp => dp.promise.catch(e => ({ morning: [], afternoon: [], evening: [] }))));
+
+        results.forEach((slots, index) => {
+            const dp = datePromises[index];
+            let dateHtml = "";
+            let hasSlotsForDate = false;
+
+            const periods = ['morning', 'afternoon', 'evening'];
+            periods.forEach(p => {
+                if (slots[p] && slots[p].length > 0) {
+                    hasSlotsForDate = true;
+                    hasAnySlots = true;
+                    slots[p].forEach(s => {
+                        dateHtml += `
+                            <div style="background: #f8fafc; padding: 8px 12px; border-radius: 8px; border: 1px solid #e2e8f0; font-size: 0.9rem; display: flex; align-items: center; gap: 8px;">
+                                <span style="background: #64748b; color: white; padding: 2px 6px; border-radius: 4px; font-size: 0.75rem; text-transform: uppercase;">${p}</span>
+                                <span>${s.time}</span>
+                            </div>
+                        `;
+                    });
+                }
+            });
+
+            if (hasSlotsForDate) {
+                fullHtml += `
+                    <div style="padding-bottom: 15px; border-bottom: 1px solid #f1f5f9; margin-bottom: 15px;">
+                        <h4 style="margin-bottom: 10px; color: var(--primary); display: flex; align-items: center; gap: 10px;">
+                            <span style="font-size: 1.1rem;">📅 ${dp.displayDate}</span>
+                            ${dp.dateStr === today.toISOString().split('T')[0] ? '<span style="color: #6366f1; font-size: 0.8rem;">(Today)</span>' : ''}
+                        </h4>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 10px;">
+                            ${dateHtml}
+                        </div>
                     </div>
                 `;
-                slots[p].forEach(s => {
-                    html += `
-                        <div style="background: #f8fafc; padding: 10px; border-radius: 8px; border: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center;">
-                            <span>${s.time}</span>
-                        </div>
-                    `;
-                });
             }
         });
 
-        if (!hasSlots) {
-            container.innerHTML = "<p style='color: var(--text-muted);'>No slots scheduled for this date.</p>";
+        if (!hasAnySlots) {
+            container.innerHTML = "<p style='color: var(--text-muted);'>You have no slots scheduled for the next 7 days.</p>";
         } else {
-            container.innerHTML = html;
+            container.innerHTML = fullHtml;
         }
     } catch (err) {
-        console.error("Failed to fetch slots:", err);
-        container.innerHTML = "<p style='color: var(--text-muted);'>No slots scheduled for this date.</p>";
+        console.error("Failed to fetch schedule:", err);
+        container.innerHTML = "<p style='color: var(--text-muted);'>Error loading schedule. Please try again.</p>";
     }
 }
 
@@ -139,8 +170,8 @@ async function handleAvailability(event) {
         alert("Availability added successfully");
         document.getElementById("availabilityForm").reset();
 
-        // Refresh the list for the same date
-        if (dateStr) loadCurrentSchedule(dateStr);
+        // Refresh the list
+        loadFullSchedule();
     } catch (err) {
         console.error(err);
         alert("Success! Availability has been updated in the system.");
