@@ -30,6 +30,7 @@
     <div class="role-select">
       <button id="btnClient" class="active" onclick="handleRoleSwitch('client')">Client</button>
       <button id="btnCounsellor" onclick="handleRoleSwitch('counsellor')">Counsellor</button>
+      <button id="btnAdmin" onclick="handleRoleSwitch('admin')">Admin</button>
     </div>
 
     <!-- Client Login -->
@@ -41,15 +42,26 @@
       <p onclick="showClientSignup()">Don't have an account? <span
           style="cursor: pointer; color: var(--primary);">Create one</span></p>
     </form>
-
-    <!-- Counsellor Login -->
-    <form id="counsellorLogin" class="form-box hidden">
-      <h2>Counsellor Login</h2>
-      <input id="c_email" type="email" placeholder="Professional Email" required>
-      <input id="c_password" type="password" placeholder="Password" required>
-      <button type="submit">Sign In</button>
-      <p onclick="showCounsellorSignup()">Want to join our team? <span
+    +
+    + <!-- Counsellor Login -->
+    + <form id="counsellorLogin" class="form-box hidden">
+      + <h2>Counsellor Login</h2>
+      + <input id="c_email" type="email" placeholder="Professional Email" required>
+      + <input id="c_password" type="password" placeholder="Password" required>
+      + <button type="submit">Sign In</button>
+      + <p onclick="showCounsellorSignup()">Want to join our team? <span +
           style="cursor: pointer; color: var(--primary);">Apply here</span></p>
+      + </form>
+
+
+    <!-- Admin Login -->
+    <form id="adminLogin" class="form-box hidden">
+      <h2>Admin Login</h2>
+      <input id="a_email" type="email" placeholder="Admin Email" required>
+      <input id="a_password" type="password" placeholder="Password" required>
+      <button type="submit">Sign In as Admin</button>
+      <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 10px;">Restricted access. Dedicated to
+        Counselly staff.</p>
     </form>
 
     <!-- Client Signup -->

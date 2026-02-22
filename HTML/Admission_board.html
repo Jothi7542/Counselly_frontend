@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Admission Board | Counselly Admin</title>
+    <link rel="stylesheet" href="../CSS/navbar.css">
+    <link rel="stylesheet" href="../CSS/CD.css">
+    <style>
+        .admission-list {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: var(--shadow-md);
+            margin-top: 30px;
+        }
+
+        .counsellor-row {
+            display: grid;
+            grid-template-columns: 80px 1fr 150px 200px;
+            align-items: center;
+            padding: 20px;
+            border-bottom: 1px solid #f1f5f9;
+            gap: 20px;
+        }
+
+        .counsellor-row img {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .status-pill {
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .status-pending {
+            background: #fffbeb;
+            color: #92400e;
+        }
+
+        .status-active {
+            background: #f0fdf4;
+            color: #166534;
+        }
+
+        .action-btns {
+            display: flex;
+            gap: 10px;
+        }
+
+        .action-btn {
+            padding: 8px 16px;
+            border-radius: 8px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: var(--transition);
+        }
+
+        .btn-approve {
+            background: #16a34a;
+            color: white;
+        }
+
+        .btn-reject {
+            background: #dc2626;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="navbar">
+        <div class="logo">
+            <img src="../Assets/Project_logo.png" alt="Counselly Logo">
+            <h1>Counselly <span style="font-weight: 300; font-size: 0.9rem; opacity: 0.8;">Admin</span></h1>
+        </div>
+        <ul class="nav-links">
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="#">Security</a></li>
+            <li><a href="#">Logs</a></li>
+        </ul>
+        <div class="nav-buttons" id="navButtons">
+            <button class="login-btn" onclick="API.auth.logout()">Logout</button>
+        </div>
+    </nav>
+
+    <!-- Core JS -->
+    <script src="../JS/auth-manager.js"></script>
+    <script src="../JS/api-client.js"></script>
+    <script src="../JS/common.js"></script>
+
+    <!-- API Definitions -->
+    <script src="../JS/auth-api.js"></script>
+    <script src="../JS/counsellor-api.js"></script>
+
+    <aside class="counselly-sidenav">
+        <div class="counselly-brand">
+            <div
+                style="width: 50px; height: 50px; border-radius: 50%; background: var(--primary); display: flex; align-items: center; justify-content: center; color: white; font-weight: 800; font-size: 1.2rem;">
+                A</div>
+            <div class="counselly-brand-text">
+                <h2>Admin Panel</h2>
+                <p>Counselly Management</p>
+            </div>
+        </div>
+        <nav class="counselly-nav">
+            <a href="./Admission_board.html" class="counselly-link active">ADMISSION BOARD</a>
+            <a href="#" class="counselly-link">ANALYTICS</a>
+            <a href="#" class="counselly-link">BROADCAST</a>
+        </nav>
+    </aside>
+
+    <div class="dashboard-container">
+        <div class="welcome-box">
+            <h2>Expert Onboarding & Verification Board</h2>
+            <p style="color: var(--text-muted);">Review new counsellor applications and verify their credentials before
+                they can start taking sessions.</p>
+        </div>
+
+        <div class="stats" style="margin-bottom: 30px;">
+            <div class="stat-box">
+                <h3>Pending Apps</h3>
+                <p id="pendingCount">0</p>
+            </div>
+            <div class="stat-box">
+                <h3>Verified Experts</h3>
+                <p id="verifiedCount">0</p>
+            </div>
+            <div class="stat-box">
+                <h3>System Health</h3>
+                <p style="color: #10b981;">Optimal</p>
+            </div>
+        </div>
+
+        <div class="admission-list">
+            <h3 style="margin-bottom: 20px; color: var(--primary);">Experts Queue</h3>
+            <div id="expertsQueue">
+                <!-- Dynamically loaded -->
+                <p style="color: var(--text-muted); padding: 20px;">Fetching applications...</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="../JS/admin-dashboard.js"></script>
+</body>
+
+</html>

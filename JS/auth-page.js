@@ -31,14 +31,20 @@ function showCounsellorSignup() {
 function handleRoleSwitch(role) {
     const btnClient = document.getElementById('btnClient');
     const btnCounsellor = document.getElementById('btnCounsellor');
+    const btnAdmin = document.getElementById('btnAdmin');
 
     if (btnClient) btnClient.classList.toggle('active', role === 'client');
     if (btnCounsellor) btnCounsellor.classList.toggle('active', role === 'counsellor');
+    if (btnAdmin) btnAdmin.classList.toggle('active', role === 'admin');
 
     if (role === 'client') {
         showClientLogin();
-    } else {
+    } else if (role === 'counsellor') {
         showCounsellorLogin();
+    } else {
+        hideAll();
+        document.getElementById("mainTitle").innerText = "Admin Login";
+        document.getElementById("adminLogin").classList.remove("hidden");
     }
 }
 
@@ -134,6 +140,33 @@ document.addEventListener("DOMContentLoaded", () => {
             window.location.href = "./Counsellor_dashboard.html";
         } catch (error) {
             alert(error.message || "Invalid email or password");
+        }
+    });
+
+    // Admin Login
+    document.getElementById("adminLogin")?.addEventListener("submit", async function (e) {
+        e.preventDefault();
+        const email = document.getElementById("a_email").value;
+        const password = document.getElementById("a_password").value;
+
+        try {
+            const btn = this.querySelector('button');
+            btn.disabled = true;
+            btn.innerText = "Verifying...";
+
+            const response = await API.auth.adminLogin(email, password);
+            TokenManager.set(response.access_token);
+            UserManager.set(response.user);
+            alert("Admin Access Granted");
+            window.location.href = "./Admission_board.html";
+        } catch (error) {
+            alert(error.message || "Admin authentication failed");
+        } finally {
+            const btn = this.querySelector('button');
+            if (btn) {
+                btn.disabled = false;
+                btn.innerText = "Sign In as Admin";
+            }
         }
     });
 });

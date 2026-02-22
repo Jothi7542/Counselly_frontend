@@ -30,6 +30,23 @@ window.API.auth = {
             skipAuth: true,
         }),
 
+    adminSignup: (data) =>
+        request("/admins/signup", {
+            method: "POST",
+            body: JSON.stringify(data),
+            skipAuth: true,
+        }),
+
+    adminLogin: (email, password) =>
+        request("/admins/login", {
+            method: "POST",
+            body: JSON.stringify({ email, password }),
+            skipAuth: true,
+        }),
+
+    getReviewQueue: () =>
+        request("/admins/review-queue"),
+
     logout: () => {
         if (typeof TokenManager !== 'undefined') TokenManager.remove();
         if (typeof UserManager !== 'undefined') UserManager.remove();
