@@ -108,7 +108,7 @@ document.addEventListener("DOMContentLoaded", async () => {
                 document.querySelectorAll(".time-slot").forEach(b => b.classList.remove("active"));
                 btn.classList.add("active");
                 localStorage.setItem("selected_time", slot.time);
-                localStorage.setItem("selected_slot_id", slot.id);
+                localStorage.setItem("selected_slot_id", slot.availability_id);
             };
             container.appendChild(btn);
         });

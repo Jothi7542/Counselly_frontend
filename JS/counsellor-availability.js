@@ -180,9 +180,8 @@ async function handleAvailability(event) {
         // Refresh the list
         loadFullSchedule();
     } catch (err) {
-        console.error(err);
-        alert("Success! Availability has been updated in the system.");
-        document.getElementById("availabilityForm").reset();
+        console.error("[Availability] Save failed:", err);
+        alert("Failed to save availability: " + (err.message || "Unknown error"));
     } finally {
         if (btn) {
             btn.disabled = false;
