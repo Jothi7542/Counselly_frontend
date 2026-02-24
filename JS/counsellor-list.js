@@ -70,6 +70,12 @@ document.addEventListener("DOMContentLoaded", async () => {
             </div>
 
             <p class="experience">${c.experience || '3.5'} years of experience</p>
+            
+            <p class="heading">About</p>
+            <p class="text bio-text" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; font-size: 0.85rem; color: var(--text-muted); line-height: 1.4; margin-bottom: 10px;">
+                ${c.about || "Dedicated psychologist providing compassionate mental health support."}
+            </p>
+
             <p class="heading">Speaks</p>
             <p class="text">${Array.isArray(c.speaks) ? c.speaks.join(", ") : (c.speaks || "English, Tamil")}</p>
             <p class="heading">Expertise</p>

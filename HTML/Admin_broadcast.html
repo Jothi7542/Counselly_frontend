@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Global Broadcast | Counselly Admin</title>
+    <link rel="stylesheet" href="../CSS/navbar.css">
+    <link rel="stylesheet" href="../CSS/CD.css">
+    <style>
+        .broadcast-container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: var(--shadow-md);
+            margin-top: 30px;
+            max-width: 800px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border-radius: 10px;
+            border: 1px solid #e2e8f0;
+            font-family: inherit;
+        }
+
+        .form-group textarea {
+            height: 150px;
+            resize: vertical;
+        }
+
+        .broadcast-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .broadcast-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .preview-box {
+            margin-top: 30px;
+            padding: 20px;
+            border-radius: 10px;
+            background: #f1f5f9;
+            border-left: 5px solid var(--primary);
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="navbar">
+        <div class="logo">
+            <img src="../Assets/Project_logo.png" alt="Counselly Logo">
+            <h1>Counselly <span style="font-weight: 300; font-size: 0.9rem; opacity: 0.8;">Admin</span></h1>
+        </div>
+        <ul class="nav-links">
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="#">Security</a></li>
+            <li><a href="#">Logs</a></li>
+        </ul>
+        <div class="nav-buttons" id="navButtons">
+            <button class="login-btn" onclick="API.auth.logout()">Logout</button>
+        </div>
+    </nav>
+
+    <!-- Core JS -->
+    <script src="../JS/auth-manager.js"></script>
+    <script src="../JS/api-client.js"></script>
+    <script src="../JS/common.js"></script>
+
+    <aside class="counselly-sidenav">
+        <div class="counselly-brand">
+            <div
+                style="width: 50px; height: 50px; border-radius: 50%; background: var(--primary); display: flex; align-items: center; justify-content: center; color: white; font-weight: 800; font-size: 1.2rem;">
+                A</div>
+            <div class="counselly-brand-text">
+                <h2>Admin Panel</h2>
+                <p>Counselly Management</p>
+            </div>
+        </div>
+        <nav class="counselly-nav">
+            <a href="./Admission_board.html" class="counselly-link">ADMISSION BOARD</a>
+            <a href="./Admin_analytics.html" class="counselly-link">ANALYTICS</a>
+            <a href="./Admin_broadcast.html" class="counselly-link active">BROADCAST</a>
+        </nav>
+    </aside>
+
+    <div class="dashboard-container">
+        <div class="welcome-box">
+            <h2>Global Announcement Tool</h2>
+            <p style="color: var(--text-muted);">Send important updates, maintenance alerts, or success stories to all
+                platform users.</p>
+        </div>
+
+        <div class="broadcast-container">
+            <form id="broadcastForm">
+                <div class="form-group">
+                    <label>Broadcast Title</label>
+                    <input type="text" id="title" placeholder="e.g., Scheduled Maintenance" required>
+                </div>
+                <div class="form-group">
+                    <label>Target Audience</label>
+                    <select id="target">
+                        <option value="all">All Users (Clients & Experts)</option>
+                        <option value="clients">Clients Only</option>
+                        <option value="counsellors">Experts Only</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Message Type</label>
+                    <select id="type">
+                        <option value="info">Information</option>
+                        <option value="alert">Alert / Warning</option>
+                        <option value="success">Success Story</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Message Content</label>
+                    <textarea id="message" placeholder="Type your announcement here..." required></textarea>
+                </div>
+
+                <button type="submit" class="broadcast-btn">Dispatch Broadcast</button>
+            </form>
+
+            <div class="preview-box" id="previewBox" style="display: none;">
+                <h4 id="previewTitle">Preview Title</h4>
+                <p id="previewContent" style="margin-top: 10px; font-size: 0.9rem;"></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- API & Logic -->
+    <script src="../JS/auth-api.js"></script>
+    <script src="../JS/admin-broadcast.js"></script>
+</body>
+
+</html>
