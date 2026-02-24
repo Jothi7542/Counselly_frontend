@@ -5,11 +5,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (user && navButtons) {
         // Initialize Navbar
-        const dashboardUrl = user.role === 'client' ? './User_dashboard.html' : './Counsellor_dashboard.html';
-
         // Adjust paths if on root or in HTML subdir
         const isSubdir = window.location.pathname.includes('/HTML/');
-        const baseDir = isSubdir ? '.' : './HTML';
+
+        let dashboardPage = 'User_dashboard.html';
+        if (user.role === 'counsellor') dashboardPage = 'Counsellor_dashboard.html';
+        else if (user.role === 'admin') dashboardPage = 'Admission_board.html';
+
+        const dashboardUrl = isSubdir ? `./${dashboardPage}` : `./HTML/${dashboardPage}`;
         const logoutPath = isSubdir ? '../index.html' : './index.html';
 
         navButtons.innerHTML = `
