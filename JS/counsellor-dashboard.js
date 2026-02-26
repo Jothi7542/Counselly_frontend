@@ -19,6 +19,43 @@ document.addEventListener("DOMContentLoaded", () => {
     // Load Data
     loadDashboardStats(counsellor.counsellors_id);
     loadRequests(counsellor.counsellors_id);
+    loadReviews(counsellor.counsellors_id);
+
+    async function loadReviews(id) {
+        try {
+            const reviews = await API.reviews.getByCounsellor(id);
+            const container = document.getElementById("feedbackList");
+            if (!container) return;
+
+            if (!reviews || reviews.length === 0) {
+                container.innerHTML = '<p style="text-align:center; padding: 20px; color: var(--text-muted);">No feedback received yet.</p>';
+                return;
+            }
+
+            container.innerHTML = "";
+            reviews.slice(0, 5).forEach(r => {
+                const div = document.createElement("div");
+                div.className = "feedback-item";
+                div.style = "padding: 15px; border-bottom: 1px solid #eee; margin-bottom: 10px;";
+
+                const stars = '★'.repeat(r.rating) + '☆'.repeat(5 - r.rating);
+
+                div.innerHTML = `
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;">
+                        <span style="font-weight: 600; color: var(--primary);">${r.client_name || 'Anonymous Client'}</span>
+                        <span style="color: #FFD700; font-size: 1.1rem;">${stars}</span>
+                    </div>
+                    <p style="font-size: 0.9rem; color: #475569; margin: 0; line-height: 1.4;">${r.comment || 'No comment provided.'}</p>
+                    <small style="color: #94a3b8; display: block; margin-top: 5px;">${new Date(r.created_at || Date.now()).toLocaleDateString()}</small>
+                `;
+                container.appendChild(div);
+            });
+        } catch (err) {
+            console.error("Failed to load reviews:", err);
+            const container = document.getElementById("feedbackList");
+            if (container) container.innerHTML = '<p style="color: #ef4444; padding: 10px;">Failed to load feedback.</p>';
+        }
+    }
 
     async function loadDashboardStats(id) {
         try {
