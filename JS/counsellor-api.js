@@ -13,8 +13,8 @@ window.API.counsellors = {
                 ]);
                 return {
                     ...c,
-                    rating: avg.average ? parseFloat(avg.average).toFixed(1) : (4 + Math.random()).toFixed(1),
-                    reviews_count: count.count || 0
+                    rating: avg.average_rating ? parseFloat(avg.average_rating).toFixed(1) : (4 + Math.random()).toFixed(1),
+                    reviews_count: count.total_reviews || 0
                 };
             } catch (err) {
                 return {
@@ -34,8 +34,8 @@ window.API.counsellors = {
                     API.reviews.getAverageRating(id),
                     API.reviews.getCount(id)
                 ]);
-                c.rating = avg.average ? parseFloat(avg.average).toFixed(1) : (4.5).toFixed(1);
-                c.reviews_count = count.count || 0;
+                c.rating = avg.average_rating ? parseFloat(avg.average_rating).toFixed(1) : (4.5).toFixed(1);
+                c.reviews_count = count.total_reviews || 0;
             } catch (err) {
                 c.rating = (4.5).toFixed(1);
                 c.reviews_count = 12;
@@ -54,8 +54,8 @@ window.API.counsellors = {
                 ]);
                 return {
                     ...c,
-                    rating: avg.average ? parseFloat(avg.average).toFixed(1) : (4 + Math.random()).toFixed(1),
-                    reviews_count: count.count || 0
+                    rating: avg.average_rating ? parseFloat(avg.average_rating).toFixed(1) : (4 + Math.random()).toFixed(1),
+                    reviews_count: count.total_reviews || 0
                 };
             } catch (err) {
                 return {

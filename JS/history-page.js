@@ -13,19 +13,28 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     try {
-        const [history, reviews] = await Promise.all([
-            API.clients.getCompletedSessions(user.clients_id),
-            API.reviews.getAll() // We'll filter this for the client's reviews
-        ]);
+        // Step 1: Load History first - this is the priority
+        const history = await API.clients.getCompletedSessions(user.clients_id);
 
-        // Filter reviews given by this client
-        const clientReviews = reviews.filter(r => r.clients_id === user.clients_id);
-        renderHistory(history, clientReviews);
+        // Step 2: Render sessions immediately (even without reviews)
+        renderHistory(history, []);
+
+        // Step 3: Try to load reviews in the background
+        try {
+            const reviews = await API.reviews.getAll();
+            const clientReviews = Array.isArray(reviews) ? reviews.filter(r => r.clients_id === user.clients_id) : [];
+            if (clientReviews.length > 0) {
+                renderHistory(history, clientReviews); // Re-render with reviews
+            }
+        } catch (reviewErr) {
+            console.warn("Could not load reviews, but history is safe:", reviewErr);
+        }
+
     } catch (err) {
         console.error("Load history failed:", err);
         const container = document.getElementById("historyList");
         if (container) {
-            container.innerHTML = `<p style="text-align:center; padding: 20px; color: #ef4444;">Error loading history. Please try again later.</p>`;
+            container.innerHTML = `<p style="text-align:center; padding: 20px; color: #ef4444;">Error loading history. Please check if you have completed sessions.</p>`;
         }
     }
 });
@@ -33,8 +42,13 @@ document.addEventListener("DOMContentLoaded", async () => {
 function renderHistory(sessions, clientReviews = []) {
     const container = document.getElementById("historyList");
     if (!container) return;
-    container.innerHTML = sessions.length ? "" : '<p style="text-align:center; padding: 20px;">No completed sessions found.</p>';
 
+    if (!sessions || sessions.length === 0) {
+        container.innerHTML = '<p style="text-align:center; padding: 20px;">No completed sessions found. If you just finished a session, wait for the expert to mark it as completed.</p>';
+        return;
+    }
+
+    container.innerHTML = "";
     sessions.forEach(s => {
         const review = clientReviews.find(r => r.appointment_id === s.appointment_id);
 
@@ -49,13 +63,13 @@ function renderHistory(sessions, clientReviews = []) {
                 ${review ? `
                     <div class="review-display" style="margin-top: 10px; padding: 10px; background: #f8fafc; border-radius: 8px; border-left: 4px solid #FFD700;">
                         <div style="color: #FFD700; margin-bottom: 5px;">${'★'.repeat(review.rating)}${'☆'.repeat(5 - review.rating)}</div>
-                        <p style="font-size: 0.9rem; color: #475569; margin: 0;">${review.comment || 'No comment provided.'}</p>
+                        <p style="font-size: 0.9rem; color: #475569; margin: 0;">${review.comments || 'No comment provided.'}</p>
                     </div>
                 ` : ''}
             </div>
             <div class="session-actions" style="display: flex; gap: 10px; align-items: flex-end;">
                 ${review ? `
-                    <button class="delete-btn" onclick="deleteReview(${review.reviews_id})" style="background:#fee2e2; color:#ef4444; border:none; padding:10px 20px; border-radius:8px; cursor:pointer; font-weight: 600;">Delete Review</button>
+                    <button class="delete-btn" onclick="deleteReview(${review.review_id})" style="background:#fee2e2; color:#ef4444; border:none; padding:10px 20px; border-radius:8px; cursor:pointer; font-weight: 600;">Delete Review</button>
                 ` : `
                     <button class="feedback-btn" onclick="giveFeedback(${s.appointment_id}, ${s.counsellors_id})" style="background:var(--primary); color:white; border:none; padding:10px 20px; border-radius:8px; cursor:pointer;">Give Feedback</button>
                 `}
@@ -110,11 +124,10 @@ async function submitReview() {
         btn.innerText = "Submitting...";
 
         await API.reviews.create({
-            appointment_id: currentAppointmentId,
             clients_id: user.clients_id,
             counsellors_id: currentCounsellorId,
             rating: rating,
-            comment: comment
+            comments: comment // Backend uses 'comments'
         });
 
         alert("Thank you for your feedback!");

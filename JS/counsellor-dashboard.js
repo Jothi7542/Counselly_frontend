@@ -45,7 +45,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         <span style="font-weight: 600; color: var(--primary);">${r.client_name || 'Anonymous Client'}</span>
                         <span style="color: #FFD700; font-size: 1.1rem;">${stars}</span>
                     </div>
-                    <p style="font-size: 0.9rem; color: #475569; margin: 0; line-height: 1.4;">${r.comment || 'No comment provided.'}</p>
+                    <p style="font-size: 0.9rem; color: #475569; margin: 0; line-height: 1.4;">${r.comments || 'No comment provided.'}</p>
                     <small style="color: #94a3b8; display: block; margin-top: 5px;">${new Date(r.created_at || Date.now()).toLocaleDateString()}</small>
                 `;
                 container.appendChild(div);
