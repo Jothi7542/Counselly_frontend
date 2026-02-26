@@ -50,7 +50,13 @@ function renderHistory(sessions, clientReviews = []) {
 
     container.innerHTML = "";
     sessions.forEach(s => {
-        const review = clientReviews.find(r => r.appointment_id === s.appointment_id);
+        // Find review for this specific appointment
+        let review = clientReviews.find(r => r.appointment_id == s.appointment_id);
+
+        // Fallback: If no direct match by appointment_id, try matching by counsellor (for older reviews)
+        if (!review && s.counsellors_id) {
+            review = clientReviews.find(r => !r.appointment_id && r.counsellors_id == s.counsellors_id);
+        }
 
         const box = document.createElement("div");
         box.className = "session-box";
@@ -62,6 +68,7 @@ function renderHistory(sessions, clientReviews = []) {
                 <p><strong>Date:</strong> ${s.date} at ${s.time}</p>
                 ${review ? `
                     <div class="review-display" style="margin-top: 10px; padding: 10px; background: #f8fafc; border-radius: 8px; border-left: 4px solid #FFD700;">
+                        <input type="hidden" class="review-id" value="${review.review_id}">
                         <div style="color: #FFD700; margin-bottom: 5px;">${'★'.repeat(review.rating)}${'☆'.repeat(5 - review.rating)}</div>
                         <p style="font-size: 0.9rem; color: #475569; margin: 0;">${review.comments || 'No comment provided.'}</p>
                     </div>
