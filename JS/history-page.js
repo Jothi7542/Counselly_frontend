@@ -126,6 +126,7 @@ async function submitReview() {
         await API.reviews.create({
             clients_id: user.clients_id,
             counsellors_id: currentCounsellorId,
+            appointment_id: currentAppointmentId,
             rating: rating,
             comments: comment // Backend uses 'comments'
         });
