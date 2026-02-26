@@ -1,5 +1,7 @@
 // API Configuration
-const API_BASE_URL = "https://counselly-backend.vercel.app";
+const API_BASE_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+    ? "http://localhost:8000"
+    : "https://counselly-backend.vercel.app";
 
 // HTTP Request Helper
 async function request(endpoint, options = {}) {
