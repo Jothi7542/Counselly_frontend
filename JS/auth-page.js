@@ -54,14 +54,14 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("clientSignup")?.addEventListener("submit", async function (e) {
         e.preventDefault();
         const data = {
-            name: document.getElementById("cls_name").value,
-            email: document.getElementById("cls_email").value,
-            password: document.getElementById("cls_password").value,
+            name: document.getElementById("cls_name").value.trim(),
+            email: document.getElementById("cls_email").value.trim().toLowerCase(),
+            password: document.getElementById("cls_password").value.trim(),
             age: parseInt(document.getElementById("cls_age").value),
             gender: document.getElementById("cls_gender").value,
-            phone_number: document.getElementById("cls_phone").value,
+            phone_number: document.getElementById("cls_phone").value.trim(),
             language: [document.getElementById("cls_language").value],
-            address: document.getElementById("cls_address").value
+            address: document.getElementById("cls_address").value.trim()
         };
 
         try {
@@ -78,8 +78,8 @@ document.addEventListener("DOMContentLoaded", () => {
     // Client Login
     document.getElementById("clientLogin")?.addEventListener("submit", async function (e) {
         e.preventDefault();
-        const email = this.querySelector('input[type="email"]').value;
-        const password = this.querySelector('input[type="password"]').value;
+        const email = this.querySelector('input[type="email"]').value.trim().toLowerCase();
+        const password = this.querySelector('input[type="password"]').value.trim();
 
         try {
             const response = await API.auth.clientLogin(email, password);
@@ -95,18 +95,18 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("counsellorSignup")?.addEventListener("submit", async function (e) {
         e.preventDefault();
         const data = {
-            name: document.getElementById("cs_name").value,
-            email: document.getElementById("cs_email").value,
-            password: document.getElementById("cs_password").value,
+            name: document.getElementById("cs_name").value.trim(),
+            email: document.getElementById("cs_email").value.trim().toLowerCase(),
+            password: document.getElementById("cs_password").value.trim(),
             age: parseInt(document.getElementById("cs_age").value),
             gender: document.getElementById("cs_gender").value,
-            phone_number: document.getElementById("cs_phone").value,
+            phone_number: document.getElementById("cs_phone").value.trim(),
             speaks: [document.getElementById("cs_language").value],
             experience: parseInt(document.getElementById("cs_exp").value) || 0,
-            address: document.getElementById("cs_address").value,
-            specialization: document.getElementById("cs_spec").value || "Counselling Psychologist",
-            profile_image: document.getElementById("cs_image").value,
-            about: document.getElementById("cs_about").value
+            address: document.getElementById("cs_address").value.trim(),
+            specialization: document.getElementById("cs_spec").value.trim() || "Counselling Psychologist",
+            profile_image: document.getElementById("cs_image").value.trim(),
+            about: document.getElementById("cs_about").value.trim()
         };
 
         try {
@@ -130,8 +130,8 @@ document.addEventListener("DOMContentLoaded", () => {
     // Counsellor Login
     document.getElementById("counsellorLogin")?.addEventListener("submit", async function (e) {
         e.preventDefault();
-        const email = document.getElementById("c_email").value;
-        const password = document.getElementById("c_password").value;
+        const email = document.getElementById("c_email").value.trim().toLowerCase();
+        const password = document.getElementById("c_password").value.trim();
 
         try {
             const response = await API.auth.counsellorLogin(email, password);
@@ -146,8 +146,8 @@ document.addEventListener("DOMContentLoaded", () => {
     // Admin Login
     document.getElementById("adminLogin")?.addEventListener("submit", async function (e) {
         e.preventDefault();
-        const email = document.getElementById("a_email").value;
-        const password = document.getElementById("a_password").value;
+        const email = document.getElementById("a_email").value.trim().toLowerCase();
+        const password = document.getElementById("a_password").value.trim();
 
         try {
             const btn = this.querySelector('button');
