@@ -86,7 +86,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const allSessions = [...pending, ...accepted];
             const tbody = document.getElementById("requestTable");
             if (tbody) {
-                tbody.innerHTML = allSessions.length ? "" : '<tr><td colspan="6" style="text-align:center;">No active sessions or requests</td></tr>';
+                tbody.innerHTML = allSessions.length ? "" : '<tr><td colspan="7" style="text-align:center;">No active sessions or requests</td></tr>';
 
                 allSessions.forEach(s => {
                     const tr = document.createElement("tr");
@@ -96,6 +96,7 @@ document.addEventListener("DOMContentLoaded", () => {
               <td>${s.date}</td>
               <td>${s.time}</td>
               <td>${s.client_name}</td>
+              <td><a href="mailto:${s.client_email}" style="color: var(--primary); text-decoration: none;">${s.client_email}</a></td>
               <td>${s.mode}</td>
               <td><span class="status-badge status-${isPending ? 'pending' : 'completed'}">${isPending ? 'Pending' : 'Confirmed'}</span></td>
               <td>
@@ -114,7 +115,7 @@ document.addEventListener("DOMContentLoaded", () => {
             console.error("Failed to load sessions:", err);
             const tbody = document.getElementById("requestTable");
             if (tbody) {
-                tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; color: #ef4444; background: #fee2e2; padding: 20px; border-radius: 8px;">
+                tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; color: #ef4444; background: #fee2e2; padding: 20px; border-radius: 8px;">
                 <strong>Failed to load data</strong><br>
                 <small>${err.message}</small>
               </td></tr>`;

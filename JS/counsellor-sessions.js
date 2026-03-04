@@ -40,7 +40,7 @@ async function loadSessions(counsellorId) {
 function renderHistory(sessions) {
     const tbody = document.getElementById("historyTable");
     if (!tbody) return;
-    tbody.innerHTML = sessions.length ? "" : '<tr><td colspan="6" style="text-align:center;">No session history</td></tr>';
+    tbody.innerHTML = sessions.length ? "" : '<tr><td colspan="7" style="text-align:center;">No session history</td></tr>';
 
     sessions.forEach(s => {
         const tr = document.createElement("tr");
@@ -48,6 +48,7 @@ function renderHistory(sessions) {
       <td>${s.date}</td>
       <td>${s.time}</td>
       <td>${s.client_name}</td>
+      <td><a href="mailto:${s.client_email}" style="color: var(--primary); text-decoration: none;">${s.client_email}</a></td>
       <td>${s.mode}</td>
       <td><span class="status-badge status-completed">${s.status}</span></td>
       <td>${s.notes || '---'}</td>
