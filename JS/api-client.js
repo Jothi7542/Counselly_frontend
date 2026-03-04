@@ -21,7 +21,10 @@ async function request(endpoint, options = {}) {
             };
             if (options.body) {
                 fetchConfig.body = options.body;
-                fetchConfig.headers = { "Content-Type": "application/json" };
+                // If body is NOT FormData, set to JSON. If it IS FormData, let browser set boundary.
+                if (!(options.body instanceof FormData)) {
+                    fetchConfig.headers = { "Content-Type": "application/json" };
+                }
             }
             const response = await fetch(url, fetchConfig);
             const data = await response.json();

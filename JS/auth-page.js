@@ -60,7 +60,7 @@ document.addEventListener("DOMContentLoaded", () => {
             age: parseInt(document.getElementById("cls_age").value),
             gender: document.getElementById("cls_gender").value,
             phone_number: document.getElementById("cls_phone").value.trim(),
-            language: [document.getElementById("cls_language").value],
+            language: document.getElementById("cls_language").value,
             address: document.getElementById("cls_address").value.trim()
         };
 

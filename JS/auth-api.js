@@ -2,19 +2,28 @@
 window.API = window.API || {};
 
 window.API.auth = {
-    clientSignup: (data) =>
-        request("/clients/signup", {
+    clientSignup: (data) => {
+        const formData = new FormData();
+        for (const key in data) {
+            formData.append(key, data[key]);
+        }
+        return request("/clients/signup", {
             method: "POST",
-            body: JSON.stringify(data),
+            body: formData,
             skipAuth: true,
-        }),
+        });
+    },
 
-    clientLogin: (email, password) =>
-        request("/clients/login", {
+    clientLogin: (email, password) => {
+        const formData = new FormData();
+        formData.append("email", email);
+        formData.append("password", password);
+        return request("/clients/login", {
             method: "POST",
-            body: JSON.stringify({ email, password }),
+            body: formData,
             skipAuth: true,
-        }),
+        });
+    },
 
     counsellorSignup: (data) =>
         request("/counsellors/signup", {
