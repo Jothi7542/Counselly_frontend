@@ -118,20 +118,22 @@
                 <span>📍 Chennai, India</span>
             </div>
         </div>
-        <form class="contact-form">
+        <form class="contact-form" id="contactForm">
             <div class="form-group">
                 <label>Your Name</label>
-                <input type="text" placeholder="John Doe">
+                <input type="text" id="contactName" placeholder="John Doe" required>
             </div>
             <div class="form-group">
                 <label>Email Address</label>
-                <input type="email" placeholder="john@example.com">
+                <input type="email" id="contactEmail" placeholder="john@example.com" required>
             </div>
             <div class="form-group">
                 <label>Message</label>
-                <textarea rows="4" placeholder="How can we help you?"></textarea>
+                <textarea id="contactMessage" rows="4" placeholder="How can we help you?" required></textarea>
             </div>
-            <button type="submit" class="send-btn">Send Message</button>
+            <button type="submit" class="send-btn" id="submitBtn">Send Message</button>
+            <div id="formStatus"
+                style="margin-top: 20px; text-align: center; border-radius: 8px; padding: 10px; display: none;"></div>
         </form>
     </div>
 
@@ -180,6 +182,7 @@
             <p>Copyright © 2025 COUNSELLY INDIA PRIVATE LIMITED. All Rights Reserved</p>
         </div>
     </footer>
+    <script src="../JS/contact.js"></script>
 </body>
 
 </html>

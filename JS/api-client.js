@@ -89,5 +89,9 @@ async function request(endpoint, options = {}) {
 
 // Global API object to be populated by domain-specific files
 window.API = window.API || {};
+window.API.contact = {
+    submit: (data) => request('/contact/submit', { method: 'POST', body: JSON.stringify(data), skipAuth: true }),
+    getAll: () => request('/contact/all')
+};
 window.request = request;
 window.API_BASE_URL = API_BASE_URL;
