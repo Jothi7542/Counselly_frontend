@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Security Settings | Counselly Admin</title>
+    <link rel="stylesheet" href="../CSS/navbar.css">
+    <link rel="stylesheet" href="../CSS/CD.css">
+    <style>
+        .security-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .security-card {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: var(--shadow-md);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 1rem;
+        }
+
+        .btn-update {
+            background: var(--primary);
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 10px;
+            font-weight: 700;
+            cursor: pointer;
+            width: 100%;
+            transition: var(--transition);
+        }
+
+        .btn-update:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .session-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .session-info h4 {
+            margin: 0;
+            color: var(--text-dark);
+        }
+
+        .session-info p {
+            margin: 5px 0 0 0;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .status-online {
+            color: #10b981;
+            font-weight: 700;
+            font-size: 0.8rem;
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="navbar">
+        <div class="logo">
+            <img src="../Assets/Project_logo.png" alt="Counselly Logo">
+            <h1>Counselly <span style="font-weight: 300; font-size: 0.9rem; opacity: 0.8;">Admin</span></h1>
+        </div>
+        <ul class="nav-links">
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="./Admin_security.html" class="active">Security</a></li>
+            <li><a href="./Admin_logs.html">Logs</a></li>
+        </ul>
+        <div class="nav-buttons" id="navButtons">
+            <button class="login-btn" onclick="API.auth.logout()">Logout</button>
+        </div>
+    </nav>
+
+    <!-- Core JS -->
+    <script src="../JS/auth-manager.js"></script>
+    <script src="../JS/api-client.js"></script>
+    <script src="../JS/common.js"></script>
+
+    <aside class="counselly-sidenav">
+        <div class="counselly-brand">
+            <div
+                style="width: 50px; height: 50px; border-radius: 50%; background: var(--primary); display: flex; align-items: center; justify-content: center; color: white; font-weight: 800; font-size: 1.2rem;">
+                A</div>
+            <div class="counselly-brand-text">
+                <h2>Admin Panel</h2>
+                <p>Counselly Management</p>
+            </div>
+        </div>
+        <nav class="counselly-nav">
+            <a href="./Admission_board.html" class="counselly-link">ADMISSION BOARD</a>
+            <a href="./Admin_analytics.html" class="counselly-link">ANALYTICS</a>
+            <a href="./Admin_broadcast.html" class="counselly-link">BROADCAST</a>
+            <a href="./Admin_contact.html" class="counselly-link">CONTACT MESSAGES</a>
+        </nav>
+    </aside>
+
+    <div class="dashboard-container">
+        <div class="welcome-box">
+            <h2>Security & Authentication</h2>
+            <p style="color: var(--text-muted);">Manage your administrative security settings and active sessions.</p>
+        </div>
+
+        <div class="security-container">
+            <div class="security-card">
+                <h3 style="margin-bottom: 20px; color: var(--primary);">Change Password</h3>
+                <form id="passwordForm">
+                    <div class="form-group">
+                        <label>Current Password</label>
+                        <input type="password" id="currentPassword" required>
+                    </div>
+                    <div class="form-group">
+                        <label>New Password</label>
+                        <input type="password" id="newPassword" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Confirm New Password</label>
+                        <input type="password" id="confirmPassword" required>
+                    </div>
+                    <button type="submit" class="btn-update">Update Password</button>
+                </form>
+                <div id="passwordStatus"
+                    style="margin-top: 15px; text-align: center; display: none; padding: 10px; border-radius: 8px;">
+                </div>
+            </div>
+
+            <div class="security-card">
+                <h3 style="margin-bottom: 20px; color: var(--primary);">Active Sessions</h3>
+                <div id="sessionList">
+                    <div class="session-item">
+                        <div class="session-info">
+                            <h4>Windows PC - Chrome</h4>
+                            <p>Chennai, India • Current Session</p>
+                        </div>
+                        <span class="status-online">Online</span>
+                    </div>
+                    <div class="session-item">
+                        <div class="session-info">
+                            <h4>Mobile App - iOS</h4>
+                            <p>Madurai, India • 2 hours ago</p>
+                        </div>
+                        <button
+                            style="background: none; border: 1px solid #fee2e2; color: #991b1b; padding: 4px 8px; border-radius: 4px; cursor: pointer; font-size: 0.75rem;">Revoke</button>
+                    </div>
+                </div>
+
+                <div
+                    style="margin-top: 30px; padding: 20px; background: #fffbeb; border-radius: 12px; border-left: 4px solid #f59e0b;">
+                    <h4 style="color: #92400e; margin-bottom: 10px;">Security Tip</h4>
+                    <p style="font-size: 0.85rem; color: #92400e; line-height: 1.4;">Regularly update your password and
+                        monitor active sessions to ensure your administrative account remains secure.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- API & Logic -->
+    <script src="../JS/auth-api.js"></script>
+    <script src="../JS/admin-security.js"></script>
+</body>
+
+</html>

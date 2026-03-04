@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Activity Logs | Counselly Admin</title>
+    <link rel="stylesheet" href="../CSS/navbar.css">
+    <link rel="stylesheet" href="../CSS/CD.css">
+    <style>
+        .logs-container {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: var(--shadow-md);
+            margin-top: 30px;
+        }
+
+        .filter-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .log-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .log-table th {
+            text-align: left;
+            padding: 12px;
+            background: #f8fafc;
+            color: var(--text-dark);
+            font-weight: 700;
+        }
+
+        .log-table td {
+            padding: 15px 12px;
+            border-bottom: 1px solid #f1f5f9;
+            font-size: 0.9rem;
+        }
+
+        .level-badge {
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .level-info {
+            background: #e0f2fe;
+            color: #0369a1;
+        }
+
+        .level-warning {
+            background: #fffbeb;
+            color: #92400e;
+        }
+
+        .level-error {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .search-box {
+            padding: 10px 15px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            width: 300px;
+        }
+
+        .refresh-btn {
+            background: var(--primary);
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .refresh-btn:hover {
+            background: var(--primary-hover);
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="navbar">
+        <div class="logo">
+            <img src="../Assets/Project_logo.png" alt="Counselly Logo">
+            <h1>Counselly <span style="font-weight: 300; font-size: 0.9rem; opacity: 0.8;">Admin</span></h1>
+        </div>
+        <ul class="nav-links">
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="./Admin_security.html">Security</a></li>
+            <li><a href="./Admin_logs.html" class="active">Logs</a></li>
+        </ul>
+        <div class="nav-buttons" id="navButtons">
+            <button class="login-btn" onclick="API.auth.logout()">Logout</button>
+        </div>
+    </nav>
+
+    <!-- Core JS -->
+    <script src="../JS/auth-manager.js"></script>
+    <script src="../JS/api-client.js"></script>
+    <script src="../JS/common.js"></script>
+
+    <aside class="counselly-sidenav">
+        <div class="counselly-brand">
+            <div
+                style="width: 50px; height: 50px; border-radius: 50%; background: var(--primary); display: flex; align-items: center; justify-content: center; color: white; font-weight: 800; font-size: 1.2rem;">
+                A</div>
+            <div class="counselly-brand-text">
+                <h2>Admin Panel</h2>
+                <p>Counselly Management</p>
+            </div>
+        </div>
+        <nav class="counselly-nav">
+            <a href="./Admission_board.html" class="counselly-link">ADMISSION BOARD</a>
+            <a href="./Admin_analytics.html" class="counselly-link">ANALYTICS</a>
+            <a href="./Admin_broadcast.html" class="counselly-link">BROADCAST</a>
+            <a href="./Admin_contact.html" class="counselly-link">CONTACT MESSAGES</a>
+        </nav>
+    </aside>
+
+    <div class="dashboard-container">
+        <div class="welcome-box">
+            <h2>System Activity Logs</h2>
+            <p style="color: var(--text-muted);">Monitor all administrative actions and system events in real-time.</p>
+        </div>
+
+        <div class="logs-container">
+            <div class="filter-bar">
+                <input type="text" class="search-box" placeholder="Search by event or user...">
+                <div>
+                    <select id="levelFilter"
+                        style="padding: 10px; border-radius: 8px; border: 1px solid #e2e8f0; margin-right: 10px;">
+                        <option value="all">All Levels</option>
+                        <option value="info">Info</option>
+                        <option value="warning">Warning</option>
+                        <option value="error">Error</option>
+                    </select>
+                    <button class="refresh-btn" onclick="location.reload()">Refresh Logs</button>
+                </div>
+            </div>
+
+            <table class="log-table">
+                <thead>
+                    <tr>
+                        <th>Timestamp</th>
+                        <th>Level</th>
+                        <th>Event</th>
+                        <th>User</th>
+                        <th>IP Address</th>
+                    </tr>
+                </thead>
+                <tbody id="logBody">
+                    <!-- Logs will be loaded here -->
+                    <tr>
+                        <td colspan="5" style="text-align:center; padding: 40px; color: var(--text-muted);">Fetching
+                            activity logs...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- API & Logic -->
+    <script src="../JS/auth-api.js"></script>
+    <script src="../JS/admin-logs.js"></script>
+</body>
+
+</html>
