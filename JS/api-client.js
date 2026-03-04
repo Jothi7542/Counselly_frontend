@@ -91,7 +91,8 @@ async function request(endpoint, options = {}) {
 window.API = window.API || {};
 window.API.contact = {
     submit: (data) => request('/contact/submit', { method: 'POST', body: JSON.stringify(data), skipAuth: true }),
-    getAll: () => request('/contact/all')
+    getAll: () => request('/contact/all'),
+    updateStatus: (id, status) => request(`/contact/${id}/status?status=${status}`, { method: 'PUT' })
 };
 window.request = request;
 window.API_BASE_URL = API_BASE_URL;

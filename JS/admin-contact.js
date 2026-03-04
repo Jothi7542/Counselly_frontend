@@ -35,6 +35,7 @@ document.addEventListener("DOMContentLoaded", () => {
             card.className = "message-card";
 
             const date = new Date(msg.created_at).toLocaleString();
+            const isPending = msg.status === 'pending';
 
             card.innerHTML = `
                 <div class="message-header">
@@ -45,9 +46,32 @@ document.addEventListener("DOMContentLoaded", () => {
                     <div class="message-date">${date}</div>
                 </div>
                 <div class="message-content">${msg.message}</div>
-                <span class="status-badge status-${msg.status}">${msg.status}</span>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 15px;">
+                    <span class="status-badge status-${msg.status}">${msg.status}</span>
+                    <div class="action-btns">
+                        <button class="action-btn btn-approve" style="background: #3b82f6; color: white; padding: 6px 12px; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 0.8rem; margin-right: 8px;" onclick="replyToClient('${msg.email}', '${msg.name}')">Reply</button>
+                        ${isPending ? `<button class="action-btn btn-approve" style="background: #10b981; color: white; padding: 6px 12px; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 0.8rem;" onclick="handleStatusUpdate(${msg.id}, 'reviewed')">Mark Reviewed</button>` : ''}
+                    </div>
+                </div>
             `;
             listContainer.appendChild(card);
         });
     }
+
+    window.replyToClient = function (email, name) {
+        const subject = encodeURIComponent("Regarding your inquiry at Counselly");
+        const body = encodeURIComponent(`Hello ${name},\n\nThank you for reaching out to Counselly. `);
+        window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
+    };
+
+    window.handleStatusUpdate = async function (id, status) {
+        if (!confirm(`Mark this message as ${status}?`)) return;
+        try {
+            await API.contact.updateStatus(id, status);
+            alert(`Message status updated to ${status}`);
+            loadMessages();
+        } catch (err) {
+            alert("Failed to update status: " + err.message);
+        }
+    };
 });
