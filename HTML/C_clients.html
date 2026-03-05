@@ -39,10 +39,9 @@
 
   <aside class="counselly-sidenav" aria-label="Counselly side navigation">
     <div class="counselly-brand">
-      <div
-        style="width: 50px; height: 50px; border-radius: 50%; overflow: hidden; margin-right: 12px; border: 2px solid rgba(255,255,255,0.2); flex-shrink: 0;">
+      <div class="avatar-sidebar-container">
         <img id="sidebarProfileImage" src="../Assets/wire5.webp" alt="Profile"
-          style="width: 100%; height: 100%; object-fit: cover;">
+          class="avatar-sidebar-img">
       </div>
       <div class="counselly-brand-text">
         <h2>Counselly</h2>
@@ -65,7 +64,7 @@
   <div class="dashboard-container">
     <div class="welcome-box">
       <h2>Your Clients 👋</h2>
-      <p style="color: var(--text-muted); margin-bottom: 0;">Keep track of the people you are helping and their
+      <p class="text-muted-no-margin">Keep track of the people you are helping and their
         progress.</p>
     </div>
 
@@ -81,7 +80,7 @@
         </thead>
         <tbody id="clientsTable">
           <tr>
-            <td colspan="4" style="text-align: center;">Loading clients...</td>
+            <td colspan="4" class="text-center">Loading clients...</td>
           </tr>
         </tbody>
       </table>
@@ -90,7 +89,7 @@
 
   <!-- Local script removed as it is now in ../JS/pages/counsellor-clients.js -->
 
-  <footer class="footer" style="margin-left: var(--sidebar-w);">
+  <footer class="footer footer-with-sidebar">
     <div class="footer-container">
       <div class="footer-logo">
         <img src="../Assets/Project_logo.png" alt="Counselly Logo">

@@ -34,10 +34,9 @@
 
   <aside class="counselly-sidenav" aria-label="Counselly side navigation">
     <div class="counselly-brand">
-      <div
-        style="width: 50px; height: 50px; border-radius: 50%; overflow: hidden; margin-right: 12px; border: 2px solid rgba(255,255,255,0.2); flex-shrink: 0;">
+      <div class="avatar-sidebar-container">
         <img id="sidebarProfileImage" src="../Assets/wire5.webp" alt="Profile"
-          style="width: 100%; height: 100%; object-fit: cover;">
+          class="avatar-sidebar-img">
       </div>
       <div class="counselly-brand-text">
         <h2>Counselly</h2>
@@ -60,14 +59,14 @@
   <div class="dashboard-container">
     <div class="welcome-box">
       <h2>Appointments & Sessions 👋</h2>
-      <p style="color: var(--text-muted); margin-bottom: 0;">View and manage all your upcoming and past counseling
+      <p class="text-muted-no-margin">View and manage all your upcoming and past counseling
         sessions.</p>
     </div>
 
 
 
     <div class="stat-box">
-      <h3 style="margin-bottom: 20px;">Session History</h3>
+      <h3 class="section-title-spaced">Session History</h3>
       <table>
         <thead>
           <tr>
@@ -98,7 +97,7 @@
   <!-- Page Logic -->
   <script src="../JS/counsellor-sessions.js"></script>
 
-  <footer class="footer" style="margin-left: var(--sidebar-w);">
+  <footer class="footer footer-with-sidebar">
     <div class="footer-container">
       <div class="footer-logo">
         <img src="../Assets/Project_logo.png" alt="Counselly Logo">

@@ -431,3 +431,21 @@
     font-weight: 800;
     font-size: 1.2rem;
 }
+
+/* Navbar brand subtitle (e.g. "Admin") */
+.navbar-brand-sub {
+    font-weight: 300;
+    font-size: 0.9rem;
+    opacity: 0.8;
+}
+
+/* Full-width chart box spanning both grid columns */
+.chart-full-width {
+    grid-column: 1 / -1;
+}
+
+/* Messages loading placeholder */
+.messages-loading-box {
+    text-align: center;
+    padding: 50px;
+}

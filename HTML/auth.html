@@ -25,7 +25,7 @@
 
   <div class="auth-wrapper">
     <h1 id="mainTitle">Welcome back</h1>
-    <p style="color: var(--text-muted); margin-bottom: 30px;">Choose your account type to continue</p>
+    <p class="dashboard-subtitle">Choose your account type to continue</p>
 
     <div class="role-select">
       <button id="btnClient" class="active" onclick="handleRoleSwitch('client')">Client</button>
@@ -40,7 +40,7 @@
       <input type="password" placeholder="Password" required>
       <button type="submit">Sign In</button>
       <p onclick="showClientSignup()">Don't have an account? <span
-          style="cursor: pointer; color: var(--primary);">Create one</span></p>
+          class="color-primary pointer">Create one</span></p>
     </form>
     <!-- Counsellor Login -->
     <form id="counsellorLogin" class="form-box hidden">
@@ -49,7 +49,7 @@
       <input id="c_password" type="password" placeholder="Password" required>
       <button type="submit">Sign In</button>
       <p onclick="showCounsellorSignup()">Want to join our team? <span
-          style="cursor: pointer; color: var(--primary);">Apply here</span></p>
+          class="color-primary pointer">Apply here</span></p>
     </form>
 
 
@@ -60,7 +60,7 @@
       <input id="a_email" type="email" placeholder="Admin Email" required>
       <input id="a_password" type="password" placeholder="Password" required>
       <button type="submit">Sign In as Admin</button>
-      <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 10px;">Restricted access. Dedicated to
+      <p class="stat-label-small color-text-muted margin-top-10">Restricted access. Dedicated to
         Counselly staff.</p>
     </form>
 
@@ -70,9 +70,9 @@
       <input id="cls_name" placeholder="Full Name" required>
       <input id="cls_email" type="email" placeholder="Email address" required>
       <input id="cls_password" type="password" placeholder="Create Password" required>
-      <div style="display: flex; gap: 10px;">
-        <input id="cls_age" placeholder="Age" type="number" style="flex: 1;">
-        <select id="cls_gender" style="flex: 1.5;">
+      <div class="form-inline-row">
+        <input id="cls_age" placeholder="Age" type="number" class="flex-1">
+        <select id="cls_gender" class="flex-1-5">
           <option value="">Gender</option>
           <option>Male</option>
           <option>Female</option>
@@ -90,7 +90,7 @@
       </select>
       <textarea id="cls_address" placeholder="Residential Address" rows="3"></textarea>
       <button type="submit">Create Account</button>
-      <p onclick="showClientLogin()">Already have an account? <span style="cursor: pointer; color: var(--primary);">Sign
+      <p onclick="showClientLogin()">Already have an account? <span class="color-primary pointer">Sign
           In</span></p>
     </form>
 
@@ -101,9 +101,9 @@
       <input id="cs_email" type="email" placeholder="Professional Email" required>
       <input id="cs_password" type="password" placeholder="Create Password" required>
 
-      <div style="display: flex; gap: 10px;">
-        <input id="cs_age" placeholder="Age" type="number" style="flex: 1;">
-        <select id="cs_gender" style="flex: 1.5;">
+      <div class="form-inline-row">
+        <input id="cs_age" placeholder="Age" type="number" class="flex-1">
+        <select id="cs_gender" class="flex-1-5">
           <option value="">Gender</option>
           <option>Male</option>
           <option>Female</option>
@@ -112,9 +112,9 @@
 
       <input id="cs_phone" placeholder="Phone Number" type="tel">
 
-      <div style="display: flex; gap: 10px;">
-        <input id="cs_spec" placeholder="Specialization (e.g. Clinical)" style="flex: 1;">
-        <select id="cs_language" style="flex: 1;">
+      <div class="form-inline-row">
+        <input id="cs_spec" placeholder="Specialization (e.g. Clinical)" class="flex-1">
+        <select id="cs_language" class="flex-1">
           <option value="">Speaks</option>
           <option>Tamil</option>
           <option>English</option>
@@ -128,7 +128,7 @@
       <textarea id="cs_address" placeholder="Professional Address" rows="2"></textarea>
 
       <button type="submit">Register Now</button>
-      <p onclick="showCounsellorLogin()">Back to <span style="cursor: pointer; color: var(--primary);">Sign In</span>
+      <p onclick="showCounsellorLogin()">Back to <span class="color-primary pointer">Sign In</span>
       </p>
     </form>
 

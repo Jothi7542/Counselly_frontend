@@ -134,3 +134,23 @@ body {
 .hidden {
   display: none;
 }
+
+/* Inline form row (e.g. Age + Gender side by side) */
+.form-inline-row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.form-inline-row input,
+.form-inline-row select {
+  margin-bottom: 0;
+}
+
+.flex-1 {
+  flex: 1;
+}
+
+.flex-1-5 {
+  flex: 1.5;
+}

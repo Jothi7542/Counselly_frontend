@@ -14,7 +14,7 @@
     <nav class="navbar">
         <div class="logo">
             <img src="../Assets/Project_logo.png" alt="Counselly Logo">
-            <h1>Counselly <span style="font-weight: 300; font-size: 0.9rem; opacity: 0.8;">Admin</span></h1>
+            <h1>Counselly <span class="navbar-brand-sub">Admin</span></h1>
         </div>
         <ul class="nav-links">
             <li><a href="../index.html">Home</a></li>
@@ -56,11 +56,11 @@
     <div class="dashboard-container">
         <div class="welcome-box">
             <h2>Expert Onboarding & Verification Board</h2>
-            <p style="color: var(--text-muted);">Review new counsellor applications and verify their credentials before
+            <p class="text-muted-no-margin">Review new counsellor applications and verify their credentials before
                 they can start taking sessions.</p>
         </div>
 
-        <div class="stats" style="margin-bottom: 30px;">
+        <div class="stats stats-spaced">
             <div class="stat-box">
                 <h3>Pending Apps</h3>
                 <p id="pendingCount">0</p>
@@ -71,15 +71,15 @@
             </div>
             <div class="stat-box">
                 <h3>System Health</h3>
-                <p style="color: #10b981;">Optimal</p>
+                <p class="color-success">Optimal</p>
             </div>
         </div>
 
         <div class="admission-list">
-            <h3 style="margin-bottom: 20px; color: var(--primary);">Experts Queue</h3>
+            <h3 class="admin-section-title section-title-spaced">Experts Queue</h3>
             <div id="expertsQueue">
                 <!-- Dynamically loaded -->
-                <p style="color: var(--text-muted); padding: 20px;">Fetching applications...</p>
+                <p class="color-text-muted centered-pad">Fetching applications...</p>
             </div>
         </div>
     </div>

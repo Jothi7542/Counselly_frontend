@@ -463,3 +463,7 @@ body {
 .margin-bottom-20 {
     margin-bottom: 20px;
 }
+
+.margin-top-10 { margin-top: 10px; }
+.pointer { cursor: pointer; }
+.color-text-muted { color: var(--text-muted); }
