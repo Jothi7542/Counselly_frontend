@@ -432,11 +432,3 @@ body {
     background: var(--primary-hover);
     transform: translateY(-2px);
 }
-
-/* Dashboard Utility Classes */
-.avatar-sidebar-container { width: 50px; height: 50px; border-radius: 50%; overflow: hidden; margin-right: 12px; border: 2px solid rgba(255,255,255,0.2); flex-shrink: 0; }
-.avatar-sidebar-img { width: 100%; height: 100%; object-fit: cover; }
-.text-muted-no-margin { color: var(--text-muted); margin-bottom: 0; display: block; }
-.container-flush { margin-left: var(--sidebar-w, 250px); padding: 40px; }
-.centered-loading { text-align: center; padding: 20px; color: var(--text-muted); }
-.footer-with-sidebar { margin-left: var(--sidebar-w, 250px); }
