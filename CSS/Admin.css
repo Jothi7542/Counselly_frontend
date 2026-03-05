@@ -449,3 +449,13 @@
     text-align: center;
     padding: 50px;
 }
+
+/* Admin Utility Classes formatting */
+.stats-spaced { margin-bottom: 30px; }
+.section-title-spaced { margin-bottom: 20px; color: var(--primary); font-size: 1.25rem; font-weight: 600;}
+.centered-pad { text-align: center; padding: 20px; color: var(--text-muted); }
+.warning-tip-title { color: #92400e; margin-bottom: 10px; font-weight: 600; font-size: 1.1rem; }
+.warning-tip-text { font-size: 0.85rem; color: #92400e; line-height: 1.4; }
+.color-success { color: #10b981; }
+.color-warning { color: #92400e; }
+.text-muted-no-margin { color: var(--text-muted); margin-bottom: 0; }

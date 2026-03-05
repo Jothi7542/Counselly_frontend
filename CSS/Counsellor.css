@@ -291,3 +291,6 @@ body {
     color: rgba(255, 255, 255, 0.5);
     font-size: 0.85rem;
 }
+
+/* Empty profile message */
+.empty-profile-msg { grid-column: 1/-1; text-align: center; padding: 50px; color: var(--text-muted); }
