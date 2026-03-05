@@ -6,67 +6,7 @@
     <title>System Analytics | Counselly Admin</title>
     <link rel="stylesheet" href="../CSS/navbar.css">
     <link rel="stylesheet" href="../CSS/CD.css">
-    <style>
-        .analytics-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 30px;
-            margin-top: 30px;
-        }
-
-        .chart-box {
-            background: white;
-            border-radius: 20px;
-            padding: 30px;
-            box-shadow: var(--shadow-md);
-            min-height: 300px;
-        }
-
-        .kpi-row {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-
-        .kpi-card {
-            background: white;
-            padding: 20px;
-            border-radius: 15px;
-            box-shadow: var(--shadow-sm);
-            text-align: center;
-        }
-
-        .kpi-card h4 {
-            font-size: 0.9rem;
-            color: var(--text-muted);
-            margin-bottom: 10px;
-        }
-
-        .kpi-card .value {
-            font-size: 1.8rem;
-            font-weight: 800;
-            color: var(--primary);
-        }
-
-        .growth-up {
-            color: #10b981;
-            font-size: 0.8rem;
-        }
-
-        .placeholder-chart {
-            width: 100%;
-            height: 200px;
-            background: #f8fafc;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 2px dashed #e2e8f0;
-            color: var(--text-muted);
-            margin-top: 20px;
-        }
-    </style>
+    <link rel="stylesheet" href="../CSS/Admin.css">
 </head>
 
 <body>
@@ -141,20 +81,17 @@
 
         <div class="analytics-grid">
             <div class="chart-box">
-                <h3 style="color: var(--primary); margin-bottom: 20px;">User Growth</h3>
-                <img src="../Assets/user_growth.png" alt="User Growth Chart" class="chart-img"
-                    style="width: 100%; height: 250px; object-fit: cover; border-radius: 10px;">
+                <h3 class="admin-section-title">User Growth</h3>
+                <img src="../Assets/user_growth.png" alt="User Growth Chart" class="chart-img admin-chart-img">
             </div>
             <div class="chart-box">
-                <h3 style="color: var(--primary); margin-bottom: 20px;">Session Distribution</h3>
+                <h3 class="admin-section-title">Session Distribution</h3>
                 <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=800&auto=format&fit=crop"
-                    alt="Session Distribution Chart" class="chart-img"
-                    style="width: 100%; height: 250px; object-fit: cover; border-radius: 10px;">
+                    alt="Session Distribution Chart" class="chart-img admin-chart-img">
             </div>
-            <div class="chart-box" style="grid-column: 1 / -1;">
-                <h3 style="color: var(--primary); margin-bottom: 20px;">Platform Health Metrics</h3>
-                <img src="../Assets/platform_health.png" alt="Health Metrics Timeline" class="chart-img"
-                    style="width: 100%; height: 300px; object-fit: cover; border-radius: 10px;">
+            <div class="chart-box full-width" style="grid-column: 1 / -1;">
+                <h3 class="admin-section-title">Platform Health Metrics</h3>
+                <img src="../Assets/platform_health.png" alt="Health Metrics Timeline" class="chart-img admin-chart-img chart-img-tall">
             </div>
         </div>
     </div>

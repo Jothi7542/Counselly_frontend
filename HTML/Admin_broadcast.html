@@ -6,66 +6,7 @@
     <title>Global Broadcast | Counselly Admin</title>
     <link rel="stylesheet" href="../CSS/navbar.css">
     <link rel="stylesheet" href="../CSS/CD.css">
-    <style>
-        .broadcast-container {
-            background: white;
-            border-radius: 20px;
-            padding: 40px;
-            box-shadow: var(--shadow-md);
-            margin-top: 30px;
-            max-width: 800px;
-        }
-
-        .form-group {
-            margin-bottom: 25px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 10px;
-            font-weight: 700;
-            color: var(--primary);
-        }
-
-        .form-group input,
-        .form-group select,
-        .form-group textarea {
-            width: 100%;
-            padding: 12px;
-            border-radius: 10px;
-            border: 1px solid #e2e8f0;
-            font-family: inherit;
-        }
-
-        .form-group textarea {
-            height: 150px;
-            resize: vertical;
-        }
-
-        .broadcast-btn {
-            background: var(--primary);
-            color: white;
-            border: none;
-            padding: 15px 30px;
-            border-radius: 10px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-
-        .broadcast-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        }
-
-        .preview-box {
-            margin-top: 30px;
-            padding: 20px;
-            border-radius: 10px;
-            background: #f1f5f9;
-            border-left: 5px solid var(--primary);
-        }
-    </style>
+    <link rel="stylesheet" href="../CSS/Admin.css">
 </head>
 
 <body>
@@ -92,8 +33,7 @@
 
     <aside class="counselly-sidenav">
         <div class="counselly-brand">
-            <div
-                style="width: 50px; height: 50px; border-radius: 50%; background: var(--primary); display: flex; align-items: center; justify-content: center; color: white; font-weight: 800; font-size: 1.2rem;">
+            <div class="avatar-circle-init">
                 A</div>
             <div class="counselly-brand-text">
                 <h2>Admin Panel</h2>
@@ -147,7 +87,7 @@
 
             <div class="preview-box" id="previewBox" style="display: none;">
                 <h4 id="previewTitle">Preview Title</h4>
-                <p id="previewContent" style="margin-top: 10px; font-size: 0.9rem;"></p>
+                <p id="previewContent" class="preview-content-text"></p>
             </div>
         </div>
     </div>

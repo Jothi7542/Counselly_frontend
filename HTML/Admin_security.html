@@ -6,82 +6,7 @@
     <title>Security Settings | Counselly Admin</title>
     <link rel="stylesheet" href="../CSS/navbar.css">
     <link rel="stylesheet" href="../CSS/CD.css">
-    <style>
-        .security-container {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 30px;
-            margin-top: 30px;
-        }
-
-        .security-card {
-            background: white;
-            border-radius: 20px;
-            padding: 30px;
-            box-shadow: var(--shadow-md);
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: var(--text-dark);
-        }
-
-        .form-group input {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #e2e8f0;
-            border-radius: 10px;
-            font-size: 1rem;
-        }
-
-        .btn-update {
-            background: var(--primary);
-            color: white;
-            padding: 12px 24px;
-            border: none;
-            border-radius: 10px;
-            font-weight: 700;
-            cursor: pointer;
-            width: 100%;
-            transition: var(--transition);
-        }
-
-        .btn-update:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-md);
-        }
-
-        .session-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px;
-            border-bottom: 1px solid #f1f5f9;
-        }
-
-        .session-info h4 {
-            margin: 0;
-            color: var(--text-dark);
-        }
-
-        .session-info p {
-            margin: 5px 0 0 0;
-            font-size: 0.85rem;
-            color: var(--text-muted);
-        }
-
-        .status-online {
-            color: #10b981;
-            font-weight: 700;
-            font-size: 0.8rem;
-        }
-    </style>
+    <link rel="stylesheet" href="../CSS/Admin.css">
 </head>
 
 <body>
@@ -108,9 +33,9 @@
 
     <aside class="counselly-sidenav">
         <div class="counselly-brand">
-            <div
-                style="width: 50px; height: 50px; border-radius: 50%; background: var(--primary); display: flex; align-items: center; justify-content: center; color: white; font-weight: 800; font-size: 1.2rem;">
-                A</div>
+                <div class="avatar-circle-init">
+                    A
+                </div>
             <div class="counselly-brand-text">
                 <h2>Admin Panel</h2>
                 <p>Counselly Management</p>
@@ -148,9 +73,7 @@
                     </div>
                     <button type="submit" class="btn-update">Update Password</button>
                 </form>
-                <div id="passwordStatus"
-                    style="margin-top: 15px; text-align: center; display: none; padding: 10px; border-radius: 8px;">
-                </div>
+                <p id="passwordStatus" class="status-badge" style="display:none;"></p>
             </div>
 
             <div class="security-card">
@@ -168,13 +91,11 @@
                             <h4>Mobile App - iOS</h4>
                             <p>Madurai, India • 2 hours ago</p>
                         </div>
-                        <button
-                            style="background: none; border: 1px solid #fee2e2; color: #991b1b; padding: 4px 8px; border-radius: 4px; cursor: pointer; font-size: 0.75rem;">Revoke</button>
+                            <button onclick="terminateSession('SESS-9921')" class="revoke-btn">Revoke</button>
                     </div>
                 </div>
 
-                <div
-                    style="margin-top: 30px; padding: 20px; background: #fffbeb; border-radius: 12px; border-left: 4px solid #f59e0b;">
+                    <div class="alert-warning-box">
                     <h4 style="color: #92400e; margin-bottom: 10px;">Security Tip</h4>
                     <p style="font-size: 0.85rem; color: #92400e; line-height: 1.4;">Regularly update your password and
                         monitor active sessions to ensure your administrative account remains secure.</p>

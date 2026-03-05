@@ -28,10 +28,9 @@
 
   <aside class="counselly-sidenav" aria-label="Counselly side navigation">
     <div class="counselly-brand">
-      <div
-        style="width: 50px; height: 50px; border-radius: 50%; overflow: hidden; margin-right: 12px; border: 2px solid rgba(255,255,255,0.2); flex-shrink: 0;">
+      <div class="avatar-sidebar-container">
         <img id="sidebarProfileImage" src="../Assets/wire5.webp" alt="Profile"
-          style="width: 100%; height: 100%; object-fit: cover;">
+          class="avatar-sidebar-img">
       </div>
       <div class="counselly-brand-text">
         <h2>Counselly</h2>
@@ -52,25 +51,25 @@
   <div class="dashboard-container">
     <div class="welcome-box">
       <h2 id="welcomeText">Welcome Back 👋</h2>
-      <p style="color: var(--text-muted); margin-bottom: 30px;">Here's what's happening with your sessions today.</p>
+      <p class="dashboard-subtitle">Here's what's happening with your sessions today.</p>
 
       <div class="stats">
         <div class="stat-box">
           <h3>Upcoming</h3>
           <p id="upcomingCount">0</p>
-          <span style="font-size: 0.8rem; color: var(--primary);">Sessions booked</span>
+          <span class="stat-label-small color-primary">Sessions booked</span>
         </div>
 
         <div class="stat-box">
           <h3>Completed</h3>
           <p id="completedCount">0</p>
-          <span style="font-size: 0.8rem; color: #10B981;">Total sessions</span>
+          <span class="stat-label-small color-success">Total sessions</span>
         </div>
 
         <div class="stat-box">
           <h3>Progress</h3>
           <p>85%</p>
-          <span style="font-size: 0.8rem; color: var(--accent);">Wellness score</span>
+          <span class="stat-label-small color-accent">Wellness score</span>
         </div>
       </div>
     </div>
@@ -103,7 +102,7 @@
   <!-- Page Logic -->
   <script src="../JS/user-dashboard.js"></script>
 
-  <footer class="footer" style="margin-left: var(--sidebar-w);">
+  <footer class="footer footer-with-sidebar">
     <div class="footer-container">
       <div class="footer-logo">
         <img src="../Assets/Project_logo.png" alt="Counselly Logo">
