@@ -28,9 +28,10 @@
 
   <aside class="counselly-sidenav" aria-label="Counselly side navigation">
     <div class="counselly-brand">
-      <div class="avatar-sidebar-container">
+      <div
+        style="width: 50px; height: 50px; border-radius: 50%; overflow: hidden; margin-right: 12px; border: 2px solid rgba(255,255,255,0.2); flex-shrink: 0;">
         <img id="sidebarProfileImage" src="../Assets/wire5.webp" alt="Profile"
-          class="avatar-sidebar-img">
+          style="width: 100%; height: 100%; object-fit: cover;">
       </div>
       <div class="counselly-brand-text">
         <h2>Counselly</h2>
@@ -55,7 +56,8 @@
   <div class="dashboard-container">
     <div class="welcome-box">
       <h2 id="welcomeText">Welcome back 👋</h2>
-      <p class="dashboard-subtitle">Maintain your professional schedule and manage sessions.</p>
+      <p style="color: var(--text-muted); margin-bottom: 30px;">Maintain your professional schedule and manage sessions.
+      </p>
 
       <div class="stats">
         <div class="stat-box">
@@ -73,9 +75,8 @@
       </div>
     </div>
 
-    <div class="stat-box stat-box-bordered">
-
-      <h3 class="section-title-spaced">New Session Requests</h3>
+    <div class="stat-box" style="margin-top: 40px; border: 1px solid var(--accent);">
+      <h3 style="margin-bottom: 20px;">New Session Requests</h3>
       <table>
         <thead>
           <tr>
@@ -90,16 +91,15 @@
         </thead>
         <tbody id="requestTable">
           <tr>
-            <td colspan="6" class="text-center">Loading requests...</td>
+            <td colspan="6" style="text-align:center;">Loading requests...</td>
           </tr>
         </tbody>
       </table>
     </div>
-    <div class="stat-box stat-box-bordered">
-
-      <h3 class="section-title-spaced">Recent Client Feedback</h3>
+    <div class="stat-box" style="margin-top: 40px; border: 1px solid var(--accent);">
+      <h3 style="margin-bottom: 20px;">Recent Client Feedback</h3>
       <div id="feedbackList">
-        <p class="centered-loading">Loading feedback...</p>
+        <p style="text-align:center; padding: 20px; color: var(--text-muted);">Loading feedback...</p>
       </div>
     </div>
 
@@ -119,7 +119,7 @@
   <script src="../JS/counsellor-dashboard.js"></script>
 
 
-  <footer class="footer footer-with-sidebar">
+  <footer class="footer" style="margin-left: var(--sidebar-w);">
     <div class="footer-container">
       <div class="footer-logo">
         <img src="../Assets/Project_logo.png" alt="Counselly Logo">

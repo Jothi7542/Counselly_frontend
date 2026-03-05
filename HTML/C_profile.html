@@ -33,9 +33,10 @@
 
   <aside class="counselly-sidenav" aria-label="Counselly side navigation">
     <div class="counselly-brand">
-        <div class="avatar-sidebar-container">
+      <div
+        style="width: 50px; height: 50px; border-radius: 50%; overflow: hidden; margin-right: 12px; border: 2px solid rgba(255,255,255,0.2); flex-shrink: 0;">
         <img id="sidebarProfileImage" src="../Assets/wire5.webp" alt="Profile"
-          class="avatar-sidebar-img">
+          style="width: 100%; height: 100%; object-fit: cover;">
       </div>
       <div class="counselly-brand-text">
         <h2>Counselly</h2>
@@ -58,19 +59,21 @@
   <div class="dashboard-container">
     <div class="welcome-box">
       <h2>Counsellor Profile 👋</h2>
-      <p class="text-muted-no-margin">Manage your professional information and credentials.</p>
+      <p style="color: var(--text-muted); margin-bottom: 0;">Manage your professional information and credentials.</p>
     </div>
 
     <div class="stat-box">
       <form id="profileForm">
-        <div class="form-group text-center margin-bottom-20">
-          <div class="profile-avatar-main">
+        <div class="form-group" style="text-align: center; margin-bottom: 20px;">
+          <div
+            style="width: 120px; height: 120px; margin: 0 auto 15px; border-radius: 50%; overflow: hidden; background: #e0e0e0;">
             <img id="currentProfileImage" src="../Assets/wire5.webp" alt="Profile"
-              class="profile-avatar-img">
-                                </div>
-          <label for="profileImageInput" class="find-button label-btn-small">Change Photo</label>
-          <input type="file" id="profileImageInput" class="hidden-input" accept="image/*">
-          <p id="uploadStatus" class="stat-label-small margin-top-5 color-text-muted"></p>
+              style="width: 100%; height: 100%; object-fit: cover;">
+          </div>
+          <label for="profileImageInput" class="find-button"
+            style="cursor: pointer; font-size: 0.9rem; padding: 8px 16px;">Change Photo</label>
+          <input type="file" id="profileImageInput" style="display: none;" accept="image/*">
+          <p id="uploadStatus" style="font-size: 0.8rem; margin-top: 5px; color: var(--text-muted);"></p>
         </div>
 
         <div class="form-group">
@@ -98,7 +101,7 @@
     </div>
   </div>
 
-  <footer class="footer footer-with-sidebar">
+  <footer class="footer" style="margin-left: var(--sidebar-w);">
     <div class="footer-container">
       <div class="footer-logo">
         <img src="../Assets/Project_logo.png" alt="Counselly Logo">
