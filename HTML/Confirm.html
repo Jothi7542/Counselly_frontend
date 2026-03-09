@@ -32,6 +32,21 @@
     <script src="../JS/booking-manager.js"></script>
 
     <h1 class="final">Booking Confirmed!</h1>
+    <div class="confirm-box">
+        <h2>Success</h2>
+        <p class="success-msg">Your session has been scheduled.</p>
+        <img src="../Assets/icons8-checkmark-50.png" class="success-img" alt="Success">
+        <div class="details" id="confirmationDetails">
+            <p><strong>Booking ID</strong> #<span id="bookingId"></span></p>
+            <p><strong>Therapist</strong> <span id="doctorName"></span></p>
+            <p><strong>Date</strong> <span id="bookingDate"></span></p>
+            <p><strong>Time</strong> <span id="bookingTime"></span></p>
+        </div>
+        <div class="btn-row">
+            <a href="./User_dashboard.html" class="btn dash">Go to Dashboard</a>
+        </div>
+    </div>
+
     <!-- EmailJS Integration -->
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
     <script src="../JS/email-service.js"></script>
@@ -41,44 +56,71 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", async () => {
+            console.log("[Confirm] DOM Content Loaded");
+
             const bookingId = localStorage.getItem("last_booking_id");
-            document.getElementById("bookingId").innerText = bookingId || "N/A";
             const doctorName = localStorage.getItem("last_doctor") || "N/A";
             const bookingDate = localStorage.getItem("last_date") || "N/A";
             const bookingTime = localStorage.getItem("last_time") || "N/A";
 
-            document.getElementById("doctorName").innerText = doctorName;
-            document.getElementById("bookingDate").innerText = bookingDate;
-            document.getElementById("bookingTime").innerText = bookingTime;
+            // Populate UI safely
+            const elId = document.getElementById("bookingId");
+            const elDoc = document.getElementById("doctorName");
+            const elDate = document.getElementById("bookingDate");
+            const elTime = document.getElementById("bookingTime");
+
+            if (elId) elId.innerText = bookingId || "N/A";
+            if (elDoc) elDoc.innerText = doctorName;
+            if (elDate) elDate.innerText = bookingDate;
+            if (elTime) elTime.innerText = bookingTime;
 
             // Trigger Email Notification via EmailJS
             if (bookingId && typeof EmailService !== 'undefined') {
                 try {
-                    console.log("Triggering EmailJS notification for booking:", bookingId);
-                    const user = UserManager.get();
+                    console.log("[Confirm] Triggering EmailJS notification for booking:", bookingId);
+                    const user = typeof UserManager !== 'undefined' ? UserManager.get() : null;
+                    const clientEmail = user ? user.email : localStorage.getItem("user_email");
+
+                    if (!clientEmail) {
+                        console.error("[Confirm] Cannot send email: No client email found.");
+                        alert("Note: Email could not be sent because no email address was found. Please ensure you are logged in.");
+                        return;
+                    }
+                    
                     await EmailService.sendBookingNotification({
                         bookingId: bookingId,
                         doctorName: doctorName,
                         date: bookingDate,
                         time: bookingTime,
                         clientName: user ? user.name : "Client",
-                        clientEmail: user ? user.email : null
+                        clientEmail: clientEmail
                     });
                     
+                    console.log("[Confirm] EmailJS call completed");
+                    alert("📧 Booking confirmation email has been sent successfully!");
+
                     // Show a small subtle notice
                     const confirmBox = document.querySelector('.confirm-box');
-                    const emailNotice = document.createElement('p');
-                    emailNotice.innerHTML = "📧 <small>Confirmation email has been sent via EmailJS.</small>";
-                    emailNotice.style.cssText = "color: #059669; margin-top: 15px; font-size: 0.85rem; border-top: 1px solid #eee; padding-top: 10px;";
-                    confirmBox.appendChild(emailNotice);
+                    if (confirmBox) {
+                        const emailNotice = document.createElement('p');
+                        emailNotice.innerHTML = "📧 <small>Confirmation email has been sent via EmailJS.</small>";
+                        emailNotice.style.cssText = "color: #059669; margin-top: 15px; font-size: 0.85rem; border-top: 1px solid #eee; padding-top: 10px;";
+                        confirmBox.appendChild(emailNotice);
+                    }
                 } catch (err) {
-                    console.error("Failed to trigger EmailJS notification:", err);
+                    console.error("[Confirm] Failed to trigger EmailJS notification:", err);
+                    alert("⚠️ Email notification failed: " + err.message + "\nCheck console for details.");
                 }
+            } else {
+                console.warn("[Confirm] Skip email: bookingId missing or EmailService undefined", { bookingId, hasEmailService: typeof EmailService !== 'undefined' });
             }
 
             // Clear booking state
-            localStorage.removeItem("booking_step1");
-            localStorage.removeItem("booking_step2");
+            // Note: Keep last_booking_id for a bit in case of refresh during debugging
+            setTimeout(() => {
+                localStorage.removeItem("booking_step1");
+                localStorage.removeItem("booking_step2");
+            }, 1000);
         });
     </script>
 </body>
