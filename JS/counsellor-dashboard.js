@@ -127,7 +127,15 @@ document.addEventListener("DOMContentLoaded", () => {
         if (!confirm(`Are you sure you want to ${response} this appointment?`)) return;
         try {
             await API.appointments.updateResponse(appointmentId, response);
-            alert(`Appointment ${response} successfully`);
+            
+            // Trigger Email Notification for Accept/Reject
+            try {
+                await API.appointments.sendConfirmationEmail(appointmentId);
+            } catch (emailErr) {
+                console.error("Failed to send status update email:", emailErr);
+            }
+
+            alert(`Appointment ${response} successfully. Client has been notified via email.`);
             location.reload();
         } catch (err) {
             alert("Failed to update response: " + err.message);

@@ -47,12 +47,33 @@
         </div>
     </div>
 
+    <!-- API Definitions -->
+    <script src="../JS/appointment-api.js"></script>
+
     <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            document.getElementById("bookingId").innerText = localStorage.getItem("last_booking_id") || "N/A";
+        document.addEventListener("DOMContentLoaded", async () => {
+            const bookingId = localStorage.getItem("last_booking_id");
+            document.getElementById("bookingId").innerText = bookingId || "N/A";
             document.getElementById("doctorName").innerText = localStorage.getItem("last_doctor") || "N/A";
             document.getElementById("bookingDate").innerText = localStorage.getItem("last_date") || "N/A";
             document.getElementById("bookingTime").innerText = localStorage.getItem("last_time") || "N/A";
+
+            // Trigger Email Notification
+            if (bookingId && window.API && API.appointments) {
+                try {
+                    console.log("Triggering confirmation email for booking:", bookingId);
+                    await API.appointments.sendConfirmationEmail(bookingId);
+                    
+                    // Show a small subtle notice
+                    const confirmBox = document.querySelector('.confirm-box');
+                    const emailNotice = document.createElement('p');
+                    emailNotice.innerHTML = "📧 <small>Confirmation email has been sent to your registered email address.</small>";
+                    emailNotice.style.cssText = "color: #059669; margin-top: 15px; font-size: 0.85rem; border-top: 1px solid #eee; padding-top: 10px;";
+                    confirmBox.appendChild(emailNotice);
+                } catch (err) {
+                    console.error("Failed to trigger confirmation email:", err);
+                }
+            }
 
             // Clear booking state
             localStorage.removeItem("booking_step1");

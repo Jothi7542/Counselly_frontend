@@ -22,4 +22,8 @@ window.API.appointments = {
         request(`/appointments/${id}`, {
             method: "DELETE",
         }),
+    sendConfirmationEmail: (id) =>
+        request(`/appointments/${id}/send-confirmation-email`, {
+            method: "POST",
+        }),
 };
