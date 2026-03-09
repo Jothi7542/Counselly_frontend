@@ -128,11 +128,13 @@ document.addEventListener("DOMContentLoaded", () => {
         try {
             await API.appointments.updateResponse(appointmentId, response);
             
-            // Trigger Email Notification for Accept/Reject
-            try {
-                await API.appointments.sendConfirmationEmail(appointmentId);
-            } catch (emailErr) {
-                console.error("Failed to send status update email:", emailErr);
+            // Trigger Email Notification for Accept/Reject via EmailJS
+            if (typeof EmailService !== 'undefined') {
+                try {
+                    await EmailService.sendStatusUpdateNotification(appointmentId, response);
+                } catch (emailErr) {
+                    console.error("Failed to send EmailJS status update:", emailErr);
+                }
             }
 
             alert(`Appointment ${response} successfully. Client has been notified via email.`);
