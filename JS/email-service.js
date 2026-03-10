@@ -41,7 +41,9 @@ const EmailService = {
             return response;
         } catch (error) {
             console.error("[EmailService] Failed to send booking email:", error);
-            throw error;
+            // EmailJS errors often have 'text' and 'status' instead of 'message'
+            const errorMsg = error?.text || error?.message || JSON.stringify(error) || "Unknown Error";
+            throw new Error(errorMsg);
         }
     },
 
@@ -71,7 +73,8 @@ const EmailService = {
             return response;
         } catch (error) {
             console.error("[EmailService] Failed to send status update email:", error);
-            throw error;
+            const errorMsg = error?.text || error?.message || JSON.stringify(error) || "Unknown Error";
+            throw new Error(errorMsg);
         }
     }
 };

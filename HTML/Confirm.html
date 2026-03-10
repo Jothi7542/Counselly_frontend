@@ -109,7 +109,8 @@
                     }
                 } catch (err) {
                     console.error("[Confirm] Failed to trigger EmailJS notification:", err);
-                    alert("⚠️ Email notification failed: " + err.message + "\nCheck console for details.");
+                    const errorDetails = err.message || JSON.stringify(err);
+                    alert("⚠️ Email notification failed: " + errorDetails + "\n\nTry checking your EmailJS Service ID and Template ID.");
                 }
             } else {
                 console.warn("[Confirm] Skip email: bookingId missing or EmailService undefined", { bookingId, hasEmailService: typeof EmailService !== 'undefined' });
