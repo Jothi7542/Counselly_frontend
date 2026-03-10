@@ -9,11 +9,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (menuBtn && navLinks) {
         menuBtn.addEventListener("click", () => {
-            navLinks.classList.toggle("active");
-            
-            // Also toggle sidebar if on dashboard
             const sidebar = document.querySelector(".counselly-sidenav");
-            if (sidebar) sidebar.classList.toggle("active");
+            
+            if (sidebar) {
+                // On Dashboard: Toggle sidebar only
+                sidebar.classList.toggle("active");
+                navLinks.classList.remove("active"); // Ensure general nav is hidden
+            } else {
+                // On Landing/Other pages: Toggle general nav
+                navLinks.classList.toggle("active");
+            }
 
             // Switch icon if using innerText (e.g., ☰ vs ✕)
             if (menuBtn.innerText === "☰") menuBtn.innerText = "✕";
