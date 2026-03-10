@@ -104,11 +104,63 @@
 }
 
 /* Responsive Navbar */
+.menu-btn {
+    display: none;
+    font-size: 24px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--primary);
+    padding: 10px;
+}
+
 @media (max-width: 768px) {
     .navbar {
         padding: 0 20px;
+        height: 70px;
     }
+
+    .menu-btn {
+        display: block;
+        order: 3;
+    }
+
+    .nav-buttons {
+        margin-left: auto;
+        margin-right: 10px;
+        order: 2;
+    }
+
+    .nav-buttons .login-btn {
+        padding: 8px 16px;
+        font-size: 14px;
+    }
+
     .nav-links {
-        display: none; /* Consider a hamburger menu later if needed */
+        position: fixed;
+        top: 70px;
+        left: -100%;
+        width: 100%;
+        height: calc(100vh - 70px);
+        background: var(--white);
+        flex-direction: column;
+        align-items: center;
+        padding-top: 40px;
+        gap: 30px;
+        transition: var(--transition);
+        box-shadow: var(--shadow-md);
+    }
+
+    .nav-links.active {
+        left: 0;
+    }
+
+    .logo h1 {
+        font-size: 20px;
+    }
+
+    .logo img {
+        height: 36px;
+        width: 36px;
     }
 }

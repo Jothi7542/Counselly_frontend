@@ -164,3 +164,41 @@ body {
     transform: translateY(-2px);
     box-shadow: 0 10px 15px -3px rgba(43, 97, 225, 0.2);
 }
+
+/* --- Responsive Styles --- */
+
+@media (max-width: 768px) {
+    .navbar {
+        padding: 0 20px;
+        height: 70px;
+    }
+
+    .final {
+        font-size: 1.6rem;
+        margin-top: 40px;
+    }
+
+    .confirm-box {
+        padding: 30px 20px;
+        width: 90%;
+        margin-bottom: 60px;
+        border-radius: 20px;
+    }
+
+    .success-msg {
+        font-size: 1.2rem;
+    }
+
+    .details {
+        padding: 15px;
+    }
+
+    .details p strong {
+        width: 80px;
+        font-size: 0.9rem;
+    }
+
+    .details p {
+        font-size: 0.9rem;
+    }
+}

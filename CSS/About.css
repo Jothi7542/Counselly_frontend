@@ -258,3 +258,60 @@ body {
   color: rgba(255, 255, 255, 0.5);
   font-size: 0.85rem;
 }
+
+/* --- Responsive Styles --- */
+
+@media (max-width: 768px) {
+    .about {
+        font-size: 32px;
+        padding-top: 40px;
+    }
+
+    .banner img {
+        height: 250px;
+    }
+
+    .art {
+        padding: 20px;
+        font-size: 1rem;
+        width: 95%;
+    }
+
+    .theraphy {
+        font-size: 1.8rem;
+        margin-top: 50px;
+    }
+
+    .therapy-container {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+
+    .mission-section {
+        padding: 60px 20px;
+    }
+
+    .mission-heading {
+        font-size: 2rem;
+    }
+
+    .footer-container {
+        padding: 0 20px;
+    }
+
+    .footer-links {
+        flex: 1;
+        flex-direction: column;
+        gap: 30px;
+    }
+
+    .footer-bottom {
+        flex-direction: column;
+        text-align: center;
+        padding: 20px;
+    }
+
+    .footer-bottom-links {
+        justify-content: center;
+    }
+}

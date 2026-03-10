@@ -601,3 +601,74 @@ body {
   color: rgba(255, 255, 255, 0.5);
   font-size: 0.8rem;
 }
+
+/* --- Responsive Styles --- */
+
+@media (max-width: 1024px) {
+    .dashboard-container, 
+    .main-container,
+    .profile-content,
+    .Upcoming-session,
+    .footer {
+        margin-left: 0 !important;
+        padding: 40px 30px;
+    }
+
+    .main-container {
+        grid-template-columns: 1fr;
+    }
+
+    .profile-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .counselly-sidenav {
+        left: -100%;
+        top: 70px;
+        height: calc(100vh - 70px);
+        width: 100%;
+        transition: var(--transition);
+    }
+
+    .counselly-sidenav.active {
+        left: 0;
+    }
+
+    .welcome-box {
+        padding: 30px 20px;
+    }
+
+    .welcome-box h2 {
+        font-size: 24px;
+    }
+
+    .stats {
+        grid-template-columns: 1fr;
+    }
+
+    .quick-actions {
+        grid-template-columns: 1fr;
+    }
+
+    .action-card {
+        padding: 30px 20px;
+    }
+
+    .footer-container {
+        padding: 0 20px;
+    }
+
+    .footer-links {
+        flex: 1;
+        flex-direction: column;
+        gap: 30px;
+    }
+
+    .footer-bottom {
+        flex-direction: column;
+        text-align: center;
+        padding: 20px;
+    }
+}

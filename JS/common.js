@@ -3,6 +3,32 @@ document.addEventListener("DOMContentLoaded", () => {
     const user = typeof UserManager !== 'undefined' ? UserManager.get() : null;
     const navButtons = document.getElementById("navButtons");
 
+    // Hamburger Menu Toggler
+    const menuBtn = document.querySelector(".menu-btn");
+    const navLinks = document.querySelector(".nav-links");
+
+    if (menuBtn && navLinks) {
+        menuBtn.addEventListener("click", () => {
+            navLinks.classList.toggle("active");
+            
+            // Also toggle sidebar if on dashboard
+            const sidebar = document.querySelector(".counselly-sidenav");
+            if (sidebar) sidebar.classList.toggle("active");
+
+            // Switch icon if using innerText (e.g., ☰ vs ✕)
+            if (menuBtn.innerText === "☰") menuBtn.innerText = "✕";
+            else menuBtn.innerText = "☰";
+        });
+
+        // Close menu when clicking links
+        navLinks.querySelectorAll("a").forEach(link => {
+            link.addEventListener("click", () => {
+                navLinks.classList.remove("active");
+                if (menuBtn) menuBtn.innerText = "☰";
+            });
+        });
+    }
+
     if (user && navButtons) {
         // Initialize Navbar
         // Adjust paths if on root or in HTML subdir

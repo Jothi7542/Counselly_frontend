@@ -399,3 +399,69 @@ tr:hover td {
   color: rgba(255, 255, 255, 0.5);
   font-size: 0.85rem;
 }
+
+/* --- Responsive Styles --- */
+
+@media (max-width: 1024px) {
+    .dashboard-container, 
+    .footer {
+        margin-left: 0 !important;
+        padding: 40px 20px;
+    }
+}
+
+@media (max-width: 768px) {
+    .counselly-sidenav {
+        left: -100%;
+        top: 70px;
+        height: calc(100vh - 70px);
+        width: 100%;
+        transition: var(--transition);
+        padding: 30px 20px;
+    }
+
+    .counselly-sidenav.active {
+        left: 0;
+    }
+
+    .welcome-box {
+        padding: 30px 20px;
+    }
+
+    .welcome-box h2 {
+        font-size: 1.8rem;
+    }
+
+    .stats {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .stat-box {
+        width: 100%;
+        overflow-x: auto; /* For tables inside stat-boxes */
+    }
+
+    table {
+        display: block;
+        width: 100%;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+
+    .footer-container {
+        padding: 0 20px;
+    }
+
+    .footer-links {
+        flex: 1;
+        flex-direction: column;
+        gap: 30px;
+    }
+
+    .footer-bottom {
+        flex-direction: column;
+        text-align: center;
+        padding: 20px;
+    }
+}

@@ -153,4 +153,46 @@ body {
 
 .flex-1-5 {
   flex: 1.5;
-}
+}
+
+/* --- Responsive Styles --- */
+
+@media (max-width: 768px) {
+    .auth-wrapper {
+        margin: 20px auto;
+        padding: 30px 20px;
+        width: 95%;
+        border-radius: 16px;
+    }
+
+    .auth-wrapper h1 {
+        font-size: 26px;
+        margin-bottom: 20px;
+    }
+
+    .role-select {
+        margin-bottom: 25px;
+    }
+
+    .role-select button {
+        padding: 10px;
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    .form-inline-row {
+        flex-direction: column;
+        gap: 0;
+    }
+
+    .form-inline-row input,
+    .form-inline-row select {
+        margin-bottom: 16px;
+    }
+
+    .auth-wrapper h1 {
+        font-size: 22px;
+    }
+}
+
