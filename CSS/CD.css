@@ -408,9 +408,7 @@ tr:hover td {
         margin-left: 0 !important;
         padding: 40px 20px;
     }
-}
 
-@media (max-width: 768px) {
     .counselly-sidenav {
         left: -100%;
         top: 70px;
@@ -423,7 +421,9 @@ tr:hover td {
     .counselly-sidenav.active {
         left: 0;
     }
+}
 
+@media (max-width: 768px) {
     .welcome-box {
         padding: 30px 20px;
     }

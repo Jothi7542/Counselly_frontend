@@ -621,9 +621,7 @@ body {
     .profile-grid {
         grid-template-columns: 1fr;
     }
-}
 
-@media (max-width: 768px) {
     .counselly-sidenav {
         left: -100%;
         top: 70px;
@@ -635,7 +633,9 @@ body {
     .counselly-sidenav.active {
         left: 0;
     }
+}
 
+@media (max-width: 768px) {
     .welcome-box {
         padding: 30px 20px;
     }
