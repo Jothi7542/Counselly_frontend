@@ -126,9 +126,7 @@
     }
 
     .nav-buttons {
-        margin-left: auto;
-        margin-right: 10px;
-        order: 2;
+        display: none;
     }
 
     .nav-buttons .login-btn {
