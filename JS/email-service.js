@@ -7,7 +7,7 @@
 const EmailService = {
     // --- USER CONFIGURATION START ---
     PUBLIC_KEY: "ve9YqBIKGPA_8UHjk", // Updated with your key
-    SERVICE_ID: "service_adda4nb",   // Updated with your service id
+    SERVICE_ID: "service_7od6eqf",   // Updated with your correct service id
     BOOKING_TEMPLATE_ID: "template_0xgrr4g", // Updated with your booking template id
     STATUS_UPDATE_TEMPLATE_ID: "template_m1sxu84", // Updated with your status update template id
     // --- USER CONFIGURATION END ---
