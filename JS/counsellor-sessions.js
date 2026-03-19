@@ -51,7 +51,7 @@ function renderHistory(sessions) {
       <td><a href="mailto:${s.client_email}" style="color: var(--primary); text-decoration: none;">${s.client_email}</a></td>
       <td>${s.mode}</td>
       <td><span class="status-badge status-completed">${s.status}</span></td>
-      <td>${s.notes || '---'}</td>
+    //   <td>${s.notes || '---'}</td>
     `;
         tbody.appendChild(tr);
     });

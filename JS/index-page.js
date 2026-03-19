@@ -1,11 +1,11 @@
-// JS Logic for index.html (Home Page)
+
 document.addEventListener("DOMContentLoaded", async () => {
   const teamContainer = document.getElementById("expertTeam");
   if (!teamContainer) return;
 
   try {
     const counsellors = await API.counsellors.getAll();
-    // Get top 3
+   
     const top3 = counsellors.slice(0, 3);
 
     if (top3.length === 0) {
