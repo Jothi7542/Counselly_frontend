@@ -11,8 +11,7 @@ async function request(endpoint, options = {}) {
     const path = endpoint.startsWith('/') ? endpoint : `/${endpoint}`;
     const url = `${API_BASE_URL}${path}`;
 
-    // If skipAuth is true, we use a simple fetch without any custom headers
-    // to avoid CORS preflight (OPTIONS) requests on public GET endpoints.
+ 
     if (options.skipAuth) {
         console.log(`[API] Fetching (skipAuth): ${url}`);
         try {

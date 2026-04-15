@@ -94,12 +94,12 @@
 
                     const res = await API.appointments.create(appointmentData);
 
-                    // Save for confirmation page
+                    
                     localStorage.setItem("last_booking_id", res.appointment_id);
                     localStorage.setItem("last_doctor", data.counsellor_name);
                     localStorage.setItem("last_date", data.date);
                     localStorage.setItem("last_time", data.time);
-                    BookingManager.clear(); // Clear booking data after successful booking
+                    BookingManager.clear(); 
                     window.location.href = "./Confirm.html";
                 } catch (err) {
                     alert("Booking failed: " + err.message);

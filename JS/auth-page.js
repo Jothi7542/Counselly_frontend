@@ -1,4 +1,4 @@
-// JS Logic for auth.html
+
 function hideAll() {
     document.querySelectorAll(".form-box")
         .forEach(el => el.classList.add("hidden"));
